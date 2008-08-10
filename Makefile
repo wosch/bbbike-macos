@@ -1,7 +1,7 @@
 ###############################################################
 # Wolfram Schneider, Aug 2008
 #
-# build a BBBike/SFBike image archive for MacOS 10.5 Intel
+# build and update a BBBike/SFBike image archive for MacOS 10.5 Intel
 #
 # For more information about BBBike, see http://www.bbbike.de
 
@@ -55,6 +55,9 @@ get-data-sfo:
 extract-data-sfo:
 	@zcat ${DOWNLOAD_DIR}/${SFBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
 
+scp:
+	scp ${BUILD_DIR}/${BBBIKE_DMG} ${BUILD_DIR}/${SFBIKE_DMG} ${ARCHIVE_HOME}
+
 clean:
 	rm -rf ${BUILD_DIR}/${BBBIKE_ROOT}
 	rm -f ${BUILD_DIR}/*.dmg
@@ -63,4 +66,4 @@ dist-clean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz
 
 help:
-	@echo "usage: make [ help | bbbike-dmg | sfbike-dmg | clean | dist-clean ]"
+	@echo "usage: make [ help | bbbike-dmg | sfbike-dmg | scp | clean | dist-clean ]"
