@@ -7,7 +7,11 @@
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_ARCHIVE=	BBBike-3.16-MacOS-10.5-intel-perl-5.10.0.tbz
+BBBIKE_DMG=	BBBike-3.16-Intel.dmg
+
 SFBIKE_DATA=	data-sfo.tgz
+SFBIKE_DMG=	SFBike-3.16-Intel.dmg
+
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
 ARCHIVE_HOME=	http://wolfram.schneider.org/src
@@ -25,10 +29,10 @@ bbbike-dmg: clean get-tarball update-files create-bbbike-image
 sfbike-dmg: clean get-tarball update-files get-data-sfo extract-data-sfo create-sfbike-image
 
 create-bbbike-image:
-	  hdiutil create -srcfolder ${BUILD_DIR}/BBBike -volname BBBike -ov  ${BUILD_DIR}/BBBike-3.16-Intel.dmg
+	  hdiutil create -srcfolder ${BUILD_DIR}/BBBike -volname BBBike -ov  ${BUILD_DIR}/${BBBIKE_DMG}
 
 create-sfbike-image:
-	  hdiutil create -srcfolder ${BUILD_DIR}/BBBike -volname SFBike -ov  ${BUILD_DIR}/SFBike-3.16-Intel.dmg
+	  hdiutil create -srcfolder ${BUILD_DIR}/BBBike -volname SFBike -ov  ${BUILD_DIR}/${SFBIKE_DMG}
 
 update-files:
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_ARCHIVE} | ( cd ${BUILD_DIR} && tar xf - )
