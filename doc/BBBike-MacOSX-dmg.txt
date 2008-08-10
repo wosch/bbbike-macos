@@ -1,0 +1,94 @@
+Create an bbbike.img for MacOS 10.5/Leopard
+-----------------------------------------
+by Wolfram Schneider <wosch@FreeBSD.org>, March 2008
+
+Preface
+--------
+All binaries will be installed (and started) in 
+<Directory>/BBBike/
+		/bbbike					# wrapper script to start bbbike
+		/README.txt
+		/.Build-BBBike-dmg.txt			# this document
+		/.BBBike-<version>			# bbbike root
+		/.BBBike-<version>/perl-<version>       # perl prefix
+
+You can drag BBBike to your Application folder and start bbbike.
+
+------------------------------------------------------------------------------
+1. Perl Installation
+- download Perl 5.10 and use the MacOS perl option for configure
+  try `/usr/bin/perl -V' for MacOS's options
+  
+  - build a universal binary. See perldoc perlmacosx
+  - patch hints/darwin.sh and add 
+	lddlflags="${ldflags} -bundle -undefined dynamic_lookup -arch i386 -arch ppc"
+
+$ env ld='cc -mmacosx-version-min=10.5' ldflags='-arch i386 -arch ppc -L/usr/local/lib' lddlflags='-arch i386 -arch ppc -bundle -undefined dynamic_lookup -L/usr/local/lib' cppflags='-no-cpp-precomp -g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/local/include' \
+ ./Configure -ds -e -Dprefix=/tmp/perl-5.10.0 -Dccflags='-g  -pipe'  -Dldflags=-Dman3ext=3pm -Duseithreads -Duseshrplib -Accflags="-arch i686 -arch ppc" -Aldflags="-arch i686 -arch ppc" 
+
+$ make
+$ make test
+$ make install
+
+2. Perl/Tk Installation
+- configure cpan
+ env HOME=/tmp/cpan /tmp/perl-5.10.0/bin/cpan
+- install Tk
+ env HOME=/tmp/cpan /tmp/perl-5.10.0/bin/cpan
+  force install Tk
+
+3. BBBike Installion
+- download BBBike-3.16.tgz, extract archive
+- run install.pl script:
+  /tmp/perl-5.10.0/bin/perl install.pl
+- copy BBBike-3.16 directory to /tmp/bbbike/BBBike
+   mkdir /tmp/bbbike/BBBike
+   cp -R BBBike-3.16 /tmp/bbbike/BBBike/.BBBike-3.16
+   cp -R /tmp/perl-5.10.0 /tmp/bbbike/BBBike/.BBBike-3.16
+
+4. Install start script for bbbike
+
+cat << 'EOF'> /tmp/bbbike/BBBike/bbbike
+#!/bin/sh
+
+dir=`dirname "$0"`
+perl_home=$dir/.BBBike-3.16/perl-5.10.0
+
+export DYLD_LIBRARY_PATH=$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE 
+
+$perl_home/bin/perl \
+        -I$perl_home/lib/5.10.0/darwin-thread-multi-2level \
+        -I$perl_home/lib/5.10.0 \
+        -I$perl_home/lib/site_perl/5.10.0/darwin-thread-multi-2level \
+        -I$perl_home/lib/site_perl/5.10.0 \
+   $dir/.BBBike-3.16/bbbike
+
+EOF
+
+  chmod 755 /tmp/bbbike/BBBike/bbbike
+  # cleanup cpan: 
+  rm -rf /tmp/cpan
+
+5. Create an bbbike.dmg image for MacOS
+
+Interactive:
+   - Start the 'Disk Utiltiy' program, open Menu:
+   - File -> New -> Disk Image From Folder
+   - choose Folder /tmp/bbbike
+   - create image, use option compress, the image
+     will be only ~28MB large!
+   - cleanup: rm -rf /tmp/bbbike
+
+on the command line:
+$ hdiutil create -srcfolder bbbike -volname BBBike-3.16 -ov  BBBike-3.16-Intel.dmg
+
+!!!YOU ARE NOW DONE!!!
+To start bbbike, click on the image and than
+on the start script ./bbbike
+
+You can also drag BBBike to your Application folder.
+
+Have fun,
+Wolfram
+
+

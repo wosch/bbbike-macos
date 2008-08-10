@@ -1,0 +1,25 @@
+SFBike - A bike information system for cyclists in San Francisco
+
+#########################################################################
+#
+# get sources for bbbike from sourceforge.net repository
+
+cvs -d:pserver:anonymous@bbbike.cvs.sourceforge.net:/cvsroot/bbbike login
+cvs -z3 -d:pserver:anonymous@bbbike.cvs.sourceforge.net:/cvsroot/bbbike co -P bbbike
+
+#########################################################################
+#
+# get data for sfbike
+#
+1. download geo data for San Francisco/SFO from opensteetmaps.org
+./miscsrc/downloadosm -o ../sfbike/sfo -- -122.527 37.594 -122.351 37.811
+
+2. convert *.osm files to bbbike data
+ ./miscsrc/osm2bbd -f -map bbbike -center -122.598,37.6829  -o data-sfo -d ../sfbike/sfo
+
+3. start sfbike, english version
+env LANG=en_US.UTF-8 perl ./bbbike -datadir data-sfo
+
+
+-Wolfram Schneider, Aug 2008
+
