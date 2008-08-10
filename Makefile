@@ -52,7 +52,11 @@ extract-data-sfo:
 	@zcat ${DOWNLOAD_DIR}/${SFBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
 
 clean:
-	rm -rf build/${BBBIKE_ROOT}
+	rm -rf ${BUILD_DIR}/${BBBIKE_ROOT}
+	rm -f ${BUILD_DIR}/*.dmg
+
+dist-clean: clean
+	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz
 
 help:
-	@echo "usage: make [ help | bbbike-dmg | sfbike-dmg | clean ]"
+	@echo "usage: make [ help | bbbike-dmg | sfbike-dmg | clean | dist-clean ]"
