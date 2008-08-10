@@ -29,10 +29,14 @@ bbbike-dmg: clean get-tarball update-files create-bbbike-image
 sfbike-dmg: clean get-tarball update-files get-data-sfo extract-data-sfo create-sfbike-image
 
 create-bbbike-image:
-	  hdiutil create -srcfolder ${BUILD_DIR}/BBBike -volname BBBike -ov  ${BUILD_DIR}/${BBBIKE_DMG}
+	mv ${BUILD_DIR}/${BBBIKE_ROOT}/sfbike ${BUILD_DIR}/${BBBIKE_ROOT}/.sfbike
+	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
+	mv ${BUILD_DIR}/${BBBIKE_ROOT}/.sfbike ${BUILD_DIR}/${BBBIKE_ROOT}/sfbike
 
 create-sfbike-image:
-	  hdiutil create -srcfolder ${BUILD_DIR}/BBBike -volname SFBike -ov  ${BUILD_DIR}/${SFBIKE_DMG}
+	mv ${BUILD_DIR}/BBBike ${BUILD_DIR}/SFBike
+	hdiutil create -srcfolder ${BUILD_DIR} -volname SFBike -ov  ${DOWNLOAD_DIR}/${SFBIKE_DMG}
+	mv ${BUILD_DIR}/SFBike ${BUILD_DIR}/BBBike
 
 update-files:
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_ARCHIVE} | ( cd ${BUILD_DIR} && tar xf - )
@@ -59,11 +63,12 @@ scp:
 	scp ${BUILD_DIR}/${BBBIKE_DMG} ${BUILD_DIR}/${SFBIKE_DMG} ${ARCHIVE_HOME}
 
 clean:
-	rm -rf ${BUILD_DIR}/${BBBIKE_ROOT}
-	rm -f ${BUILD_DIR}/*.dmg
+	rm -rf ${BUILD_DIR}
+	mkdir ${BUILD_DIR}
 
 dist-clean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz
+	rm -f ${BUILD_DIR}/*.dmg
 
 help:
 	@echo "usage: make [ help | bbbike-dmg | sfbike-dmg | scp | clean | dist-clean ]"
