@@ -52,16 +52,16 @@ cat << 'EOF'> /tmp/bbbike/BBBike/bbbike
 #!/bin/sh
 
 dir=`dirname "$0"`
-perl_home=$dir/.BBBike-3.16/perl-5.10.0
+perl_home="$dir"/.BBBike-3.16/perl-5.10.0
 
-export DYLD_LIBRARY_PATH=$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE 
+export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
 
-$perl_home/bin/perl \
-        -I$perl_home/lib/5.10.0/darwin-thread-multi-2level \
-        -I$perl_home/lib/5.10.0 \
-        -I$perl_home/lib/site_perl/5.10.0/darwin-thread-multi-2level \
-        -I$perl_home/lib/site_perl/5.10.0 \
-   $dir/.BBBike-3.16/bbbike
+"$perl_home"/bin/perl \
+        -I"$perl_home"/lib/5.10.0/darwin-thread-multi-2level \
+        -I"$perl_home"/lib/5.10.0 \
+        -I"$perl_home"/lib/site_perl/5.10.0/darwin-thread-multi-2level \
+        -I"$perl_home"/lib/site_perl/5.10.0 \
+   "$dir"/.BBBike-3.16/bbbike
 
 EOF
 
@@ -80,7 +80,7 @@ Interactive:
    - cleanup: rm -rf /tmp/bbbike
 
 on the command line:
-$ hdiutil create -srcfolder bbbike -volname BBBike-3.16 -ov  BBBike-3.16-Intel.dmg
+$ hdiutil create -srcfolder bbbike -volname BBBike -ov  BBBike-3.16-Intel.dmg
 
 !!!YOU ARE NOW DONE!!!
 To start bbbike, click on the image and than
