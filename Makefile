@@ -67,7 +67,7 @@ clean:
 	mkdir ${BUILD_DIR}
 
 dist-clean: clean
-	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz
+	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
 	rm -f ${BUILD_DIR}/*.dmg
 
 help:
