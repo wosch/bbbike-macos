@@ -60,7 +60,7 @@ extract-data-sfo:
 	@zcat ${DOWNLOAD_DIR}/${SFBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
 
 scp:
-	scp ${BUILD_DIR}/${BBBIKE_DMG} ${BUILD_DIR}/${SFBIKE_DMG} ${ARCHIVE_HOME}
+	scp ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${SFBIKE_DMG} wolfram.schneider.org:www/src
 
 clean:
 	rm -rf ${BUILD_DIR}
