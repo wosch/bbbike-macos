@@ -16,6 +16,11 @@ export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
 # start english version of SFBike
 export LANG=en_US.UTF-8
 
+case `uname -m` in
+        i386) ;;
+        * ) echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
+esac
+
 "$perl_home"/bin/perl \
 	-I"$perl_home"/lib/5.10.0/darwin-thread-multi-2level \
      	-I"$perl_home"/lib/5.10.0 \

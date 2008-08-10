@@ -13,6 +13,11 @@ perl_home="$dir/.BBBike-3.16/perl-5.10.0"
 
 export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE" 
 
+case `uname -m` in
+	i386) ;;
+	* ) echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
+esac
+
 "$perl_home"/bin/perl \
 	-I"$perl_home"/lib/5.10.0/darwin-thread-multi-2level \
      	-I"$perl_home"/lib/5.10.0 \
