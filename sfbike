@@ -9,18 +9,18 @@
 dir=`dirname "$0"`
 
 # perl/TK binary installation
-perl_home=$dir/.BBBike-3.16/perl-5.10.0
+perl_home="$dir"/.BBBike-3.16/perl-5.10.0
 
-export DYLD_LIBRARY_PATH=$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE 
+export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
 
 # start english version of SFBike
 export LANG=en_US.UTF-8
 
-$perl_home/bin/perl \
-	-I$perl_home/lib/5.10.0/darwin-thread-multi-2level \
-     	-I$perl_home/lib/5.10.0 \
-	-I$perl_home/lib/site_perl/5.10.0/darwin-thread-multi-2level \
-	-I$perl_home/lib/site_perl/5.10.0 \
-   $dir/.BBBike-3.16/bbbike -datadir $dir/.BBBike-3.16/data-sfo "$@"
+"$perl_home"/bin/perl \
+	-I"$perl_home"/lib/5.10.0/darwin-thread-multi-2level \
+     	-I"$perl_home"/lib/5.10.0 \
+	-I"$perl_home"/lib/site_perl/5.10.0/darwin-thread-multi-2level \
+	-I"$perl_home"/lib/site_perl/5.10.0 \
+   "$dir"/.BBBike-3.16/bbbike -datadir "$dir"/.BBBike-3.16/data-sfo "$@"
 
 
