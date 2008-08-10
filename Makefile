@@ -11,6 +11,10 @@ UPDATE_FILES=\
 
 all: help
 
+bbbike-dmg:
+	cd ${BUILD_DIR}; \
+	  hdiutil create -srcfolder BBBike -volname BBBike -ov  BBBike-3.16-Intel.dmg
+
 update-files:
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_ARCHIVE} | ( cd ${BUILD_DIR} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
