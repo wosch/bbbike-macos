@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Wolfram Schneider, Aug 2008
+#
+# bbbike - a wrapper for the perl program BBBike - a route-finder for 
+#          cyclists in Berlin and Brandenburg, http://www.bbbike.de
+
+# $0 may contain spaces: /Volumes/bbbike 1/BBBike/bbbike
+dir=`dirname "$0"`
+
+# perl/TK binary installation
+perl_home="$dir"/.BBBike-3.16/perl-5.10.0
+
+export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
+
+# start english version of SFBike
+export LANG=en_US.UTF-8
+
+case `uname -m` in
+        i386) ;;
+        * ) echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
+esac
+
+"$perl_home"/bin/perl \
+	-I"$perl_home"/lib/5.10.0/darwin-thread-multi-2level \
+     	-I"$perl_home"/lib/5.10.0 \
+	-I"$perl_home"/lib/site_perl/5.10.0/darwin-thread-multi-2level \
+	-I"$perl_home"/lib/site_perl/5.10.0 \
+   "$dir"/.BBBike-3.16/bbbike -datadir "$dir"/.BBBike-3.16/data-kobenhavn "$@"
+

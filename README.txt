@@ -11,15 +11,14 @@ To start BBBike, click on the wrapper script
 
 	./bbbike 
 
-SFBike
+Other Cities
 --------------
 
-To start a version for the San Francisco area,  
-click on the wrapper script
+!!!Note: xxBike is still in alpha test!!!
+Data by openstreetmap.org
 
-	./sfbike
-
-Note: SFBike is still in alpha test!
+San Francisco area: 	./sfbike  
+Copenhagen:		./khbike
 
 
 have fun,

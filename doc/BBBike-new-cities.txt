@@ -21,5 +21,20 @@ cvs -z3 -d:pserver:anonymous@bbbike.cvs.sourceforge.net:/cvsroot/bbbike co -P bb
 env LANG=en_US.UTF-8 perl ./bbbike -datadir data-sfo
 
 
+#########################################################################
+#
+# get data for khbike / København
+#
+1. download geo data for København from opensteetmaps.org
+# Copenhagen downtown only: 12.418 55.596 12.687 55.743
+./miscsrc/downloadosm -o ../sfbike/khbike -- 12.275 55.549 12.702 55.831
+
+2. convert *.osm files to bbbike data
+./miscsrc/osm2bbd -f -map bbbike -center  12.435,55.579 -o data-kobenhavn -d ../sfbike/khbike
+
+3. start khbike, english version
+env LANG=en_US.UTF-8 perl ./bbbike -datadir data-kobenhavn
+
+
 -Wolfram Schneider, Aug 2008
 
