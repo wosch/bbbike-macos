@@ -1,5 +1,5 @@
 #!/bin/sh
-# 
+#
 # Wolfram Schneider, Aug 2008
 #
 # bbbike - a wrapper for the perl program BBBike - a route-finder for 
@@ -8,14 +8,25 @@
 # $0 may contain spaces: /Volumes/bbbike 1/BBBike/bbbike
 dir=`dirname "$0"`
 
-# perl/TK binary installation
-perl_home="$dir/.BBBike-3.16/perl-5.10.0"
+# perl/TK binary installation for perl-5.10.0
+perl_home="$dir"/.BBBike-3.16/perl-5.10.0
 
-export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE" 
+export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
+
+# start english version of BBBike
+export LANG=en_US.UTF-8
 
 case `uname -m` in
-	i386) ;;
-	* ) echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
+        i386) ;;
+        * ) echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
+esac
+
+datadir=data
+
+case $0 in
+	*[Kk]arlsruhe* ) 	datadir=data-osm/karlsruhe ;;
+	*[Cc]openhagen* ) 	datadir=data-osm/copenhagen ;;
+	*[Ss]an_[Ff]rancisco* ) datadir=data-osm/san_francisco ;;
 esac
 
 "$perl_home"/bin/perl \
@@ -23,5 +34,5 @@ esac
      	-I"$perl_home"/lib/5.10.0 \
 	-I"$perl_home"/lib/site_perl/5.10.0/darwin-thread-multi-2level \
 	-I"$perl_home"/lib/site_perl/5.10.0 \
-   "$dir"/.BBBike-3.16/bbbike "$@"
+   "$dir"/.BBBike-3.16/bbbike -datadir "$dir/.BBBike-3.16/$datadir" "$@"
 
