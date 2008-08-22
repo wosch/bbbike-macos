@@ -14,11 +14,7 @@ BUILD_DIR=	build
 DOWNLOAD_DIR=	download
 ARCHIVE_HOME=	http://wolfram.schneider.org/src
 
-UPDATE_FILES=\
-	.Build-BBBike-dmg.txt \
-	.SFBike.txt \
-	README.txt \
-	bbbike 
+UPDATE_FILES= README.txt bbbike 
 
 all: help
 
@@ -33,6 +29,7 @@ create-bbbike-image:
 update-files:
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_ARCHIVE} | ( cd ${BUILD_DIR} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
+	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
 
 get-tarball:
 	cd ${DOWNLOAD_DIR}; \
