@@ -46,7 +46,7 @@ get-data-osm:
 	  fi
 
 extract-data-osm:
-	@zcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
+	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
 
 scp:
 	scp ${DOWNLOAD_DIR}/${BBBIKE_DMG} wolfram.schneider.org:www/src
