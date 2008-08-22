@@ -1,0 +1,116 @@
+###############################################################
+# Wolfram Schneider, Aug 2008
+#
+# Get and convert OpenStreetMap.org data to BBBike
+#
+# For more information about BBBike, see http://www.bbbike.de
+
+
+OSMBIKE_DATA=	data-osm.tgz
+DOWNLOADOSM=	./miscsrc/downloadosm 
+OSM2BBD=	./miscsrc/osm2bbd
+
+OSM_DIR=	osm
+DATA_OSM_DIR=	data-osm
+
+all: help
+
+tarball:
+	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
+
+cities: copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover kolmar zuerich
+convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert kolmar-convert zuerich-convert
+
+# bbbike @ Copenhagen
+copenhagen: copenhagen-download copenhagen-convert
+copenhagen-download: 
+	mkdir -p ${OSM_DIR}/copenhagen
+	${DOWNLOADOSM} -o ${OSM_DIR}/copenhagen -- 12.275 55.549 12.702 55.831
+copenhagen-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center  12.435,55.579 -o ${DATA_OSM_DIR}/copenhagen ${OSM_DIR}/copenhagen
+
+# bbbike @ Karlsruhe
+karlsruhe: karlsruhe-download karlsruhe-convert
+karlsruhe-download:
+	mkdir -p ${OSM_DIR}/karlsruhe
+	${DOWNLOADOSM} -o ${OSM_DIR}/karlsruhe -- 8.295 48.964 8.478 49.126
+karlsruhe-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 8.275,48.894 -o ${DATA_OSM_DIR}/karlsruhe ${OSM_DIR}/karlsruhe
+
+# bbbike @ San Francisco
+san_francisco: san_francisco-download san_francisco-convert
+san_francisco-download:
+	mkdir -p ${OSM_DIR}/san_francisco
+	${DOWNLOADOSM} -o ${OSM_DIR}/san_francisco -- -122.527 37.594 -122.351 37.811
+san_francisco-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center  -122.598,37.6829 -o ${DATA_OSM_DIR}/san_francisco ${OSM_DIR}/san_francisco
+
+# bbbike @ Basel
+basel: basel-download basel-convert
+basel-download:
+	mkdir -p ${OSM_DIR}/basel
+	${DOWNLOADOSM} -o ${OSM_DIR}/basel -- 7.5298 47.5128 7.6823 47.5943
+basel-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 7.5298,47.5128 -o ${DATA_OSM_DIR}/basel ${OSM_DIR}/basel
+
+
+# bbbike @ Amsterdam
+amsterdam: amsterdam-download amsterdam-convert
+amsterdam-download:
+	mkdir -p ${OSM_DIR}/amsterdam
+	${DOWNLOADOSM} -o ${OSM_DIR}/amsterdam -- 4.7982 52.3206 5.0265 52.4309
+amsterdam-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 4.7982,52.3206 -o ${DATA_OSM_DIR}/amsterdam ${OSM_DIR}/amsterdam
+
+# bbbike @ Erlangen
+erlangen: erlangen-download erlangen-convert
+erlangen-download:
+	mkdir -p ${OSM_DIR}/erlangen
+	${DOWNLOADOSM} -o ${OSM_DIR}/erlangen -- 10.9636 49.5208 11.0606 49.6199
+erlangen-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 10.9636,49.5208 -o ${DATA_OSM_DIR}/erlangen ${OSM_DIR}/erlangen
+
+# bbbike @ Freiburg
+freiburg: freiburg-download freiburg-convert
+freiburg-download:
+	mkdir -p ${OSM_DIR}/freiburg
+	${DOWNLOADOSM} -o ${OSM_DIR}/freiburg -- 7.7758 47.9677 7.9087 48.0393
+freiburg-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 7.7758,47.9677 -o ${DATA_OSM_DIR}/freiburg ${OSM_DIR}/freiburg
+
+# bbbike @ Hannover
+hannover: hannover-download hannover-convert
+hannover-download:
+	mkdir -p ${OSM_DIR}/hannover
+	${DOWNLOADOSM} -o ${OSM_DIR}/hannover -- 9.583 52.308 9.92 52.473
+hannover-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 9.583,52.308 -o ${DATA_OSM_DIR}/hannover ${OSM_DIR}/hannover
+
+# bbbike @ Kolmar
+kolmar: kolmar-download kolmar-convert
+kolmar-download:
+	mkdir -p ${OSM_DIR}/kolmar
+	${DOWNLOADOSM} -o ${OSM_DIR}/kolmar -- 7.305 48.0471 7.4086 48.1236
+kolmar-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center  7.305,48.0471  -o ${DATA_OSM_DIR}/kolmar ${OSM_DIR}/kolmar
+
+# bbbike @ Zuerich
+zuerich: zuerich-download zuerich-convert
+zuerich-download:
+	mkdir -p ${OSM_DIR}/zuerich
+	${DOWNLOADOSM} -o ${OSM_DIR}/zuerich -- 8.4483 47.3437 8.6271 47.4185
+zuerich-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 8.4483,47.3437 -o ${DATA_OSM_DIR}/zuerich ${OSM_DIR}/zuerich
+
+
+
+scp:
+	scp ${OSMBIKE_DATA} wolfram.schneider.org:www/src
+
+clean:
+
+dist-clean devel-clean: clean
+
+help:
+	@echo "usage: make [ help | copenhagen | karlsruhe | san_francisco | convert | scp | clean | dist-clean ]"
+

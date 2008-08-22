@@ -27,6 +27,13 @@ case $0 in
 	*[Kk]arlsruhe* ) 	datadir=data-osm/karlsruhe ;;
 	*[Cc]openhagen* ) 	datadir=data-osm/copenhagen ;;
 	*[Ss]an_[Ff]rancisco* ) datadir=data-osm/san_francisco ;;
+	*[Bb]asel* ) 		datadir=data-osm/basel ;;
+	*[Aa]msterdam* ) 	datadir=data-osm/amsterdam ;;
+	*[Ee]rlangen* ) 	datadir=data-osm/erlangen ;;
+	*[Ff]reiburg* ) 	datadir=data-osm/freiburg ;;
+	*[Hh]annover* ) 	datadir=data-osm/hannover ;;
+	*[Kk]olmar* ) 		datadir=data-osm/kolmar ;;
+	*[Zz]uerich* ) 		datadir=data-osm/zuerich ;;
 esac
 
 "$perl_home"/bin/perl \

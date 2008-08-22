@@ -21,9 +21,9 @@ all: help
 bbbike-dmg bbbike: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 
 create-bbbike-image:
-	cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike Copenhagen
-	cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike San_Francisco
-	cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike Karlsruhe
+	@for city in Copenhagen Karlsruhe San_Francisco Basel Amsterdam Erlangen Freiburg Hannover Kolmar Zuerich; do \
+		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
+	done
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
 
 update-files:
@@ -34,14 +34,14 @@ update-files:
 get-tarball:
 	cd ${DOWNLOAD_DIR}; \
 	  if [ ! -f ${BBBIKE_ARCHIVE} ]; then  \
-	     curl -o ${BBBIKE_ARCHIVE}.part ${ARCHIVE_HOME}/${BBBIKE_ARCHIVE}; \
+	     curl -s -S -o ${BBBIKE_ARCHIVE}.part ${ARCHIVE_HOME}/${BBBIKE_ARCHIVE}; \
 	     mv -f ${BBBIKE_ARCHIVE}.part ${BBBIKE_ARCHIVE}; \
 	  fi
 
 get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
 	  if [ ! -f ${OSMBIKE_DATA} ]; then  \
-	     curl -o ${OSMBIKE_DATA}.part ${ARCHIVE_HOME}/${OSMBIKE_DATA}; \
+	     curl  -s -S -o ${OSMBIKE_DATA}.part ${ARCHIVE_HOME}/${OSMBIKE_DATA}; \
 	     mv -f ${OSMBIKE_DATA}.part ${OSMBIKE_DATA}; \
 	  fi
 

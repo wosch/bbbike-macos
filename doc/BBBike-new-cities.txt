@@ -24,20 +24,21 @@ mkdir -p osm
 ./miscsrc/downloadosm -o osm/sfo -- -122.527 37.594 -122.351 37.811
 
 2. convert *.osm files to bbbike data
- ./miscsrc/osm2bbd -f -map bbbike -center -122.598,37.6829  -o data-osm/sfo osm/sfo
+ ./miscsrc/osm2bbd -enc iso-8859-1 -f -map bbbike -center -122.598,37.6829  -o data-osm/sfo osm/sfo
 
 3. start sfbike, english version
 env LANG=en_US.UTF-8 perl ./bbbike -datadir data-osm/sfo
 
+see Makefile.osm for other cities
 
 # bbbike @ Copenhagen
 ./miscsrc/downloadosm -o osm/cph -- 12.275 55.549 12.702 55.831
-./miscsrc/osm2bbd -f -map bbbike -center  12.435,55.579 -o data-osm/cph osm/cph
+./miscsrc/osm2bbd -enc iso-8859-1 -f -map bbbike -center  12.435,55.579 -o data-osm/cph osm/cph
 ./bbbike -datadir data-osm/cph
 
 # bbbike @ Karlsruhe
 ./miscsrc/downloadosm -o osm/karlsruhe -- 8.295 48.964 8.478 49.126
-./miscsrc/osm2bbd -f -map bbbike -center 8.275,48.894 -o data-osm/karlsruhe osm/karlsruhe
+./miscsrc/osm2bbd -enc iso-8859-1 -f -map bbbike -center 8.275,48.894 -o data-osm/karlsruhe osm/karlsruhe
 ./bbbike -datadir data-osm/karlsruhe
 
 # bbbike @ Amsterdam
