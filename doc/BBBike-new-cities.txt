@@ -1,40 +1,53 @@
-SFBike - A bike information system for cyclists in San Francisco
+1. BBBike - A bike information system for cyclists around the World
+------------------------------------------------------------------------
+For more information about BBBike, visit http://www.bbbike.de
 
-#########################################################################
-#
+This is a step-by-step guide how to port BBBike to your city
+using free map data from the OpenStreetMap.org project.
+
+2. Get the newest sources from CVS tree
+------------------------------------------------------------------------
 # get sources for bbbike from sourceforge.net repository
 
 cvs -d:pserver:anonymous@bbbike.cvs.sourceforge.net:/cvsroot/bbbike login
 cvs -z3 -d:pserver:anonymous@bbbike.cvs.sourceforge.net:/cvsroot/bbbike co -P bbbike
 
-#########################################################################
-#
-# get data for sfbike
+3. Port BBBike to your city
+------------------------------
+cd bbbike
+mkdir -p osm
+
+################################################
+# get data for bbbike @ SFO
 #
 1. download geo data for San Francisco/SFO from opensteetmaps.org
-./miscsrc/downloadosm -o ../sfbike/sfo -- -122.527 37.594 -122.351 37.811
+./miscsrc/downloadosm -o osm/sfo -- -122.527 37.594 -122.351 37.811
 
 2. convert *.osm files to bbbike data
- ./miscsrc/osm2bbd -f -map bbbike -center -122.598,37.6829  -o data-sfo -d ../sfbike/sfo
+ ./miscsrc/osm2bbd -f -map bbbike -center -122.598,37.6829  -o data-osm/sfo osm/sfo
 
 3. start sfbike, english version
-env LANG=en_US.UTF-8 perl ./bbbike -datadir data-sfo
+env LANG=en_US.UTF-8 perl ./bbbike -datadir data-osm/sfo
 
 
-#########################################################################
-#
-# get data for khbike / København
-#
-1. download geo data for København from opensteetmaps.org
-# Copenhagen downtown only: 12.418 55.596 12.687 55.743
-./miscsrc/downloadosm -o ../sfbike/khbike -- 12.275 55.549 12.702 55.831
+# bbbike @ Copenhagen
+./miscsrc/downloadosm -o osm/cph -- 12.275 55.549 12.702 55.831
+./miscsrc/osm2bbd -f -map bbbike -center  12.435,55.579 -o data-osm/cph osm/cph
+./bbbike -datadir data-osm/cph
 
-2. convert *.osm files to bbbike data
-./miscsrc/osm2bbd -f -map bbbike -center  12.435,55.579 -o data-kobenhavn -d ../sfbike/khbike
+# bbbike @ Karlsruhe
+./miscsrc/downloadosm -o osm/karlsruhe -- 8.295 48.964 8.478 49.126
+./miscsrc/osm2bbd -f -map bbbike -center 8.275,48.894 -o data-osm/karlsruhe osm/karlsruhe
+./bbbike -datadir data-osm/karlsruhe
 
-3. start khbike, english version
-env LANG=en_US.UTF-8 perl ./bbbike -datadir data-kobenhavn
+# bbbike @ Amsterdam
+# bbbike @ Basel
+# bbbike @ Erlangen
+# bbbike @ Freiburg
+# bbbike @ Hannover
+# bbbike @ Kolmar
+# bbbike @ Zuerich
 
-
--Wolfram Schneider, Aug 2008
+--
+Wolfram Schneider, Aug 2008
 

@@ -11,15 +11,17 @@ To start BBBike, click on the wrapper script
 
 	./bbbike 
 
-Other Cities
---------------
+Other Cities around the World
+-----------------------------
 
-!!!Note: xxBike is still in alpha test!!!
+!!!Note: openstreetmap support is still in alpha test!!!
 Data by openstreetmap.org
 
-San Francisco area: 	./sfbike  
-Copenhagen:		./khbike
+To start BBBike for your city, click on the city name:
 
+	./Copenhagen
+	./San_Francisco
+	./Karlsruhe
 
-have fun,
-Wolfram Schneider, Aug 2008
+--
+have fun, Wolfram Schneider, Aug 2008

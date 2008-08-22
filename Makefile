@@ -8,11 +8,7 @@
 BBBIKE_ROOT=	BBBike
 BBBIKE_ARCHIVE=	BBBike-3.16-MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	BBBike-3.16-Intel.dmg
-
-SFBIKE_DATA=	data-sfo.tgz
-SFBIKE_DMG=	SFBike-3.16-Intel.dmg
-KHBIKE_DATA=	data-kobenhavn.tgz
-KHBIKE_DMG=	KHBike-3.16-Intel.dmg
+OSMBIKE_DATA=	data-osm.tgz
 
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
@@ -26,24 +22,13 @@ UPDATE_FILES=\
 
 all: help
 
-bbbike-dmg bbbike: clean get-tarball update-files create-bbbike-image
-sfbike-dmg sfbike: clean get-tarball update-files get-data-sfo extract-data-sfo create-sfbike-image
-khbike-dmg khbike: clean get-tarball update-files get-data-kobenhavn extract-data-kobenhavn create-khbike-image
+bbbike-dmg bbbike: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 
 create-bbbike-image:
+	cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike Copenhagen
+	cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike San_Francisco
+	cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike Karlsruhe
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
-
-create-sfbike-image:
-	cp -f sfbike ${BUILD_DIR}/${BBBIKE_ROOT}
-	mv ${BUILD_DIR}/BBBike ${BUILD_DIR}/SFBike
-	hdiutil create -srcfolder ${BUILD_DIR} -volname SFBike -ov  ${DOWNLOAD_DIR}/${SFBIKE_DMG}
-	mv ${BUILD_DIR}/SFBike ${BUILD_DIR}/BBBike
-
-create-khbike-image:
-	cp -f khbike ${BUILD_DIR}/${BBBIKE_ROOT}
-	mv ${BUILD_DIR}/BBBike ${BUILD_DIR}/KHBike
-	hdiutil create -srcfolder ${BUILD_DIR} -volname KHBike -ov  ${DOWNLOAD_DIR}/${KHBIKE_DMG}
-	mv ${BUILD_DIR}/KHBike ${BUILD_DIR}/BBBike
 
 update-files:
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_ARCHIVE} | ( cd ${BUILD_DIR} && tar xf - )
@@ -56,29 +41,18 @@ get-tarball:
 	     mv -f ${BBBIKE_ARCHIVE}.part ${BBBIKE_ARCHIVE}; \
 	  fi
 
-get-data-sfo:
+get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
-	  if [ ! -f ${SFBIKE_DATA} ]; then  \
-	     curl -o ${SFBIKE_DATA}.part ${ARCHIVE_HOME}/${SFBIKE_DATA}; \
-	     mv -f ${SFBIKE_DATA}.part ${SFBIKE_DATA}; \
+	  if [ ! -f ${OSMBIKE_DATA} ]; then  \
+	     curl -o ${OSMBIKE_DATA}.part ${ARCHIVE_HOME}/${OSMBIKE_DATA}; \
+	     mv -f ${OSMBIKE_DATA}.part ${OSMBIKE_DATA}; \
 	  fi
 
-get-data-kobenhavn:
-	cd ${DOWNLOAD_DIR}; \
-	  if [ ! -f ${KHBIKE_DATA} ]; then  \
-	     curl -o ${KHBIKE_DATA}.part ${ARCHIVE_HOME}/${KHBIKE_DATA}; \
-	     mv -f ${KHBIKE_DATA}.part ${KHBIKE_DATA}; \
-	  fi
-
-extract-data-sfo:
-	@zcat ${DOWNLOAD_DIR}/${SFBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
-
-extract-data-kobenhavn:
-	@zcat ${DOWNLOAD_DIR}/${KHBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
+extract-data-osm:
+	@zcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
 
 scp:
-	scp ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${SFBIKE_DMG}  ${DOWNLOAD_DIR}/${KHBIKE_DMG} \
-		wolfram.schneider.org:www/src
+	scp ${DOWNLOAD_DIR}/${BBBIKE_DMG} wolfram.schneider.org:www/src
 
 clean:
 	rm -rf ${BUILD_DIR}
@@ -89,5 +63,5 @@ dist-clean devel-clean: clean
 	rm -f ${BUILD_DIR}/*.dmg
 
 help:
-	@echo "usage: make [ help | bbbike-dmg | sfbike-dmg | khbike-dmg | scp | clean | dist-clean ]"
+	@echo "usage: make [ help | bbbike-dmg | scp | clean | dist-clean ]"
 
