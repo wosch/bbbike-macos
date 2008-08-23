@@ -24,10 +24,10 @@ convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-conver
 # bbbike @ Copenhagen
 copenhagen: copenhagen-download copenhagen-convert
 copenhagen-download: 
-	mkdir -p ${OSM_DIR}/copenhagen
+	mkdir -p ${OSM_DIR}/Copenhagen
 	${DOWNLOADOSM} -o ${OSM_DIR}/Copenhagen -- 12.275 55.549 12.702 55.831
 copenhagen-convert:
-	${OSM2BBD} -center  12.435,55.579 -o ${DATA_OSM_DIR}/Copenhagen ${OSM_DIR}/Copenhagen
+	${OSM2BBD} -center 12.44,55.56 -o ${DATA_OSM_DIR}/Copenhagen ${OSM_DIR}/Copenhagen
 
 # bbbike @ Karlsruhe
 karlsruhe: karlsruhe-download karlsruhe-convert
@@ -40,27 +40,27 @@ karlsruhe-convert:
 # bbbike @ San Francisco
 san_francisco: san_francisco-download san_francisco-convert
 san_francisco-download:
-	mkdir -p ${OSM_DIR}/san_francisco
+	mkdir -p ${OSM_DIR}/San_Francisco
 	${DOWNLOADOSM} -o ${OSM_DIR}/San_Francisco -- -122.527 37.594 -122.351 37.811
 san_francisco-convert:
-	${OSM2BBD} -center  -122.598,37.6829 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
+	${OSM2BBD} -center -122.598,37.6829 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
 
 # bbbike @ Basel
 basel: basel-download basel-convert
 basel-download:
-	mkdir -p ${OSM_DIR}/basel
+	mkdir -p ${OSM_DIR}/Basel
 	${DOWNLOADOSM} -o ${OSM_DIR}/Basel -- 7.5298 47.5128 7.6823 47.5943
 basel-convert:
-	${OSM2BBD} -center 7.5298,47.5128 -o ${DATA_OSM_DIR}/Basel ${OSM_DIR}/Basel
+	${OSM2BBD} -center 7.47,47.44 -o ${DATA_OSM_DIR}/Basel ${OSM_DIR}/Basel
 
 
 # bbbike @ Amsterdam
 amsterdam: amsterdam-download amsterdam-convert
 amsterdam-download:
-	mkdir -p ${OSM_DIR}/amsterdam
-	${DOWNLOADOSM} -o ${OSM_DIR}/amsterdam -- 4.7982 52.3206 5.0265 52.4309
+	mkdir -p ${OSM_DIR}/Amsterdam
+	${DOWNLOADOSM} -o ${OSM_DIR}/Amsterdam -- 4.7982 52.3206 5.0265 52.4309
 amsterdam-convert:
-	${OSM2BBD} -center 4.7982,52.3206 -o ${DATA_OSM_DIR}/amsterdam ${OSM_DIR}/amsterdam
+	${OSM2BBD} -center 4.77,52.25 -o ${DATA_OSM_DIR}/Amsterdam ${OSM_DIR}/Amsterdam
 
 # bbbike @ Erlangen
 erlangen: erlangen-download erlangen-convert
@@ -68,7 +68,7 @@ erlangen-download:
 	mkdir -p ${OSM_DIR}/Erlangen
 	${DOWNLOADOSM} -o ${OSM_DIR}/Erlangen -- 10.9636 49.5208 11.0606 49.6199
 erlangen-convert:
-	${OSM2BBD} -center 10.9636,49.5208 -o ${DATA_OSM_DIR}/Erlangen ${OSM_DIR}/Erlangen
+	${OSM2BBD} -center 10.87,49.48 -o ${DATA_OSM_DIR}/Erlangen ${OSM_DIR}/Erlangen
 
 # bbbike @ Freiburg
 freiburg: freiburg-download freiburg-convert
@@ -76,7 +76,7 @@ freiburg-download:
 	mkdir -p ${OSM_DIR}/Freiburg
 	${DOWNLOADOSM} -o ${OSM_DIR}/Freiburg -- 7.7758 47.9677 7.9087 48.0393
 freiburg-convert:
-	${OSM2BBD} -center 7.7758,47.9677 -o ${DATA_OSM_DIR}/Freiburg ${OSM_DIR}/Freiburg
+	${OSM2BBD} -center 7.73,47.88 -o ${DATA_OSM_DIR}/Freiburg ${OSM_DIR}/Freiburg
 
 # bbbike @ Hannover
 hannover: hannover-download hannover-convert
@@ -84,7 +84,7 @@ hannover-download:
 	mkdir -p ${OSM_DIR}/Hannover
 	${DOWNLOADOSM} -o ${OSM_DIR}/Hannover -- 9.583 52.308 9.92 52.473
 hannover-convert:
-	${OSM2BBD} -center 9.583,52.308 -o ${DATA_OSM_DIR}/Hannover ${OSM_DIR}/Hannover
+	${OSM2BBD} -center 9.61,52.25 -o ${DATA_OSM_DIR}/Hannover ${OSM_DIR}/Hannover
 
 # bbbike @ Colmar
 colmar: colmar-download colmar-convert
@@ -92,7 +92,7 @@ colmar-download:
 	mkdir -p ${OSM_DIR}/Colmar
 	${DOWNLOADOSM} -o ${OSM_DIR}/Colmar -- 7.305 48.0471 7.4086 48.1236
 colmar-convert:
-	${OSM2BBD} -center  7.305,48.0471  -o ${DATA_OSM_DIR}/Colmar ${OSM_DIR}/Colmar
+	${OSM2BBD} -center 7.23,47.96 -o ${DATA_OSM_DIR}/Colmar ${OSM_DIR}/Colmar
 
 # bbbike @ Zuerich
 zuerich: zuerich-download zuerich-convert
@@ -100,7 +100,7 @@ zuerich-download:
 	mkdir -p ${OSM_DIR}/Zuerich
 	${DOWNLOADOSM} -o ${OSM_DIR}/Zuerich -- 8.4483 47.3437 8.6271 47.4185
 zuerich-convert:
-	${OSM2BBD} -center 8.4483,47.3437 -o ${DATA_OSM_DIR}/Zuerich ${OSM_DIR}/Zuerich
+	${OSM2BBD} -center 8.41,47.25 -o ${DATA_OSM_DIR}/Zuerich ${OSM_DIR}/Zuerich
 
 
 
