@@ -18,8 +18,8 @@ all: help
 tarball:
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
 
-cities: copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover kolmar zuerich
-convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert kolmar-convert zuerich-convert
+cities: copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich
+convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert colmar-convert zuerich-convert
 
 # bbbike @ Copenhagen
 copenhagen: copenhagen-download copenhagen-convert
@@ -86,13 +86,13 @@ hannover-download:
 hannover-convert:
 	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center 9.583,52.308 -o ${DATA_OSM_DIR}/hannover ${OSM_DIR}/hannover
 
-# bbbike @ Kolmar
-kolmar: kolmar-download kolmar-convert
-kolmar-download:
-	mkdir -p ${OSM_DIR}/kolmar
-	${DOWNLOADOSM} -o ${OSM_DIR}/kolmar -- 7.305 48.0471 7.4086 48.1236
-kolmar-convert:
-	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center  7.305,48.0471  -o ${DATA_OSM_DIR}/kolmar ${OSM_DIR}/kolmar
+# bbbike @ Colmar
+colmar: colmar-download colmar-convert
+colmar-download:
+	mkdir -p ${OSM_DIR}/colmar
+	${DOWNLOADOSM} -o ${OSM_DIR}/colmar -- 7.305 48.0471 7.4086 48.1236
+colmar-convert:
+	${OSM2BBD} -enc iso-8859-1 -f -map bbbike -center  7.305,48.0471  -o ${DATA_OSM_DIR}/colmar ${OSM_DIR}/colmar
 
 # bbbike @ Zuerich
 zuerich: zuerich-download zuerich-convert
