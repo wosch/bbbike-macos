@@ -7,7 +7,7 @@
 
 
 OSMBIKE_DATA=	data-osm.tgz
-DOWNLOADOSM=	./miscsrc/downloadosm --debug=0
+DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
 OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -enc iso-8859-1 -f -map bbbike 
 
 OSM_DIR=	osm
@@ -18,7 +18,9 @@ all: help
 tarball:
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
 
-cities: copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich wien
+cities: 
+	@echo "for i in copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich wien; do ${MAKE} -f Makefile.osm "'$$i'" & done; wait"
+
 convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert colmar-convert zuerich-convert wien-convert
 
 # bbbike @ Copenhagen
@@ -118,7 +120,7 @@ clean:
 	rm -rf data-osm
 	mkdir data-osm
 
-dist-clean devel-clean: clean
+dist-clean devel-clean distclean: clean
 	rm -rf osm
 	mkdir -p osm
 
