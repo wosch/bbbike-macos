@@ -55,7 +55,7 @@ clean:
 	rm -rf ${BUILD_DIR}
 	mkdir ${BUILD_DIR}
 
-dist-clean devel-clean: clean
+dist-clean devel-clean distclean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
 	rm -f ${BUILD_DIR}/*.dmg
 
