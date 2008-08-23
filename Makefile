@@ -21,7 +21,7 @@ all: help
 bbbike-dmg bbbike: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 
 create-bbbike-image:
-	@for city in Copenhagen Karlsruhe San_Francisco Basel Amsterdam Erlangen Freiburg Hannover Kolmar Zuerich; do \
+	@for city in Copenhagen Karlsruhe San_Francisco Basel Amsterdam Erlangen Freiburg Hannover Colmar Zuerich; do \
 		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}

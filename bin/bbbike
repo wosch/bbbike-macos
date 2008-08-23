@@ -32,7 +32,7 @@ case $0 in
 	*Erlangen* ) 	datadir=data-osm/Erlangen ;;
 	*Freiburg* ) 	datadir=data-osm/Freiburg ;;
 	*Hannover* ) 	datadir=data-osm/Hannover ;;
-	*Kolmar* ) 	datadir=data-osm/Kolmar ;;
+	*Colmar* ) 	datadir=data-osm/Colmar ;;
 	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
 esac
 
