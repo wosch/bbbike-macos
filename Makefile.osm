@@ -3,7 +3,9 @@
 #
 # Get and convert OpenStreetMap.org data to BBBike
 #
-# For more information about BBBike, see http://www.bbbike.de
+# For more information about BBBike, visit http://www.bbbike.de
+#
+# $Id: Makefile.osm,v 1.10 2008/08/23 21:46:26 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
