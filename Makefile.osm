@@ -18,8 +18,8 @@ all: help
 tarball:
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
 
-cities: copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich
-convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert colmar-convert zuerich-convert
+cities: copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich wien
+convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert colmar-convert zuerich-convert wien-convert
 
 # bbbike @ Copenhagen
 copenhagen: copenhagen-download copenhagen-convert
@@ -103,6 +103,13 @@ zuerich-convert:
 	${OSM2BBD} -center 8.41,47.25 -o ${DATA_OSM_DIR}/Zuerich ${OSM_DIR}/Zuerich
 
 
+# bbbike @ Wien
+wien: wien-download wien-convert
+wien-download:
+	mkdir -p ${OSM_DIR}/Wien
+	${DOWNLOADOSM} -o ${OSM_DIR}/Wien -- 16.2779 48.1592 16.4976 48.2636
+wien-convert:
+	${OSM2BBD} -center 16.24,48.09 -o ${DATA_OSM_DIR}/Wien ${OSM_DIR}/Wien
 
 scp:
 	scp ${OSMBIKE_DATA} wolfram.schneider.org:www/src

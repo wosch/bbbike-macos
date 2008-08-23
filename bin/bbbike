@@ -24,15 +24,16 @@ esac
 datadir=data
 
 case $0 in
-	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
-	*Copenhagen* ) 	datadir=data-osm/Copenhagen ;;
-	*San_Francisco* ) datadir=data-osm/San_Francisco ;;
-	*Basel* ) 	datadir=data-osm/Basel ;;
 	*Amsterdam* ) 	datadir=data-osm/Amsterdam ;;
+	*Basel* ) 	datadir=data-osm/Basel ;;
+	*Colmar* ) 	datadir=data-osm/Colmar ;;
+	*Copenhagen* ) 	datadir=data-osm/Copenhagen ;;
 	*Erlangen* ) 	datadir=data-osm/Erlangen ;;
 	*Freiburg* ) 	datadir=data-osm/Freiburg ;;
 	*Hannover* ) 	datadir=data-osm/Hannover ;;
-	*Colmar* ) 	datadir=data-osm/Colmar ;;
+	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
+	*San_Francisco* ) datadir=data-osm/San_Francisco ;;
+	*Wien* ) 	datadir=data-osm/Wien ;;
 	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
 esac
 
