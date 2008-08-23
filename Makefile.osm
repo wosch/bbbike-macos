@@ -115,8 +115,12 @@ scp:
 	scp ${OSMBIKE_DATA} wolfram.schneider.org:www/src
 
 clean:
+	rm -rf data-osm
+	mkdir data-osm
 
 dist-clean devel-clean: clean
+	rm -rf osm
+	mkdir -p osm
 
 help:
 	@echo "usage: make [ help | copenhagen | karlsruhe | san_francisco | convert | scp | clean | dist-clean ]"
