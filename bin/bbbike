@@ -24,16 +24,16 @@ esac
 datadir=data
 
 case $0 in
-	*[Kk]arlsruhe* ) 	datadir=data-osm/karlsruhe ;;
-	*[Cc]openhagen* ) 	datadir=data-osm/copenhagen ;;
-	*[Ss]an_[Ff]rancisco* ) datadir=data-osm/san_francisco ;;
-	*[Bb]asel* ) 		datadir=data-osm/basel ;;
-	*[Aa]msterdam* ) 	datadir=data-osm/amsterdam ;;
-	*[Ee]rlangen* ) 	datadir=data-osm/erlangen ;;
-	*[Ff]reiburg* ) 	datadir=data-osm/freiburg ;;
-	*[Hh]annover* ) 	datadir=data-osm/hannover ;;
-	*[Kk]olmar* ) 		datadir=data-osm/kolmar ;;
-	*[Zz]uerich* ) 		datadir=data-osm/zuerich ;;
+	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
+	*Copenhagen* ) 	datadir=data-osm/Copenhagen ;;
+	*San_Francisco* ) datadir=data-osm/San_Francisco ;;
+	*Basel* ) 	datadir=data-osm/Basel ;;
+	*Amsterdam* ) 	datadir=data-osm/Amsterdam ;;
+	*Erlangen* ) 	datadir=data-osm/Erlangen ;;
+	*Freiburg* ) 	datadir=data-osm/Freiburg ;;
+	*Hannover* ) 	datadir=data-osm/Hannover ;;
+	*Kolmar* ) 	datadir=data-osm/Kolmar ;;
+	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
 esac
 
 "$perl_home"/bin/perl \
