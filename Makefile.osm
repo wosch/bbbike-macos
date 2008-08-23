@@ -12,6 +12,7 @@ OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -enc iso-8859-1 -f -map bbbik
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
+CITIES=		copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich wien
 
 all: help
 
@@ -19,7 +20,7 @@ tarball:
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
 
 cities: 
-	@echo "for i in copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg hannover colmar zuerich wien; do ${MAKE} -f Makefile.osm "'$$i'" & done; wait"
+	@echo "for i in ${CITIES}; do ${MAKE} -f Makefile.osm "'$$i'" & done; wait"
 
 convert: copenhagen-convert karlsruhe-convert san_francisco-convert basel-convert amsterdam-convert erlangen-convert freiburg-convert hannover-convert colmar-convert zuerich-convert wien-convert
 
@@ -125,5 +126,6 @@ dist-clean devel-clean distclean: clean
 	mkdir -p osm
 
 help:
-	@echo "usage: make [ help | copenhagen | karlsruhe | san_francisco | convert | scp | clean | dist-clean ]"
+	@echo "usage: make [ help | cities | convert | scp | clean | dist-clean ]"
+	@echo "usage: make [ ${CITIES} ]"
 
