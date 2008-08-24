@@ -3,7 +3,9 @@
 #
 # build and update a BBBike/SFBike image archive for MacOS 10.5 Intel
 #
-# For more information about BBBike, see http://www.bbbike.de
+# For more information about BBBike, visit http://www.bbbike.de
+#
+# $Id: Makefile,v 1.19 2008/08/24 10:36:06 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_ARCHIVE=	BBBike-3.16-MacOS-10.5-intel-perl-5.10.0.tbz
@@ -15,13 +17,14 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOME=	http://wolfram.schneider.org/src
 
 UPDATE_FILES= README.txt bbbike 
+CITIES=		Amsterdam Basel Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe San_Francisco Wien Zuerich
 
 all: help
 
 bbbike-dmg bbbike: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 
 create-bbbike-image:
-	@for city in Amsterdam Basel Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe San_Francisco Wien Zuerich; do \
+	@for city in ${CITIES}; do \
 		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
