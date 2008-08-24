@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.13 2008/08/24 21:10:42 wosch Exp $
+# $Id: Makefile.osm,v 1.14 2008/08/24 21:33:17 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -133,7 +133,7 @@ cracow-download:
 	mkdir -p ${OSM_DIR}/Cracow
 	${DOWNLOADOSM} -o ${OSM_DIR}/Cracow -- 19.88 50.02 20.00 50.09
 cracow-convert:
-	${OSM2BBD} -center 19.88,50.02 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
+	${OSM2BBD} -center 20.00,50.06 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
 
 scp:
 	scp ${OSMBIKE_DATA} wolfram.schneider.org:www/src
