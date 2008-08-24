@@ -17,7 +17,7 @@ export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
 export LANG=en_US.UTF-8
 
 
-case `uname -m` in
+case `sysctl -n hw.machine` in
         i386) ;;
         * ) banner '.'; echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
 esac
