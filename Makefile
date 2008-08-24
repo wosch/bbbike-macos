@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.19 2008/08/24 10:36:06 wosch Exp $
+# $Id: Makefile,v 1.20 2008/08/24 11:51:05 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_ARCHIVE=	BBBike-3.16-MacOS-10.5-intel-perl-5.10.0.tbz
@@ -17,7 +17,7 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOME=	http://wolfram.schneider.org/src
 
 UPDATE_FILES= README.txt bbbike 
-CITIES=		Amsterdam Basel Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe San_Francisco Wien Zuerich
+CITIES=		Amsterdam Basel Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
 
 all: help
 
