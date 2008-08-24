@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.14 2008/08/24 21:33:17 wosch Exp $
+# $Id: Makefile.osm,v 1.15 2008/08/24 21:51:51 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -27,7 +27,7 @@ cities:
 	@echo "for i in ${CITIES}; do ${MAKE} -f Makefile.osm "'$$i'" & done; wait"
 
 convert: 
-	@echo "for i in ${CITIES}; do ${MAKE} -f Makefile.osm "'$$i'"-convert done"
+	@echo "for i in ${CITIES}; do ${MAKE} -f Makefile.osm "'$$i'"-convert; done"
 
 # bbbike @ Copenhagen
 copenhagen: copenhagen-download copenhagen-convert
