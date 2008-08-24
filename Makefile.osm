@@ -5,21 +5,22 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.12 2008/08/24 11:51:05 wosch Exp $
+# $Id: Makefile.osm,v 1.13 2008/08/24 21:10:42 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
-OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -enc iso-8859-1 -f -map bbbike 
+OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike #-enc iso-8859-1 
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
-CITIES=		amsterdam basel colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
+CITIES=		amsterdam basel cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
 
 all: help
 
 tarball:
 	rm -f data-osm/*/meta.*
+	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof ); done # workaround for bug in osm2bbd
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
 
 cities: 
@@ -124,7 +125,15 @@ laibach-download:
 	mkdir -p ${OSM_DIR}/Laibach
 	${DOWNLOADOSM} -o ${OSM_DIR}/Laibach -- 14.43 46.01 14.64 46.13
 laibach-convert:
-	${OSM2BBD} -enc iso-8859-2 -center 14.39,45.93 -o ${DATA_OSM_DIR}/Laibach ${OSM_DIR}/Laibach
+	${OSM2BBD} -center 14.51,46.05 -o ${DATA_OSM_DIR}/Laibach ${OSM_DIR}/Laibach
+
+# bbbike @ Cracow
+cracow: cracow-download cracow-convert
+cracow-download:
+	mkdir -p ${OSM_DIR}/Cracow
+	${DOWNLOADOSM} -o ${OSM_DIR}/Cracow -- 19.88 50.02 20.00 50.09
+cracow-convert:
+	${OSM2BBD} -center 19.88,50.02 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
 
 scp:
 	scp ${OSMBIKE_DATA} wolfram.schneider.org:www/src

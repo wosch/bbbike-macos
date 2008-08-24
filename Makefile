@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.21 2008/08/24 17:06:18 wosch Exp $
+# $Id: Makefile,v 1.22 2008/08/24 21:10:42 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_ARCHIVE=	BBBike-3.16-MacOS-10.5-intel-perl-5.10.0.tbz
@@ -21,11 +21,12 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOME=	http://wolfram.schneider.org/src
 
 UPDATE_FILES= README.txt bbbike 
-CITIES=		Amsterdam Basel Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
+CITIES=		Amsterdam Basel Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
 
 all: help
 
-bbbike-dmg bbbike: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
+bbbike: bbbike-intel-dmg bbbike-powerpc-dmg
+bbbike-intel-dmg bbbike-intel: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 bbbike-powerpc-dmg bbbike-powerpc: clean get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
 
 create-bbbike-image:
@@ -83,5 +84,5 @@ dist-clean devel-clean distclean: clean
 	rm -f ${BUILD_DIR}/*.dmg
 
 help:
-	@echo "usage: make [ help | bbbike-dmg | scp | clean | dist-clean ]"
+	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | scp | clean | dist-clean ]"
 
