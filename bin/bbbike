@@ -27,7 +27,7 @@ case `sw_vers -productVersion` in
 esac
 
 datadir=data
-lazy=""
+lazy="-lazy" # workaround for bugs in XS code
 
 case $0 in
 	*Amsterdam* ) 	datadir=data-osm/Amsterdam ;;
@@ -38,7 +38,7 @@ case $0 in
 	*Freiburg* ) 	datadir=data-osm/Freiburg ;;
 	*Hannover* ) 	datadir=data-osm/Hannover ;;
 	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
-	*Laibach* | *Ljubljana* ) datadir=data-osm/Laibach; lazy=-lazy ;;
+	*Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
 	*San_Francisco* ) datadir=data-osm/San_Francisco ;;
 	*Wien* ) 	datadir=data-osm/Wien ;;
 	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
