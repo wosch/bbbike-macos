@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.10 2008/08/23 21:46:26 wosch Exp $
+# $Id: Makefile.osm,v 1.11 2008/08/24 11:15:11 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -19,6 +19,7 @@ CITIES=		copenhagen karlsruhe san_francisco basel amsterdam erlangen freiburg ha
 all: help
 
 tarball:
+	rm -f data-osm/*/meta.*
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
 
 cities: 
