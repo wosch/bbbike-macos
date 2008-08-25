@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.24 2008/08/25 15:55:00 wosch Exp $
+# $Id: Makefile,v 1.25 2008/08/25 16:05:08 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -62,7 +62,7 @@ update-files-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC/${BBBIKE_ROOT}
+	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
 	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' bbbike > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
 
