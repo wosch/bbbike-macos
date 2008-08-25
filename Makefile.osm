@@ -5,12 +5,12 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.15 2008/08/24 21:51:51 wosch Exp $
+# $Id: Makefile.osm,v 1.16 2008/08/25 15:31:55 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
-OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike #-enc iso-8859-1 
+OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
@@ -35,7 +35,7 @@ copenhagen-download:
 	mkdir -p ${OSM_DIR}/Copenhagen
 	${DOWNLOADOSM} -o ${OSM_DIR}/Copenhagen -- 12.275 55.549 12.702 55.831
 copenhagen-convert:
-	${OSM2BBD} -center 12.44,55.56 -o ${DATA_OSM_DIR}/Copenhagen ${OSM_DIR}/Copenhagen
+	${OSM2BBD} -centerdelta 12.44,55.56 -o ${DATA_OSM_DIR}/Copenhagen ${OSM_DIR}/Copenhagen
 
 # bbbike @ Karlsruhe
 karlsruhe: karlsruhe-download karlsruhe-convert
@@ -43,7 +43,7 @@ karlsruhe-download:
 	mkdir -p ${OSM_DIR}/Karlsruhe
 	${DOWNLOADOSM} -o ${OSM_DIR}/Karlsruhe -- 8.295 48.964 8.478 49.126
 karlsruhe-convert:
-	${OSM2BBD} -center 8.275,48.894 -o ${DATA_OSM_DIR}/Karlsruhe ${OSM_DIR}/Karlsruhe
+	${OSM2BBD} -centerdelta 8.275,48.894 -o ${DATA_OSM_DIR}/Karlsruhe ${OSM_DIR}/Karlsruhe
 
 # bbbike @ San Francisco
 san_francisco: san_francisco-download san_francisco-convert
@@ -51,7 +51,7 @@ san_francisco-download:
 	mkdir -p ${OSM_DIR}/San_Francisco
 	${DOWNLOADOSM} -o ${OSM_DIR}/San_Francisco -- -122.527 37.594 -122.351 37.811
 san_francisco-convert:
-	${OSM2BBD} -center -122.598,37.6829 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
+	${OSM2BBD} -centerdelta -122.598,37.6829 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
 
 # bbbike @ Basel
 basel: basel-download basel-convert
@@ -59,7 +59,7 @@ basel-download:
 	mkdir -p ${OSM_DIR}/Basel
 	${DOWNLOADOSM} -o ${OSM_DIR}/Basel -- 7.5298 47.5128 7.6823 47.5943
 basel-convert:
-	${OSM2BBD} -center 7.47,47.44 -o ${DATA_OSM_DIR}/Basel ${OSM_DIR}/Basel
+	${OSM2BBD} -centerdelta 7.47,47.44 -o ${DATA_OSM_DIR}/Basel ${OSM_DIR}/Basel
 
 
 # bbbike @ Amsterdam
@@ -68,7 +68,7 @@ amsterdam-download:
 	mkdir -p ${OSM_DIR}/Amsterdam
 	${DOWNLOADOSM} -o ${OSM_DIR}/Amsterdam -- 4.7982 52.3206 5.0265 52.4309
 amsterdam-convert:
-	${OSM2BBD} -center 4.77,52.25 -o ${DATA_OSM_DIR}/Amsterdam ${OSM_DIR}/Amsterdam
+	${OSM2BBD} -centerdelta 4.77,52.25 -o ${DATA_OSM_DIR}/Amsterdam ${OSM_DIR}/Amsterdam
 
 # bbbike @ Erlangen
 erlangen: erlangen-download erlangen-convert
@@ -76,7 +76,7 @@ erlangen-download:
 	mkdir -p ${OSM_DIR}/Erlangen
 	${DOWNLOADOSM} -o ${OSM_DIR}/Erlangen -- 10.9636 49.5208 11.0606 49.6199
 erlangen-convert:
-	${OSM2BBD} -center 10.87,49.48 -o ${DATA_OSM_DIR}/Erlangen ${OSM_DIR}/Erlangen
+	${OSM2BBD} -centerdelta 10.87,49.48 -o ${DATA_OSM_DIR}/Erlangen ${OSM_DIR}/Erlangen
 
 # bbbike @ Freiburg
 freiburg: freiburg-download freiburg-convert
@@ -84,7 +84,7 @@ freiburg-download:
 	mkdir -p ${OSM_DIR}/Freiburg
 	${DOWNLOADOSM} -o ${OSM_DIR}/Freiburg -- 7.7758 47.9677 7.9087 48.0393
 freiburg-convert:
-	${OSM2BBD} -center 7.73,47.88 -o ${DATA_OSM_DIR}/Freiburg ${OSM_DIR}/Freiburg
+	${OSM2BBD} -centerdelta 7.73,47.88 -o ${DATA_OSM_DIR}/Freiburg ${OSM_DIR}/Freiburg
 
 # bbbike @ Hannover
 hannover: hannover-download hannover-convert
@@ -92,7 +92,7 @@ hannover-download:
 	mkdir -p ${OSM_DIR}/Hannover
 	${DOWNLOADOSM} -o ${OSM_DIR}/Hannover -- 9.583 52.308 9.92 52.473
 hannover-convert:
-	${OSM2BBD} -center 9.61,52.25 -o ${DATA_OSM_DIR}/Hannover ${OSM_DIR}/Hannover
+	${OSM2BBD} -centerdelta 9.61,52.25 -o ${DATA_OSM_DIR}/Hannover ${OSM_DIR}/Hannover
 
 # bbbike @ Colmar
 colmar: colmar-download colmar-convert
@@ -100,7 +100,7 @@ colmar-download:
 	mkdir -p ${OSM_DIR}/Colmar
 	${DOWNLOADOSM} -o ${OSM_DIR}/Colmar -- 7.305 48.0471 7.4086 48.1236
 colmar-convert:
-	${OSM2BBD} -center 7.23,47.96 -o ${DATA_OSM_DIR}/Colmar ${OSM_DIR}/Colmar
+	${OSM2BBD} -centerdelta 7.23,47.96 -o ${DATA_OSM_DIR}/Colmar ${OSM_DIR}/Colmar
 
 # bbbike @ Zuerich
 zuerich: zuerich-download zuerich-convert
@@ -108,7 +108,7 @@ zuerich-download:
 	mkdir -p ${OSM_DIR}/Zuerich
 	${DOWNLOADOSM} -o ${OSM_DIR}/Zuerich -- 8.4483 47.3437 8.6271 47.4185
 zuerich-convert:
-	${OSM2BBD} -center 8.41,47.25 -o ${DATA_OSM_DIR}/Zuerich ${OSM_DIR}/Zuerich
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Zuerich ${OSM_DIR}/Zuerich
 
 
 # bbbike @ Wien
@@ -117,7 +117,7 @@ wien-download:
 	mkdir -p ${OSM_DIR}/Wien
 	${DOWNLOADOSM} -o ${OSM_DIR}/Wien -- 16.2779 48.1592 16.4976 48.2636
 wien-convert:
-	${OSM2BBD} -center 16.24,48.09 -o ${DATA_OSM_DIR}/Wien ${OSM_DIR}/Wien
+	${OSM2BBD} -centerdelta 16.24,48.09 -o ${DATA_OSM_DIR}/Wien ${OSM_DIR}/Wien
 
 # bbbike @ Laibach
 laibach: laibach-download laibach-convert
@@ -125,7 +125,7 @@ laibach-download:
 	mkdir -p ${OSM_DIR}/Laibach
 	${DOWNLOADOSM} -o ${OSM_DIR}/Laibach -- 14.43 46.01 14.64 46.13
 laibach-convert:
-	${OSM2BBD} -center 14.51,46.05 -o ${DATA_OSM_DIR}/Laibach ${OSM_DIR}/Laibach
+	${OSM2BBD} -centerdelta 14.39,45.93 -o ${DATA_OSM_DIR}/Laibach ${OSM_DIR}/Laibach
 
 # bbbike @ Cracow
 cracow: cracow-download cracow-convert
@@ -133,10 +133,10 @@ cracow-download:
 	mkdir -p ${OSM_DIR}/Cracow
 	${DOWNLOADOSM} -o ${OSM_DIR}/Cracow -- 19.88 50.02 20.00 50.09
 cracow-convert:
-	${OSM2BBD} -center 20.00,50.06 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
+	${OSM2BBD} -centerdelta 19.82,49.94 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
 
-scp:
-	scp ${OSMBIKE_DATA} wolfram.schneider.org:www/src
+scp rsync:
+	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src
 
 clean:
 	rm -rf data-osm
