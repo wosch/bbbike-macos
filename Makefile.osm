@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.16 2008/08/25 15:31:55 wosch Exp $
+# $Id: Makefile.osm,v 1.17 2008/08/25 15:53:43 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -51,7 +51,7 @@ san_francisco-download:
 	mkdir -p ${OSM_DIR}/San_Francisco
 	${DOWNLOADOSM} -o ${OSM_DIR}/San_Francisco -- -122.527 37.594 -122.351 37.811
 san_francisco-convert:
-	${OSM2BBD} -centerdelta -122.598,37.6829 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
+	${OSM2BBD} -centerdelta -122.55,37.67 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
 
 # bbbike @ Basel
 basel: basel-download basel-convert
