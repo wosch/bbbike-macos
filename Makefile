@@ -5,20 +5,26 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.22 2008/08/24 21:10:42 wosch Exp $
+# $Id: Makefile,v 1.23 2008/08/25 15:31:12 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
-BBBIKE_ARCHIVE=	BBBike-3.16-MacOS-10.5-intel-perl-5.10.0.tbz
-BBBIKE_DMG=	BBBike-3.16-Intel.dmg
+BBBIKE_VERSION= BBBike-3.17-devel
+
+PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
+BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
 OSMBIKE_DATA=	data-osm.tgz
 
-BBBIKE_POWERPC_DMG=	BBBike-3.16-PowerPC.dmg
-BBBIKE_POWERPC_ARCHIVE=	BBBike-3.16-MacOS-10.5-powerpc-perl-5.10.0.tbz
-BUILD_POWERPC_DIR=	build-powerpc
+PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
+BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
+BUILD_DIR_POWERPC=	build-powerpc
+
+BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
+
 
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
-ARCHIVE_HOME=	http://wolfram.schneider.org/src
+ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src
+SCP_HOME=		wolfram.schneider.org:www/src
 
 UPDATE_FILES= README.txt bbbike 
 CITIES=		Amsterdam Basel Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
@@ -37,47 +43,57 @@ create-bbbike-image:
 
 create-bbbike-image-powerpc:
 	@for city in ${CITIES}; do \
-		( cd ${BUILD_POWERPC_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
+		( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
-	hdiutil create -srcfolder ${BUILD_POWERPC_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_POWERPC_DMG}
+	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
+create-bbbike-tarball:
+	cd tarball && tar cf - .BBBike-3.17-devel | bzip2 > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
+	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
 
 update-files:
-	bzcat ${DOWNLOAD_DIR}/${BBBIKE_ARCHIVE} | ( cd ${BUILD_DIR} && tar xf - )
+	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
+	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
+	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
 
 update-files-powerpc:
-	bzcat ${DOWNLOAD_DIR}/${BBBIKE_POWERPC_ARCHIVE} | ( cd ${BUILD_POWERPC_DIR} && tar xf - )
-	cp -f ${UPDATE_FILES} ${BUILD_POWERPC_DIR}/${BBBIKE_ROOT}
-	cp -rf doc ${BUILD_POWERPC_DIR}/${BBBIKE_ROOT}/.doc
-	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' bbbike > ${BUILD_POWERPC_DIR}/${BBBIKE_ROOT}/bbbike
+	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
+	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
+	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
+	cp -f ${UPDATE_FILES} ${BUILD_DIR__POWERPC/${BBBIKE_ROOT}
+	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
+	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' bbbike > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
 
 
 get-tarball:
 	cd ${DOWNLOAD_DIR}; \
-	  test -f ${BBBIKE_ARCHIVE} || curl -s -S -f -o ${BBBIKE_ARCHIVE} ${ARCHIVE_HOME}/${BBBIKE_ARCHIVE}
+	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
+	  test -f ${PERL_TARBALL} || curl -s -S -f -o ${PERL_TARBALL} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL}
 
 get-tarball-powerpc:
 	cd ${DOWNLOAD_DIR}; \
-	  test -f ${BBBIKE_POWERPC_ARCHIVE} || curl -s -S -f -o ${BBBIKE_POWERPC_ARCHIVE} ${ARCHIVE_HOME}/${BBBIKE_POWERPC_ARCHIVE}; 
+	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
+	  test -f ${PERL_TARBALL_POWERPC} || curl -s -S -f -o ${PERL_TARBALL_POWERPC} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL_POWERPC}
 
 get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
-	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOME}/${OSMBIKE_DATA}
+	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
 extract-data-osm:
-	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/BBBike/.BBBike-3.16 && tar xf - )
+	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
 extract-data-osm-powerpc:
-	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_POWERPC_DIR}/BBBike/.BBBike-3.16 && tar xf - )
+	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
-scp:
-	scp ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_POWERPC_DMG} wolfram.schneider.org:www/src
+scp rsync:
+	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
+
 
 clean:
-	rm -rf ${BUILD_DIR} ${BUILD_POWERPC_DIR}
-	mkdir ${BUILD_DIR} ${BUILD_POWERPC_DIR}
+	rm -rf ${BUILD_DIR} ${BUILD_DIR_POWERPC}
+	mkdir ${BUILD_DIR} ${BUILD_DIR_POWERPC}
 
 dist-clean devel-clean distclean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
