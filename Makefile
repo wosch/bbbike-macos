@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.25 2008/08/25 16:05:08 wosch Exp $
+# $Id: Makefile,v 1.26 2008/08/26 20:36:20 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -19,7 +19,7 @@ BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 BUILD_DIR_POWERPC=	build-powerpc
 
 BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
-
+BBBIKE_WEB_DIR=	/usr/local/www/srand.de/bbbike
 
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
@@ -86,6 +86,15 @@ extract-data-osm:
 
 extract-data-osm-powerpc:
 	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
+
+create-bbbike-web-symlinks:
+	@cd ${BBBIKE_WEB_DIR}/cgi && \
+	for city in ${CITIES}; do \
+		ln -s San_Francisco.cgi $$city.cgi || true; \
+		ln -s San_Francisco.cgi $$city.en.cgi || true; \
+		ln -s San_Francisco.cgi.config $$city.cgi.config || true; \
+	done
+	ln -s `pwd`/misc/index.html ${BBBIKE_WEB_DIR}
 
 scp rsync:
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
