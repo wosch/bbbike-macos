@@ -5,20 +5,20 @@
 # bbbike - a wrapper for the perl program BBBike - a route-finder for 
 #          cyclists in Berlin and Brandenburg, http://www.bbbike.de
 #
-# $Id: bbbike,v 1.15 2008/08/28 19:20:06 wosch Exp $
+# $Id: bbbike,v 1.16 2008/08/28 19:40:19 wosch Exp $
 ##################################################################################
 
 # BBBike version
-bbbike_version=BBBike-3.17-devel
+bbbike_version="BBBike-3.17-devel"
 
 # BBBike options
-additional_layers=--sehenswuerdigkeiten --rbahn
-advanced_mode=--advanced
+additional_layers="--sehenswuerdigkeiten --rbahn"
+advanced_mode="--advanced"
 
 
 ##################################################################################
 # perl version
-perl_version=5.10.0
+perl_version="5.10.0"
 
 # $0 may contain spaces: /Volumes/bbbike 1/BBBike/bbbike
 dir=`dirname "$0"`
@@ -60,7 +60,8 @@ esac
 
 # start english version of BBBike
 case $0 in
-	*Amsterdam* | *Cracow* | *Copenhagen* | *Laibach* ) export LANG=en_US.UTF-8;;
+	*Amsterdam* | *Cracow* | *Copenhagen* | \
+	*Laibach* | *San_Francisco* ) export LANG=en_US.UTF-8;;
 esac
 
 ##################################################################################
@@ -70,7 +71,7 @@ exec "$perl_home"/bin/perl \
      	-I"$perl_home"/lib/$perl_version \
 	-I"$perl_home"/lib/site_perl/$perl_version/darwin-thread-multi-2level \
 	-I"$perl_home"/lib/site_perl/$perl_version \
-   "$dir"/.$bbbike_version/bbbike \ 
+   "$dir"/.$bbbike_version/bbbike \
 	-datadir "$dir/.$bbbike_version/$datadir" \
 	$additional_layers $advanced_mode "$@"
 
