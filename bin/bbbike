@@ -4,13 +4,21 @@
 #
 # bbbike - a wrapper for the perl program BBBike - a route-finder for 
 #          cyclists in Berlin and Brandenburg, http://www.bbbike.de
+#
+# $Id: bbbike,v 1.15 2008/08/28 19:20:06 wosch Exp $
+##################################################################################
 
 # BBBike version
 bbbike_version=BBBike-3.17-devel
 
+# BBBike options
+additional_layers=--sehenswuerdigkeiten --rbahn
+advanced_mode=--advanced
+
+
+##################################################################################
 # perl version
 perl_version=5.10.0
-
 
 # $0 may contain spaces: /Volumes/bbbike 1/BBBike/bbbike
 dir=`dirname "$0"`
@@ -18,12 +26,11 @@ dir=`dirname "$0"`
 # perl/TK binary installation for perl-5.10.0
 perl_home="$dir"/.perl-$perl_version
 
-export DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
-
-# start english version of BBBike
-export LANG=en_US.UTF-8
+DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
+export DYLD_LIBRARY_PATH
 
 
+##################################################################################
 case `sysctl -n hw.machine` in
         i386) ;;
         * ) banner '.'; echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
@@ -34,7 +41,6 @@ case `sw_vers -productVersion` in
 esac
 
 datadir=data
-lazy="" # workaround for bugs in XS code
 
 case $0 in
 	*Amsterdam* ) 	datadir=data-osm/Amsterdam ;;
@@ -52,10 +58,19 @@ case $0 in
 	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
 esac
 
-"$perl_home"/bin/perl \
+# start english version of BBBike
+case $0 in
+	*Amsterdam* | *Cracow* | *Copenhagen* | *Laibach* ) export LANG=en_US.UTF-8;;
+esac
+
+##################################################################################
+
+exec "$perl_home"/bin/perl \
 	-I"$perl_home"/lib/$perl_version/darwin-thread-multi-2level \
      	-I"$perl_home"/lib/$perl_version \
 	-I"$perl_home"/lib/site_perl/$perl_version/darwin-thread-multi-2level \
 	-I"$perl_home"/lib/site_perl/$perl_version \
-   "$dir"/.$bbbike_version/bbbike $lazy -datadir "$dir/.$bbbike_version/$datadir" "$@"
+   "$dir"/.$bbbike_version/bbbike \ 
+	-datadir "$dir/.$bbbike_version/$datadir" \
+	$additional_layers $advanced_mode "$@"
 
