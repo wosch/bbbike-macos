@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.20 2008/09/01 06:42:04 wosch Exp $
+# $Id: Makefile.osm,v 1.21 2008/09/01 07:35:17 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -18,10 +18,13 @@ CITIES=		amsterdam basel cambrige cracow colmar copenhagen erlangen freiburg han
 
 all: help
 
-tarball:
+tarball: green-ways
 	rm -f data-osm/*/meta.*
 	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data); done # workaround for bug in osm2bbd
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
+
+green-ways:
+	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green); done
 
 cities: 
 	@echo "for i in ${CITIES}; do ${MAKE} -f Makefile.osm "'$$i'" & done; wait"
