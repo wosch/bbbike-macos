@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.18 2008/08/28 19:07:29 wosch Exp $
+# $Id: Makefile.osm,v 1.19 2008/09/01 06:30:36 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -14,7 +14,7 @@ OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
-CITIES=		amsterdam basel cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
+CITIES=		amsterdam basel cambrige cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
 
 all: help
 
@@ -134,6 +134,14 @@ cracow-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Cracow -- 19.88 50.02 20.00 50.09
 cracow-convert:
 	${OSM2BBD} -centerdelta 19.82,49.94 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
+
+# bbbike @ Cambridge
+cambridge: cambridge-download cambridge-convert
+cambridge-download:
+	mkdir -p ${OSM_DIR}/Cambridge
+	${DOWNLOADOSM} -o ${OSM_DIR}/Cambridge -- 0.096 52.1922 0.159 52.2294
+cambridge-convert:
+	${OSM2BBD} -centerdelta 0.096,52.1922 -o ${DATA_OSM_DIR}/Cambridge ${OSM_DIR}/Cambridge
 
 scp rsync:
 	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src

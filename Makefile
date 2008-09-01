@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.26 2008/08/26 20:36:20 wosch Exp $
+# $Id: Makefile,v 1.27 2008/09/01 06:30:36 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -27,7 +27,7 @@ ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src
 SCP_HOME=		wolfram.schneider.org:www/src
 
 UPDATE_FILES= README.txt bbbike 
-CITIES=		Amsterdam Basel Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
+CITIES=		Amsterdam Basel Cambridge Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
 
 all: help
 
