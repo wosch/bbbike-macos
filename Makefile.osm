@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.19 2008/09/01 06:30:36 wosch Exp $
+# $Id: Makefile.osm,v 1.20 2008/09/01 06:42:04 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -139,7 +139,7 @@ cracow-convert:
 cambridge: cambridge-download cambridge-convert
 cambridge-download:
 	mkdir -p ${OSM_DIR}/Cambridge
-	${DOWNLOADOSM} -o ${OSM_DIR}/Cambridge -- 0.096 52.1922 0.159 52.2294
+	${DOWNLOADOSM} -o ${OSM_DIR}/Cambridge -- 0.0593 52.1708 0.2018 52.2577
 cambridge-convert:
 	${OSM2BBD} -centerdelta 0.096,52.1922 -o ${DATA_OSM_DIR}/Cambridge ${OSM_DIR}/Cambridge
 
