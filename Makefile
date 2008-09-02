@@ -5,10 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.27 2008/09/01 06:30:36 wosch Exp $
+# $Id: Makefile,v 1.28 2008/09/02 23:30:05 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
+
+# cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s+=$1 } END { print s }'
+BUILD_VERSION=	76
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
@@ -39,12 +42,16 @@ create-bbbike-image:
 	@for city in ${CITIES}; do \
 		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
+	date > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_date
+	echo ${BUILD_VERSION} > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
 
 create-bbbike-image-powerpc:
 	@for city in ${CITIES}; do \
 		( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
+	date > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_date
+	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
 create-bbbike-tarball:
