@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.28 2008/09/02 23:30:05 wosch Exp $
+# $Id: Makefile,v 1.29 2008/09/02 23:31:03 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
-# cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s+=$1 } END { print s }'
-BUILD_VERSION=	76
+# cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s+=$1 } END { print s + 1}'
+BUILD_VERSION=	92
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
