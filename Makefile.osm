@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.21 2008/09/01 07:35:17 wosch Exp $
+# $Id: Makefile.osm,v 1.22 2008/09/02 21:03:27 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -14,7 +14,7 @@ OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
-CITIES=		amsterdam basel cambrige cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
+CITIES=		amsterdam basel cambridge cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
 
 all: help
 
