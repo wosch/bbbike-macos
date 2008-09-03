@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.22 2008/09/02 21:03:27 wosch Exp $
+# $Id: Makefile.osm,v 1.23 2008/09/03 08:30:39 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -144,7 +144,10 @@ cambridge-download:
 	mkdir -p ${OSM_DIR}/Cambridge
 	${DOWNLOADOSM} -o ${OSM_DIR}/Cambridge -- 0.0593 52.1708 0.2018 52.2577
 cambridge-convert:
-	${OSM2BBD} -centerdelta 0.096,52.1922 -o ${DATA_OSM_DIR}/Cambridge ${OSM_DIR}/Cambridge
+	${OSM2BBD} -centerdelta 0.00,52.085 -o ${DATA_OSM_DIR}/Cambridge ${OSM_DIR}/Cambridge
+
+rsync-source:
+	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ srand.de:/usr/local/www/srand.de/bbbike
 
 scp rsync:
 	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src
@@ -158,6 +161,7 @@ dist-clean devel-clean distclean: clean
 	mkdir -p osm
 
 help:
-	@echo "usage: make [ help | cities | convert | scp | clean | dist-clean ]"
+	@echo "usage: make [ help | cities | convert | rsync | clean | dist-clean ]"
 	@echo "usage: make [ ${CITIES} ]"
+	@echo "usage: make [ tarball | cities | convert | rsync-source ]"
 
