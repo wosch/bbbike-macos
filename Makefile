@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.29 2008/09/02 23:31:03 wosch Exp $
+# $Id: Makefile,v 1.30 2008/09/03 08:33:54 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -116,5 +116,5 @@ dist-clean devel-clean distclean: clean
 	rm -f ${BUILD_DIR}/*.dmg
 
 help:
-	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | scp | clean | dist-clean ]"
+	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | rsync | clean | dist-clean ]"
 
