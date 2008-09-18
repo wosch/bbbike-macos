@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.30 2008/09/03 08:33:54 wosch Exp $
+# $Id: Makefile,v 1.31 2008/09/18 09:04:10 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
 # cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s+=$1 } END { print s + 1}'
-BUILD_VERSION=	92
+BUILD_VERSION=	97
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
@@ -26,8 +26,8 @@ BBBIKE_WEB_DIR=	/usr/local/www/srand.de/bbbike
 
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
-ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src
-SCP_HOME=		wolfram.schneider.org:www/src
+ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
+SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
 UPDATE_FILES= README.txt bbbike 
 CITIES=		Amsterdam Basel Cambridge Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach San_Francisco Wien Zuerich
