@@ -5,7 +5,7 @@
 # bbbike - a wrapper for the perl program BBBike - a route-finder for 
 #          cyclists in Berlin and Brandenburg, http://www.bbbike.de
 #
-# $Id: bbbike,v 1.18 2008/09/03 08:30:12 wosch Exp $
+# $Id: bbbike,v 1.19 2008/10/04 20:48:36 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -54,6 +54,7 @@ case $0 in
 	*Hannover* ) 	datadir=data-osm/Hannover ;;
 	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
 	*Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
+	*Portland* ) 	datadir=data-osm/Portland ;;
 	*San_Francisco* ) datadir=data-osm/San_Francisco ;;
 	*Wien* ) 	datadir=data-osm/Wien ;;
 	*Zuerich* ) 	datadir=data-osm/Zuerich ;;

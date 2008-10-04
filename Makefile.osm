@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.24 2008/09/03 21:08:55 wosch Exp $
+# $Id: Makefile.osm,v 1.25 2008/10/04 20:48:36 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -14,7 +14,7 @@ OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
-CITIES=		amsterdam basel cambridge cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach san_francisco wien zuerich
+CITIES=		amsterdam basel cambridge cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach portland san_francisco wien zuerich
 
 all: help
 
@@ -120,6 +120,15 @@ zuerich-download:
 zuerich-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Zuerich ${OSM_DIR}/Zuerich
 
+
+# bbbike @ Portland
+portland: portland-download portland-convert
+portland-download:
+	mkdir -p ${OSM_DIR}/Portland
+	#${DOWNLOADOSM} -o ${OSM_DIR}/Portland -- -122.99 45.74 -122.37 45.34
+	${DOWNLOADOSM} -o ${OSM_DIR}/Portland -- -122.81 45.43 -122.53 45.59
+portland-convert:
+	${OSM2BBD} -centerdelta -122.99,45.74 -o ${DATA_OSM_DIR}/Portland ${OSM_DIR}/Portland
 
 # bbbike @ Wien
 wien: wien-download wien-convert
