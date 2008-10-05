@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.33 2008/10/05 07:59:03 wosch Exp $
+# $Id: Makefile,v 1.34 2008/10/05 08:00:03 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -120,4 +120,5 @@ build-version:
 
 help:
 	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | rsync | clean | dist-clean ]"
+	@echo "            [ build-version ]"
 
