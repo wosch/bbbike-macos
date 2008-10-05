@@ -5,7 +5,7 @@
 # bbbike - a wrapper for the perl program BBBike - a route-finder for 
 #          cyclists in Berlin and Brandenburg, http://www.bbbike.de
 #
-# $Id: bbbike,v 1.19 2008/10/04 20:48:36 wosch Exp $
+# $Id: bbbike,v 1.20 2008/10/05 09:56:16 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -61,10 +61,12 @@ case $0 in
 esac
 
 
+# Languate is German by default
 export LANG=de_DE.UTF-8;
+
 # start english version of BBBike
 case $0 in
-	*Amsterdam* | *Cambridge* | *Cracow* | *Copenhagen* | *Laibach* | *San_Francisco* ) export LANG=en_US.UTF-8;;
+	*Amsterdam* | *Cambridge* | *Cracow* | *Copenhagen* | *Laibach* | *Portland* | *San_Francisco* ) export LANG=en_US.UTF-8;;
 esac
 
 ##################################################################################
