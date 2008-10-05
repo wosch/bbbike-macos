@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.31 2008/10/05 11:18:12 wosch Exp $
+# $Id: Makefile.osm,v 1.32 2008/10/05 11:43:44 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -185,9 +185,9 @@ austin-convert:
 new_york: new_york-download new_york-convert
 new_york-download:
 	mkdir -p ${OSM_DIR}/New_York
-	${DOWNLOADOSM} -o ${OSM_DIR}/New_York -- -97.798 30.216 -97.675 30.316
+	${DOWNLOADOSM} -o ${OSM_DIR}/New_York -- -74.063 40.67 -73.894 40.827
 new_york-convert:
-	${OSM2BBD} -centerdelta -97.87,30.15 -o ${DATA_OSM_DIR}/New_York ${OSM_DIR}/New_York
+	${OSM2BBD} -centerdelta -74.063,40.67 -o ${DATA_OSM_DIR}/New_York ${OSM_DIR}/New_York
 
 scp rsync:
 	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src/bbbike
