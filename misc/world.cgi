@@ -3,7 +3,8 @@
 name="`basename $0 .cgi`"
 dirname=`dirname "$0"`
 
-export LANG=C
+export LANG="C"
+export PATH="/bin:/usr/bin:/usr/local/bin:/opt/local/bin"
 
 # English Version
 case $name in 
