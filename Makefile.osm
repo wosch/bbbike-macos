@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.28 2008/10/05 10:23:51 wosch Exp $
+# $Id: Makefile.osm,v 1.29 2008/10/05 10:32:03 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -169,9 +169,9 @@ rsync-source:
 austin: austin-download austin-convert
 austin-download:
 	mkdir -p ${OSM_DIR}/Austin
-	${DOWNLOADOSM} -o ${OSM_DIR}/Austin -- -97.876 30.181 -97.611 30.39
+	${DOWNLOADOSM} -o ${OSM_DIR}/Austin -- -97.798 30.216 -97.675 30.316
 austin-convert:
-	${OSM2BBD} -centerdelta -97.876,30.181 -o ${DATA_OSM_DIR}/Austin ${OSM_DIR}/Austin
+	${OSM2BBD} -centerdelta -97.798,30.216 -o ${DATA_OSM_DIR}/Austin ${OSM_DIR}/Austin
 
 
 scp rsync:
