@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.36 2008/10/05 10:47:26 wosch Exp $
+# $Id: Makefile,v 1.37 2008/10/05 11:18:12 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
 # see target build-version
-BUILD_VERSION=	103
+BUILD_VERSION=	117
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
@@ -30,7 +30,7 @@ ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
 UPDATE_FILES= README.txt bbbike 
-CITIES=		Amsterdam Austin Basel Cambridge Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach Portland San_Francisco Santa_Cruz Wien Zuerich
+CITIES=		Amsterdam Austin Basel Cambridge Cracow Colmar Copenhagen Erlangen Freiburg Hannover Karlsruhe Laibach New_York Portland San_Francisco Santa_Cruz Wien Zuerich
 
 all: help
 
@@ -95,13 +95,15 @@ extract-data-osm-powerpc:
 	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
 create-bbbike-web-symlinks:
-	@cd ${BBBIKE_WEB_DIR}/cgi && \
+	cd ${BBBIKE_WEB_DIR}/cgi && \
 	for city in ${CITIES}; do \
-		ln -s San_Francisco.cgi $$city.cgi || true; \
-		ln -s San_Francisco.cgi $$city.en.cgi || true; \
-		ln -s San_Francisco.cgi.config $$city.cgi.config || true; \
+		ln -fs world.cgi $$city.cgi; \
+		ln -fs world.cgi $$city.en.cgi; \
+		ln -fs world.cgi.config $$city.cgi.config; \
 	done
-	ln -s `pwd`/misc/index.html ${BBBIKE_WEB_DIR}
+	ln -fs `pwd`/misc/index.html ${BBBIKE_WEB_DIR}
+	ln -fs `pwd`/misc/world.cgi ${BBBIKE_WEB_DIR}/cgi
+	ln -fs `pwd`/misc/world.cgi.config ${BBBIKE_WEB_DIR}/cgi
 
 scp rsync:
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
@@ -120,5 +122,5 @@ build-version:
 
 help:
 	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | rsync | clean | dist-clean ]"
-	@echo "            [ build-version ]"
+	@echo "            [ build-version | create-bbbike-web-symlinks ]"
 

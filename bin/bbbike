@@ -1,11 +1,12 @@
 #!/bin/sh
+# Copyright (c) Wolfram Schneider, Aug 2008
 #
-# Wolfram Schneider, Aug 2008
+# bbbike - a wrapper for the perl/tk program BBBike.
 #
-# bbbike - a wrapper for the perl program BBBike - a route-finder for 
-#          cyclists in Berlin and Brandenburg, http://www.bbbike.de
+# BBBike is a route-finder for cyclists in Berlin and Brandenburg
+# see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.22 2008/10/05 10:47:26 wosch Exp $
+# $Id: bbbike,v 1.23 2008/10/05 11:18:12 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -47,16 +48,17 @@ case $0 in
 	*Austin* ) 	datadir=data-osm/Austin ;;
 	*Basel* ) 	datadir=data-osm/Basel ;;
 	*Cambridge* ) 	datadir=data-osm/Cambridge ;;
-	*Colmar* | *Kolmar* ) datadir=data-osm/Colmar ;;
-	*Cracow* | *Krakau* ) datadir=data-osm/Cracow ;;
+	*Colmar* | *Kolmar* ) 	datadir=data-osm/Colmar ;;
+	*Cracow* | *Krakau* ) 	datadir=data-osm/Cracow ;;
 	*Copenhagen* ) 	datadir=data-osm/Copenhagen ;;
 	*Erlangen* ) 	datadir=data-osm/Erlangen ;;
 	*Freiburg* ) 	datadir=data-osm/Freiburg ;;
 	*Hannover* ) 	datadir=data-osm/Hannover ;;
 	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
 	*Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
+	*New_York* ) 	datadir=data-osm/New_York ;;
 	*Portland* ) 	datadir=data-osm/Portland ;;
-	*San_Francisco* ) datadir=data-osm/San_Francisco ;;
+	*San_Francisco* ) 	datadir=data-osm/San_Francisco ;;
 	*Santa_Cruz* ) 	datadir=data-osm/Santa_Cruz ;;
 	*Wien* ) 	datadir=data-osm/Wien ;;
 	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
@@ -73,7 +75,8 @@ case $0 in
 	*Cambridge* | \
 	*Cracow* | \
 	*Copenhagen* | \
-	*Laibach* | *Ljubljana* \
+	*Laibach* | *Ljubljana* | \
+	*New_York* | \
 	*Portland* | \
 	*San_Francisco* \
 	*Santa_Cruz* \
