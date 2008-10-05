@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.25 2008/10/04 20:48:36 wosch Exp $
+# $Id: Makefile.osm,v 1.26 2008/10/05 07:58:44 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -166,7 +166,7 @@ rsync-source:
 	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ srand.de:/usr/local/www/srand.de/bbbike
 
 scp rsync:
-	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src
+	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src/bbbike
 
 clean:
 	rm -rf data-osm
