@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.29 2008/10/05 10:32:03 wosch Exp $
+# $Id: Makefile.osm,v 1.30 2008/10/05 10:47:26 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -14,7 +14,7 @@ OSM2BBD=	nice -10 time ./miscsrc/osm2bbd --debug=0 -f -map bbbike
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
-CITIES=		amsterdam austin basel cambridge cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach portland san_francisco wien zuerich
+CITIES=		amsterdam austin basel cambridge cracow colmar copenhagen erlangen freiburg hannover karlsruhe laibach portland san_francisco santa_cruz wien zuerich
 
 all: help
 
@@ -62,6 +62,14 @@ san_francisco-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/San_Francisco -- -122.527 37.594 -122.351 37.811
 san_francisco-convert:
 	${OSM2BBD} -centerdelta -122.55,37.67 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
+
+# bbbike @ Santa Cruz
+santa_cruz: santa_cruz-download santa_cruz-convert
+santa_cruz-download:
+	mkdir -p ${OSM_DIR}/Santa_Cruz
+	${DOWNLOADOSM} -o ${OSM_DIR}/Santa_Cruz -- -122.527 37.594 -122.351 37.811
+santa_cruz-convert:
+	${OSM2BBD} -centerdelta -122.55,37.67 -o ${DATA_OSM_DIR}/Santa_Cruz ${OSM_DIR}/Santa_Cruz
 
 # bbbike @ Basel
 basel: basel-download basel-convert
@@ -171,7 +179,7 @@ austin-download:
 	mkdir -p ${OSM_DIR}/Austin
 	${DOWNLOADOSM} -o ${OSM_DIR}/Austin -- -97.798 30.216 -97.675 30.316
 austin-convert:
-	${OSM2BBD} -centerdelta -97.798,30.216 -o ${DATA_OSM_DIR}/Austin ${OSM_DIR}/Austin
+	${OSM2BBD} -centerdelta -97.87,30.15 -o ${DATA_OSM_DIR}/Austin ${OSM_DIR}/Austin
 
 
 scp rsync:
