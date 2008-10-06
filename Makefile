@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.37 2008/10/05 11:18:12 wosch Exp $
+# $Id: Makefile,v 1.38 2008/10/06 08:41:54 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
 # see target build-version
-BUILD_VERSION=	117
+BUILD_VERSION=	126
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
