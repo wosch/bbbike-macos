@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.25 2008/12/10 23:03:04 wosch Exp $
+# $Id: bbbike,v 1.26 2009/01/24 22:01:10 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -44,25 +44,42 @@ esac
 datadir=data
 
 case $0 in
-	*Amsterdam* ) 	datadir=data-osm/Amsterdam ;;
-	*Austin* ) 	datadir=data-osm/Austin ;;
-	*Basel* ) 	datadir=data-osm/Basel ;;
-	*Cambridge* ) 	datadir=data-osm/Cambridge ;;
-	*Colmar* | *Kolmar* ) 	datadir=data-osm/Colmar ;;
-	*Cracow* | *Krakau* ) 	datadir=data-osm/Cracow ;;
-	*Copenhagen* ) 	datadir=data-osm/Copenhagen ;;
-	*Erlangen* ) 	datadir=data-osm/Erlangen ;;
-	*Freiburg* ) 	datadir=data-osm/Freiburg ;;
-	*Hannover* ) 	datadir=data-osm/Hannover ;;
-	*Karlsruhe* ) 	datadir=data-osm/Karlsruhe ;;
-	*Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
-	*New_York* ) 	datadir=data-osm/New_York ;;
-	*Portland* ) 	datadir=data-osm/Portland ;;
-	*San_Francisco* ) 	datadir=data-osm/San_Francisco ;;
-	*Santa_Cruz* ) 	datadir=data-osm/Santa_Cruz ;;
-	*Toronto* ) 	datadir=data-osm/Toronto ;;
-	*Wien* ) 	datadir=data-osm/Wien ;;
-	*Zuerich* ) 	datadir=data-osm/Zuerich ;;
+        *Aachen* )      datadir=data-osm/Aachen ;;
+        *Amsterdam* )   datadir=data-osm/Amsterdam ;;
+        *Austin* )      datadir=data-osm/Austin ;;
+        *Basel* )       datadir=data-osm/Basel ;;
+        *Bielefeld* )   datadir=data-osm/Bielefeld ;;
+        *Bonn* )        datadir=data-osm/Bonn ;;
+        *Bremen* )      datadir=data-osm/Bremen ;;
+        *Cambridge* )   datadir=data-osm/Cambridge ;;
+        *Colmar* | *Kolmar* )   datadir=data-osm/Colmar ;;
+        *Copenhagen* )  datadir=data-osm/Copenhagen ;;
+        *Cracow* | *Krakau* )   datadir=data-osm/Cracow ;;
+        *Dresden* )     datadir=data-osm/Dresden ;;
+        *Duesseldorf* ) datadir=data-osm/Duesseldorf ;;
+        *Erfurt* )      datadir=data-osm/Erfurt ;;
+        *Erlangen* )    datadir=data-osm/Erlangen ;;
+        *Frankfurt* )   datadir=data-osm/Frankfurt ;;
+        *Freiburg* )    datadir=data-osm/Freiburg ;;
+        *Goettingen* )  datadir=data-osm/Goettingen ;;
+        *Hamburg* )     datadir=data-osm/Hamburg ;;
+        *Hannover* )    datadir=data-osm/Hannover ;;
+        *Jena* )        datadir=data-osm/Jena ;;
+        *Karlsruhe* )   datadir=data-osm/Karlsruhe ;;
+        *Koeln* )       datadir=data-osm/Koeln ;;
+        *Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
+        *Leipzig* )     datadir=data-osm/Leipzig ;;
+        *Luebeck* )     datadir=data-osm/Luebeck ;;
+        *Mainz* )       datadir=data-osm/Mainz ;;
+        *Muenster* )    datadir=data-osm/Muenster ;;
+        *New_York* )    datadir=data-osm/New_York ;;
+        *Portland* )    datadir=data-osm/Portland ;;
+        *Rostock* )     datadir=data-osm/Rostock ;;
+        *San_Francisco* )       datadir=data-osm/San_Francisco ;;
+        *Santa_Cruz* )  datadir=data-osm/Santa_Cruz ;;
+        *Strassburg* )  datadir=data-osm/Strassburg ;;
+        *Wien* )        datadir=data-osm/Wien ;;
+        *Zuerich* )     datadir=data-osm/Zuerich ;;
 esac
 
 
@@ -80,7 +97,6 @@ case $0 in
 	*New_York* | \
 	*Portland* | \
 	*San_Francisco* | \
-	*Toronto* | \
 	*Santa_Cruz* ) export LANG=en_US.UTF-8;;
 esac
 
