@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.42 2009/01/24 23:50:32 wosch Exp $
+# $Id: Makefile,v 1.43 2009/01/25 21:56:58 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
 # see target build-version
-BUILD_VERSION=	132
+BUILD_VERSION=	147
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
@@ -29,7 +29,8 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
-UPDATE_FILES= README.txt bbbike 
+BBBIKE_SCRIPT=bin/bbbike
+UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
 CITIES=         \
         Amsterdam \
         Austin \
@@ -81,6 +82,7 @@ create-bbbike-image:
 		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
 	date > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_date
+	cp -f bin/cpan ${BUILD_DIR}/${BBBIKE_ROOT}/.cpan
 	echo ${BUILD_VERSION} > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
 
@@ -89,6 +91,7 @@ create-bbbike-image-powerpc:
 		( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
 	date > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_date
+	cp -f bin/cpan ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.cpan
 	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
@@ -109,7 +112,7 @@ update-files-powerpc:
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
-	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' bbbike > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
+	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
 
 
 get-tarball:

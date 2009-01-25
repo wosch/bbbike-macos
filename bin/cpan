@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# .cpan - a cpan wrapper to install missing perl libs for BBBike
+#
+# $Id: cpan,v 1.1 2009/01/25 21:56:58 wosch Exp $
+
+
+##################################################################################
+# perl version
+perl_version="5.10.0"
+
+# $0 may contain spaces: /Volumes/bbbike 1/BBBike/bbbike
+dir=`dirname "$0"`
+
+# perl/TK binary installation for perl-5.10.0
+perl_home="$dir"/.perl-$perl_version
+
+DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
+export DYLD_LIBRARY_PATH
+
+##################################################################################
+
+# fake original install path for perl distribution in /tmp/perl-<version>
+( 
+	pwd=`pwd`
+	cd /tmp
+	rm -f perl-$perl_version
+	ln -s $pwd/.perl-$perl_version perl-$perl_version
+)
+
+"$perl_home"/bin/perl \
+	-I"$perl_home"/lib/$perl_version/darwin-thread-multi-2level \
+     	-I"$perl_home"/lib/$perl_version \
+	-I"$perl_home"/lib/site_perl/$perl_version/darwin-thread-multi-2level \
+	-I"$perl_home"/lib/site_perl/$perl_version \
+	-I"$perl_home"/lib/5.10.0/darwin-thread-multi-2level/CORE \
+	"$perl_home"/bin/cpan "$@"
+
