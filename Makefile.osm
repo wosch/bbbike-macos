@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.40 2009/01/24 23:49:46 wosch Exp $
+# $Id: Makefile.osm,v 1.41 2009/01/25 12:44:17 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -51,7 +51,7 @@ CITIES=		\
 	Mainz \
 	Muenster \
 	Rostock \
-	Strassburg \
+	Strassburg
 
 
 all: help
@@ -321,65 +321,66 @@ Hamburg-convert:
 Jena: Jena-download Jena-convert
 Jena-download:
 	mkdir -p ${OSM_DIR}/Jena
-	${DOWNLOADOSM} -o ${OSM_DIR}/Jena -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Jena -- 11.5241 50.8597 11.6696 50.9705
 Jena-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Jena ${OSM_DIR}/Jena
+	${OSM2BBD} -centerdelta 11.52,50.85 -o ${DATA_OSM_DIR}/Jena ${OSM_DIR}/Jena
 
 # bbbike @ Koeln
 Koeln: Koeln-download Koeln-convert
 Koeln-download:
 	mkdir -p ${OSM_DIR}/Koeln
-	${DOWNLOADOSM} -o ${OSM_DIR}/Koeln -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Koeln -- 6.823 50.865 7.108 51.015
 Koeln-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Koeln ${OSM_DIR}/Koeln
+	${OSM2BBD} -centerdelta 6.82,50.86 -o ${DATA_OSM_DIR}/Koeln ${OSM_DIR}/Koeln
 
 # bbbike @ Leipzig
 Leipzig: Leipzig-download Leipzig-convert
 Leipzig-download:
 	mkdir -p ${OSM_DIR}/Leipzig
-	${DOWNLOADOSM} -o ${OSM_DIR}/Leipzig -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Leipzig -- 12.271 51.27 12.502 51.4
 Leipzig-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Leipzig ${OSM_DIR}/Leipzig
+	${OSM2BBD} -centerdelta 12.27,51.27 -o ${DATA_OSM_DIR}/Leipzig ${OSM_DIR}/Leipzig
 
 # bbbike @ Luebeck
 Luebeck: Luebeck-download Luebeck-convert
 Luebeck-download:
 	mkdir -p ${OSM_DIR}/Luebeck
-	${DOWNLOADOSM} -o ${OSM_DIR}/Luebeck -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Luebeck -- 10.574 53.82 10.806 53.933
 Luebeck-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Luebeck ${OSM_DIR}/Luebeck
+	${OSM2BBD} -centerdelta 10.57,53.82 -o ${DATA_OSM_DIR}/Luebeck ${OSM_DIR}/Luebeck
 
 # bbbike @ Mainz
 Mainz: Mainz-download Mainz-convert
 Mainz-download:
 	mkdir -p ${OSM_DIR}/Mainz
-	${DOWNLOADOSM} -o ${OSM_DIR}/Mainz -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Mainz -- 8.1339 49.9325 8.4123 50.1077
 Mainz-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Mainz ${OSM_DIR}/Mainz
+	${OSM2BBD} -centerdelta 8.13,49.93 -o ${DATA_OSM_DIR}/Mainz ${OSM_DIR}/Mainz
 
 # bbbike @ Muenster
 Muenster: Muenster-download Muenster-convert
 Muenster-download:
 	mkdir -p ${OSM_DIR}/Muenster
-	${DOWNLOADOSM} -o ${OSM_DIR}/Muenster -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Muenster -- 7.5771 51.9226 7.6873 51.9917
 Muenster-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Muenster ${OSM_DIR}/Muenster
+	${OSM2BBD} -centerdelta 7.57,51.92 -o ${DATA_OSM_DIR}/Muenster ${OSM_DIR}/Muenster
 
 # bbbike @ Rostock
 Rostock: Rostock-download Rostock-convert
 Rostock-download:
 	mkdir -p ${OSM_DIR}/Rostock
-	${DOWNLOADOSM} -o ${OSM_DIR}/Rostock -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Rostock -- 12.0204 54.0599 12.2271 54.1933
 Rostock-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Rostock ${OSM_DIR}/Rostock
+	${OSM2BBD} -centerdelta 12.02,54.05 -o ${DATA_OSM_DIR}/Rostock ${OSM_DIR}/Rostock
 
 # bbbike @ Strassburg
 Strassburg: Strassburg-download Strassburg-convert
 Strassburg-download:
 	mkdir -p ${OSM_DIR}/Strassburg
-	${DOWNLOADOSM} -o ${OSM_DIR}/Strassburg -- 8.4483 47.3437 8.6271 47.4185
+	${DOWNLOADOSM} -o ${OSM_DIR}/Strassburg -- 7.6515 48.5189 7.875 48.6525
 Strassburg-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Strassburg ${OSM_DIR}/Strassburg
+	${OSM2BBD} -centerdelta 7.65,48.51 -o ${DATA_OSM_DIR}/Strassburg ${OSM_DIR}/Strassburg
+
 ##############################################################################################
 
 
@@ -395,7 +396,6 @@ dist-clean devel-clean distclean: clean
 	mkdir -p osm
 
 help:
-	@echo "usage: make [ help | cities | convert | rsync | clean | dist-clean ]"
+	@echo "usage: make [ help | cities | convert | rsync | rsync-source | tarball | clean | dist-clean ]"
 	@echo "usage: make [ ${CITIES} ]"
-	@echo "usage: make [ tarball | cities | convert | rsync-source ]"
 
