@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.41 2009/01/25 12:44:17 wosch Exp $
+# $Id: Makefile.osm,v 1.42 2009/01/25 19:01:32 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -75,7 +75,7 @@ cities:
 	${MAKE} -f Makefile.osm ${CITIES}
 
 convert: 
-	@echo "for i in ${CITIES}; do ${MAKE} -f Makefile.osm "'$$i'"-convert; done"
+	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
@@ -210,6 +210,7 @@ Cambridge-convert:
 
 rsync-source:
 	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ srand.de:/usr/local/www/srand.de/bbbike
+	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ elsif.de:/usr/local/www/elsif.de/bbbike
 
 # bbbike @ Austin
 Austin: Austin-download Austin-convert
@@ -299,7 +300,7 @@ Frankfurt-download:
 	mkdir -p ${OSM_DIR}/Frankfurt
 	${DOWNLOADOSM} -o ${OSM_DIR}/Frankfurt -- 8.44 50.02 8.979 50.185
 Frankfurt-convert:
-	${OSM2BBD} -centerdelta 8.44,50.02 -o ${DATA_OSM_DIR}/Frankfurt ${OSM_DIR}/Frankfurt
+	${OSM2BBD} -centerdelta 8.66,50.10 -o ${DATA_OSM_DIR}/Frankfurt ${OSM_DIR}/Frankfurt
 
 # bbbike @ Goettingen
 Goettingen: Goettingen-download Goettingen-convert
