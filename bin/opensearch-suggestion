@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+while (<>) {
+    if (/^\s*#/) {
+        next;
+    }
+
+    chomp;
+    $street = ( split(/\t/) )[0];
+    $s{$street} = 1 if $street;
+}
+
+foreach ( sort keys %s ) {
+    print "$_\n";
+}
+
