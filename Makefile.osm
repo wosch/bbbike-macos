@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.46 2009/02/15 12:44:42 wosch Exp $
+# $Id: Makefile.osm,v 1.47 2009/02/15 18:51:20 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -51,7 +51,8 @@ CITIES=		\
 	Mainz \
 	Muenster \
 	Rostock \
-	Strassburg
+	Strassburg \
+	Providence \
 
 
 all: help
@@ -390,6 +391,14 @@ Strassburg-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Strassburg -- 7.6515 48.5189 7.875 48.6525
 Strassburg-convert:
 	${OSM2BBD} -centerdelta 7.65,48.51 -o ${DATA_OSM_DIR}/Strassburg ${OSM_DIR}/Strassburg
+
+# bbbike @ Providence
+Providence: Providence-download Providence-convert
+Providence-download:
+	mkdir -p ${OSM_DIR}/Providence
+	${DOWNLOADOSM} -o ${OSM_DIR}/Providence -- -71.5273 41.7378 -71.3141 41.9006
+Providence-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Providence ${OSM_DIR}/Providence
 
 ##############################################################################################
 

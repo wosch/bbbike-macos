@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.45 2009/02/15 18:23:12 wosch Exp $
+# $Id: Makefile,v 1.46 2009/02/15 18:51:20 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -69,6 +69,7 @@ CITIES=         \
         Muenster \
         Rostock \
         Strassburg \
+        Providence \
 
 
 all: help
