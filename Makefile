@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.43 2009/01/25 21:56:58 wosch Exp $
+# $Id: Makefile,v 1.44 2009/02/15 11:42:35 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -22,7 +22,7 @@ BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 BUILD_DIR_POWERPC=	build-powerpc
 
 BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
-BBBIKE_WEB_DIR=	/usr/local/www/srand.de/bbbike
+BBBIKE_WEB_DIR=	/usr/local/www/elsif.de/bbbike
 
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
@@ -46,7 +46,7 @@ CITIES=         \
         Laibach \
         New_york \
         Portland \
-        San_francisco \
+        San_Francisco \
         Santa_cruz \
         Toronto \
         Wien \
