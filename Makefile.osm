@@ -5,12 +5,12 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.43 2009/02/15 11:43:54 wosch Exp $
+# $Id: Makefile.osm,v 1.44 2009/02/15 12:23:47 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
-OSM2BBD=	./miscsrc/osm2bbd --debug=0 -f -map bbbike
+OSM2BBD=	perl ./miscsrc/osm2bbd --debug=0 -f -map bbbike
 
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
@@ -77,6 +77,14 @@ cities:
 convert: 
 	mkdir -p data-osm
 	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
+
+convert-workarounds: 
+	for city in ${CITIES}; do \
+		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
+		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
+		../bbbike-macos/bin/opensearch-suggestion data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
+	done
+
 
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
