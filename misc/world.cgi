@@ -13,5 +13,8 @@ case $name in
 		;;
 esac
 
-exec env DATA_DIR="data-osm/$name" $dirname/bbbike.cgi
+tmpdir=`mktemp -d /tmp/bbbike.XXXXXXXXXXXXXXX`
+env TMPDIR=$tmpdir DATA_DIR="data-osm/$name" BBBIKE_DATADIR="data-osm/$name" $dirname/bbbike.cgi
+
+rm -rf $tmpdir
 
