@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.47 2009/02/16 11:16:51 wosch Exp $
+# $Id: Makefile,v 1.48 2009/02/17 22:39:44 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -22,7 +22,6 @@ BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 BUILD_DIR_POWERPC=	build-powerpc
 
 BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
-BBBIKE_WEB_DIR=	/usr/local/www/elsif.de/bbbike
 
 BUILD_DIR=	build
 DOWNLOAD_DIR=	download
@@ -137,16 +136,6 @@ extract-data-osm:
 extract-data-osm-powerpc:
 	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
-create-bbbike-web-symlinks:
-	cd ${BBBIKE_WEB_DIR}/cgi && \
-	for city in ${CITIES}; do \
-		ln -fs world.cgi $$city.cgi; \
-		ln -fs world.cgi $$city.en.cgi; \
-		ln -fs world.cgi.config $$city.cgi.config; \
-	done
-	ln -fs `pwd`/misc/index.html ${BBBIKE_WEB_DIR}
-	ln -fs `pwd`/misc/world.cgi ${BBBIKE_WEB_DIR}/cgi
-	ln -fs `pwd`/misc/world.cgi.config ${BBBIKE_WEB_DIR}/cgi
 
 scp rsync:
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
@@ -165,5 +154,5 @@ build-version version:
 
 help:
 	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | rsync | clean | dist-clean ]"
-	@echo "            [ build-version | create-bbbike-web-symlinks ]"
+	@echo "            [ build-version ]"
 
