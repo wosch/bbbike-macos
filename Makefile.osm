@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.48 2009/02/16 10:40:40 wosch Exp $
+# $Id: Makefile.osm,v 1.49 2009/02/17 22:31:47 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -58,20 +58,9 @@ CITIES=		\
 
 all: help
 
-tarball: green-ways berlin-coord
-	rm -f data-osm/*/meta.*
-	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data); done # workaround for bug in osm2bbd
-	tar cf - data-osm | gzip > ${OSMBIKE_DATA}
-
-green-ways:
-	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green); done
-
-berlin-coord:
-	for i in data-osm/*; do \
-	  (cd $$i && \
-	  perl -nle '($$name,$$coord) = $$_ =~ m{^([^\t]+)\t\S+\s+(\S+)}; if ($$name) { print "$$name|||$$coord" } ' strassen | \
-	  perl -e 'binmode(\*STDOUT, ":encoding(iso-8859-1)"); binmode(\*STDIN, ":utf8"); while(<>) {print}' > Berlin.coords.data ); \
-	done
+tarball: convert-workarounds
+	tar cf - data-osm | gzip > ${OSMBIKE_DATA}.tmp
+	mv -f ${OSMBIKE_DATA}.tmp ${OSMBIKE_DATA}
 
 cities: 
 	${MAKE} -f Makefile.osm ${CITIES}
@@ -80,13 +69,19 @@ convert:
 	mkdir -p data-osm
 	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
-convert-workarounds: 
+convert-workarounds: green-ways missing-files
 	for city in ${CITIES}; do \
 		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
 		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
 		../bbbike-macos/bin/opensearch-suggestion data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
 	done
 
+missing-files:
+	rm -f data-osm/*/meta.*
+	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze); done # workaround for bug in osm2bbd
+
+green-ways:
+	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green); done
 
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
