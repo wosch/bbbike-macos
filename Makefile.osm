@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.51 2009/03/08 17:02:09 wosch Exp $
+# $Id: Makefile.osm,v 1.52 2009/03/08 20:24:40 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -54,7 +54,8 @@ CITIES=		\
 	Rostock \
 	Strassburg \
 	Providence \
-	Ruegen
+	Ruegen \
+	Chemnitz
 
 
 all: help
@@ -415,6 +416,15 @@ Ruegen-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Ruegen -- 12.904 54.199 13.81 54.708
 Ruegen-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Ruegen ${OSM_DIR}/Ruegen
+
+# bbbike @ Chemnitz
+Chemnitz: Chemnitz-download Chemnitz-convert
+Chemnitz-download:
+	mkdir -p ${OSM_DIR}/Chemnitz
+	${DOWNLOADOSM} --step=0.01 -o ${OSM_DIR}/Chemnitz -- 12.8152 50.7803 13.0154 50.8796
+Chemnitz-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Chemnitz ${OSM_DIR}/Chemnitz
+
 ##############################################################################################
 
 create-bbbike-web-symlinks:
