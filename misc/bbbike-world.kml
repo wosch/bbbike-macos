@@ -75,6 +75,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Chemnitz</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Chemnitz.cgi">Start BBBike @ Chemnitz</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>12.8152,50.7803,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Colmar</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Colmar.cgi">Start BBBike @ Colmar</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
