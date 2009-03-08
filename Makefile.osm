@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.50 2009/02/17 22:39:44 wosch Exp $
+# $Id: Makefile.osm,v 1.51 2009/03/08 17:02:09 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -64,13 +64,19 @@ tarball: convert-workarounds
 	mv -f ${OSMBIKE_DATA}.tmp ${OSMBIKE_DATA}
 
 cities: 
-	${MAKE} -f Makefile.osm ${CITIES}
+	@for i in ${CITIES}; do \
+	  for j in 1 2 3 4 5;do \
+	    ${MAKE} -f Makefile.osm $$i-download || echo "please run me again"; \
+	  done; \
+	done
 
 convert: 
 	mkdir -p data-osm
 	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
-convert-workarounds: green-ways missing-files
+convert-workarounds: convert-workarounds2 green-ways missing-files cleanup-files
+
+convert-workarounds2:
 	for city in ${CITIES}; do \
 		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
 		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
@@ -78,8 +84,12 @@ convert-workarounds: green-ways missing-files
 	done
 
 missing-files:
-	rm -f data-osm/*/meta.*
 	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze); done # workaround for bug in osm2bbd
+
+cleanup-files:
+	rm -f data-osm/*/meta.*
+	rm -f data-osm/*/_*
+	rm -f data-osm/*/*.bak
 
 green-ways:
 	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green); done
@@ -419,7 +429,7 @@ create-bbbike-web-symlinks:
 	ln -fs `pwd`/misc/world.cgi.config ${BBBIKE_WEB_DIR}/cgi
 
 
-scp rsync:
+scp rsync rsync-tgz:
 	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src/bbbike
 
 clean:
@@ -431,7 +441,7 @@ dist-clean devel-clean distclean: clean
 	mkdir -p osm
 
 help:
-	@echo "usage: make [ help | cities | convert | rsync | rsync-source ]"
+	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source ]"
 	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
