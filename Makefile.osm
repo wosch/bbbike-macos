@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.53 2009/03/08 20:57:30 wosch Exp $
+# $Id: Makefile.osm,v 1.54 2009/03/09 00:16:31 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -55,7 +55,8 @@ CITIES=		\
 	Strassburg \
 	Providence \
 	Ruegen \
-	Chemnitz
+	Chemnitz \
+	Paris
 
 
 all: help
@@ -72,6 +73,8 @@ cities:
 	done
 
 convert: 
+	rm -rf data-osm.old
+	test -e data-osm && mv data-osm data-osm.old
 	mkdir -p data-osm
 	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
@@ -88,7 +91,7 @@ missing-files:
 	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze); done # workaround for bug in osm2bbd
 
 cleanup-files:
-	rm -f data-osm/*/meta.*
+	#rm -f data-osm/*/meta.*
 	rm -f data-osm/*/_*
 	rm -f data-osm/*/*.bak
 
@@ -424,6 +427,15 @@ Chemnitz-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Chemnitz -- 12.8152 50.7803 13.0154 50.8796
 Chemnitz-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Chemnitz ${OSM_DIR}/Chemnitz
+
+
+# bbbike @ Paris
+Paris: Paris-download Paris-convert
+Paris-download:
+	mkdir -p ${OSM_DIR}/Paris
+	${DOWNLOADOSM} -o ${OSM_DIR}/Paris -- 2.2168 48.7974 2.4681 48.9241
+Paris-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Paris ${OSM_DIR}/Paris
 
 ##############################################################################################
 
