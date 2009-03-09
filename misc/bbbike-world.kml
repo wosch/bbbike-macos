@@ -379,6 +379,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Turin</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Turin.en.cgi">Start BBBike @ Turin</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>7.6221,45.0155,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Wien</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Wien.cgi">Start BBBike @ Wien</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
