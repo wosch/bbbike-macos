@@ -59,6 +59,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>BrandenburgHavel</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/BrandenburgHavel.cgi">Start BBBike @ BrandenburgHavel</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>12.4647,52.3745,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Bremen</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Bremen.cgi">Start BBBike @ Bremen</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -104,6 +112,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>12.275,55.549,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Cottbus</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Cottbus.cgi">Start BBBike @ Cottbus</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>14.2561,51.7092,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
@@ -384,6 +400,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>7.6221,45.0155,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>WarenMueritz</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/WarenMueritz.cgi">Start BBBike @ WarenMueritz</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>12.5982,53.4811,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
