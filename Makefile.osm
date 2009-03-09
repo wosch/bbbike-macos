@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.61 2009/03/09 23:01:49 wosch Exp $
+# $Id: Makefile.osm,v 1.62 2009/03/09 23:11:41 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -252,6 +252,9 @@ Cambridge-convert:
 rsync-source:
 	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ srand.de:/usr/local/www/srand.de/bbbike
 	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ elsif.de:/usr/local/www/elsif.de/bbbike
+
+rsync-osm:
+	rsync -azv --delete --max-delete=512 data-osm osm elsif.de:bbbike
 
 # bbbike @ Austin
 Austin: Austin-download Austin-convert
@@ -583,7 +586,7 @@ dist-clean devel-clean distclean: clean
 	mkdir -p osm
 
 help:
-	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source ]"
+	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
 	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
