@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.62 2009/03/09 23:11:41 wosch Exp $
+# $Id: Makefile.osm,v 1.63 2009/03/09 23:23:57 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -68,6 +68,8 @@ CITIES=		\
 	Cottbus \
 	BrandenburgHavel \
 	WarenMueritz \
+	Barcelona \
+	Boulder \
 	Paris
 
 
@@ -559,6 +561,22 @@ WarenMueritz-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/WarenMueritz -- 12.5982 53.4811 12.7647 53.5488
 WarenMueritz-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/WarenMueritz ${OSM_DIR}/WarenMueritz
+
+# bbbike @ Barcelona
+Barcelona: Barcelona-download Barcelona-convert
+Barcelona-download:
+	mkdir -p ${OSM_DIR}/Barcelona
+	${DOWNLOADOSM} -o ${OSM_DIR}/Barcelona -- 2.0555 41.2953 2.267 41.4718
+Barcelona-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Barcelona ${OSM_DIR}/Barcelona
+
+# bbbike @ Boulder
+Boulder: Boulder-download Boulder-convert
+Boulder-download:
+	mkdir -p ${OSM_DIR}/Boulder
+	${DOWNLOADOSM} -o ${OSM_DIR}/Boulder -- -105.3198 39.963 -105.2017 40.07
+Boulder-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Boulder ${OSM_DIR}/Boulder
 
 ##############################################################################################
 

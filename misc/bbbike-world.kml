@@ -35,6 +35,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Barcelona</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Barcelona.en.cgi">Start BBBike @ Barcelona</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>2.0555,41.2953,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Basel</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Basel.cgi">Start BBBike @ Basel</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -56,6 +64,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>6.971,50.621,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Boulder</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Boulder.en.cgi">Start BBBike @ Boulder</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-105.3198,39.963,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
