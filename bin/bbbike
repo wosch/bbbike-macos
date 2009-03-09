@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.32 2009/03/09 00:20:57 wosch Exp $
+# $Id: bbbike,v 1.33 2009/03/09 01:11:43 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -51,6 +51,7 @@ case $0 in
         *Bielefeld* )   datadir=data-osm/Bielefeld ;;
         *Bonn* )        datadir=data-osm/Bonn ;;
         *Bremen* )      datadir=data-osm/Bremen ;;
+        *Budapest* )    datadir=data-osm/Budapest ;;
         *Cambridge* )   datadir=data-osm/Cambridge ;;
         *Chemnitz* )    datadir=data-osm/Chemnitz ;;
         *Colmar* | *Kolmar* )   datadir=data-osm/Colmar ;;
@@ -77,6 +78,7 @@ case $0 in
         *New_York* )    datadir=data-osm/New_York ;;
         *Paris* )       datadir=data-osm/Paris ;;
         *Portland* )    datadir=data-osm/Portland ;;
+        *Prag* | *Praha* ) datadir=data-osm/Prag ;;
         *Providence* )  datadir=data-osm/Providence ;;
         *Rostock* )     datadir=data-osm/Rostock ;;
         *Ruegen* )      datadir=data-osm/Ruegen ;;
@@ -84,6 +86,7 @@ case $0 in
         *Santa_Cruz* )  datadir=data-osm/Santa_Cruz ;;
         *Strassburg* )  datadir=data-osm/Strassburg ;;
         *Wien* )        datadir=data-osm/Wien ;;
+        *Zagreb* )      datadir=data-osm/Zagreb ;;
         *Zuerich* )     datadir=data-osm/Zuerich ;;
 esac
 
@@ -93,12 +96,9 @@ export LANG=de_DE.UTF-8;
 
 # start english version of BBBike
 case $0 in
-	*Amsterdam* | \
 	*Austin* | \
 	*Cambridge* | \
-	*Cracow* | \
 	*Copenhagen* | \
-	*Laibach* | *Ljubljana* | \
 	*London* | \
 	*New_York* | \
 	*Paris* | \

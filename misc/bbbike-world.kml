@@ -20,7 +20,7 @@
   </Placemark>
   <Placemark>
     <name>Amsterdam</name>
-    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Amsterdam.en.cgi">Start BBBike @ Amsterdam</a></span>]]></description>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Amsterdam.cgi">Start BBBike @ Amsterdam</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>4.7982,52.3206,0.000000</coordinates>
@@ -67,6 +67,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Budapest</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Budapest.cgi">Start BBBike @ Budapest</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>18.9482,47.434,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Cambridge</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Cambridge.en.cgi">Start BBBike @ Cambridge</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -100,7 +108,7 @@
   </Placemark>
   <Placemark>
     <name>Cracow</name>
-    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Cracow.en.cgi">Start BBBike @ Cracow</a></span>]]></description>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Cracow.cgi">Start BBBike @ Cracow</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>19.88,50.02,0.000000</coordinates>
@@ -204,7 +212,7 @@
   </Placemark>
   <Placemark>
     <name>Laibach</name>
-    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Laibach.en.cgi">Start BBBike @ Laibach</a></span>]]></description>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Laibach.cgi">Start BBBike @ Laibach</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>14.43,46.01,0.000000</coordinates>
@@ -275,6 +283,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Prag</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Prag.cgi">Start BBBike @ Prag</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>14.3016,50.0241,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Providence</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Providence.en.cgi">Start BBBike @ Providence</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -336,6 +352,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>16.2779,48.1592,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Zagreb</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Zagreb.cgi">Start BBBike @ Zagreb</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>15.8652,45.7381,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>

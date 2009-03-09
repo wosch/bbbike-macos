@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.55 2009/03/09 00:20:57 wosch Exp $
+# $Id: Makefile.osm,v 1.56 2009/03/09 01:11:43 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -57,6 +57,9 @@ CITIES=		\
 	Ruegen \
 	Chemnitz \
 	London \
+	Zagreb \
+	Prag \
+	Budapest \
 	Paris
 
 
@@ -446,6 +449,31 @@ London-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/London -- -0.2417 51.4403 0.023 51.5621
 London-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/London ${OSM_DIR}/London
+
+# bbbike @ Zagreb
+Zagreb: Zagreb-download Zagreb-convert
+Zagreb-download:
+	mkdir -p ${OSM_DIR}/Zagreb
+	${DOWNLOADOSM} -o ${OSM_DIR}/Zagreb -- 15.8652 45.7381 16.1155 45.8511
+Zagreb-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Zagreb ${OSM_DIR}/Zagreb
+
+# bbbike @ Prag
+Prag: Prag-download Prag-convert
+Prag-download:
+	mkdir -p ${OSM_DIR}/Prag
+	${DOWNLOADOSM} -o ${OSM_DIR}/Prag -- 14.3016 50.0241 14.6009 50.1468
+Prag-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Prag ${OSM_DIR}/Prag
+
+
+# bbbike @ Budapest
+Budapest: Budapest-download Budapest-convert
+Budapest-download:
+	mkdir -p ${OSM_DIR}/Budapest
+	${DOWNLOADOSM} -o ${OSM_DIR}/Budapest -- 18.9482 47.434 19.1556 47.5407
+Budapest-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Budapest ${OSM_DIR}/Budapest
 
 ##############################################################################################
 
