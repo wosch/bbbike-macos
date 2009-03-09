@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.57 2009/03/09 01:37:13 wosch Exp $
+# $Id: Makefile.osm,v 1.58 2009/03/09 10:32:10 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -61,6 +61,9 @@ CITIES=		\
 	Prag \
 	Budapest \
 	Danzig \
+	Goerlitz \
+	FrankfurtOder \
+	Stettin \
 	Paris
 
 
@@ -72,9 +75,13 @@ tarball: convert-workarounds
 
 cities: 
 	@for i in ${CITIES}; do \
-	  for j in 1 2 3 4 5;do \
-	    ${MAKE} -f Makefile.osm $$i-download || echo "please run me again"; \
-	  done; \
+	    ${MAKE} -f Makefile.osm $$i-download || \
+	    ${MAKE} -f Makefile.osm $$i-download || \
+	    ${MAKE} -f Makefile.osm $$i-download || \
+	    ${MAKE} -f Makefile.osm $$i-download || \
+	    ${MAKE} -f Makefile.osm $$i-download || \
+	    ${MAKE} -f Makefile.osm $$i-download || \
+		echo "please run me again: $$i"; \
 	done
 
 convert: 
@@ -484,6 +491,31 @@ Danzig-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Danzig -- 18.411 54.303 18.812 54.57
 Danzig-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Danzig ${OSM_DIR}/Danzig
+
+# bbbike @ Goerlitz
+Goerlitz: Goerlitz-download Goerlitz-convert
+Goerlitz-download:
+	mkdir -p ${OSM_DIR}/Goerlitz
+	${DOWNLOADOSM} -o ${OSM_DIR}/Goerlitz -- 14.9082 51.0989 15.0494 51.1891
+Goerlitz-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Goerlitz ${OSM_DIR}/Goerlitz
+
+# bbbike @ FrankfurtOder
+FrankfurtOder: FrankfurtOder-download FrankfurtOder-convert
+FrankfurtOder-download:
+	mkdir -p ${OSM_DIR}/FrankfurtOder
+	${DOWNLOADOSM} -o ${OSM_DIR}/FrankfurtOder -- 14.4804 52.3074 14.6026 52.3724
+FrankfurtOder-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/FrankfurtOder ${OSM_DIR}/FrankfurtOder
+
+# bbbike @ Stettin
+Stettin: Stettin-download Stettin-convert
+Stettin-download:
+	mkdir -p ${OSM_DIR}/Stettin
+	${DOWNLOADOSM} -o ${OSM_DIR}/Stettin -- 14.4419 53.3575 14.7299 53.4764
+Stettin-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Stettin ${OSM_DIR}/Stettin
+
 
 ##############################################################################################
 
