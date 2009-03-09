@@ -115,6 +115,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Danzig</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Danzig.cgi">Start BBBike @ Danzig</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>18.411,54.303,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Dresden</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Dresden.cgi">Start BBBike @ Dresden</a></span>]]></description>
     <styleUrl>#style1</styleUrl>

@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.56 2009/03/09 01:11:43 wosch Exp $
+# $Id: Makefile.osm,v 1.57 2009/03/09 01:37:13 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -60,6 +60,7 @@ CITIES=		\
 	Zagreb \
 	Prag \
 	Budapest \
+	Danzig \
 	Paris
 
 
@@ -474,6 +475,15 @@ Budapest-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Budapest -- 18.9482 47.434 19.1556 47.5407
 Budapest-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Budapest ${OSM_DIR}/Budapest
+
+
+# bbbike @ Danzig
+Danzig: Danzig-download Danzig-convert
+Danzig-download:
+	mkdir -p ${OSM_DIR}/Danzig
+	${DOWNLOADOSM} -o ${OSM_DIR}/Danzig -- 18.411 54.303 18.812 54.57
+Danzig-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Danzig ${OSM_DIR}/Danzig
 
 ##############################################################################################
 
