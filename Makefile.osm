@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.54 2009/03/09 00:16:31 wosch Exp $
+# $Id: Makefile.osm,v 1.55 2009/03/09 00:20:57 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -56,6 +56,7 @@ CITIES=		\
 	Providence \
 	Ruegen \
 	Chemnitz \
+	London \
 	Paris
 
 
@@ -436,6 +437,15 @@ Paris-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Paris -- 2.2168 48.7974 2.4681 48.9241
 Paris-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Paris ${OSM_DIR}/Paris
+
+
+# bbbike @ London
+London: London-download London-convert
+London-download:
+	mkdir -p ${OSM_DIR}/London
+	${DOWNLOADOSM} -o ${OSM_DIR}/London -- -0.2417 51.4403 0.023 51.5621
+London-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/London ${OSM_DIR}/London
 
 ##############################################################################################
 
