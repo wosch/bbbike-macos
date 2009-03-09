@@ -219,6 +219,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>London</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/London.en.cgi">Start BBBike @ London</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-0.2417,51.4403,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Luebeck</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Luebeck.cgi">Start BBBike @ Luebeck</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -248,6 +256,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>-74.063,40.67,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Paris</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Paris.en.cgi">Start BBBike @ Paris</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>2.2168,48.7974,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
