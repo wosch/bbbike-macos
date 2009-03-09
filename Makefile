@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.57 2009/03/09 10:32:10 wosch Exp $
+# $Id: Makefile,v 1.58 2009/03/09 13:02:50 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -80,6 +80,7 @@ CITIES=         \
         Danzig \
         Goerlitz \
         Stettin \
+        Turin \
 
 
 all: help

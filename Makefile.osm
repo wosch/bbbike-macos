@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.59 2009/03/09 10:38:38 wosch Exp $
+# $Id: Makefile.osm,v 1.60 2009/03/09 13:02:50 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -64,6 +64,7 @@ CITIES=		\
 	Goerlitz \
 	FrankfurtOder \
 	Stettin \
+	Turin \
 	Paris
 
 
@@ -519,6 +520,14 @@ Stettin-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Stettin -- 14.4419 53.3575 14.7299 53.4764
 Stettin-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Stettin ${OSM_DIR}/Stettin
+
+# bbbike @ Turin
+Turin: Turin-download Turin-convert
+Turin-download:
+	mkdir -p ${OSM_DIR}/Turin
+	${DOWNLOADOSM} -o ${OSM_DIR}/Turin -- 7.6221 45.0155 7.7594 45.1106
+Turin-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Turin ${OSM_DIR}/Turin
 
 
 ##############################################################################################
