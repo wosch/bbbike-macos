@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.60 2009/03/09 13:02:50 wosch Exp $
+# $Id: Makefile.osm,v 1.61 2009/03/09 23:01:49 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -65,6 +65,9 @@ CITIES=		\
 	FrankfurtOder \
 	Stettin \
 	Turin \
+	Cottbus \
+	BrandenburgHavel \
+	WarenMueritz \
 	Paris
 
 
@@ -529,6 +532,30 @@ Turin-download:
 Turin-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Turin ${OSM_DIR}/Turin
 
+# bbbike @ Cottbus
+Cottbus: Cottbus-download Cottbus-convert
+Cottbus-download:
+	mkdir -p ${OSM_DIR}/Cottbus
+	${DOWNLOADOSM} -o ${OSM_DIR}/Cottbus -- 14.2561 51.7092 14.435 51.8101
+Cottbus-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Cottbus ${OSM_DIR}/Cottbus
+
+
+# bbbike @ BrandenburgHavel
+BrandenburgHavel: BrandenburgHavel-download BrandenburgHavel-convert
+BrandenburgHavel-download:
+	mkdir -p ${OSM_DIR}/BrandenburgHavel
+	${DOWNLOADOSM} -o ${OSM_DIR}/BrandenburgHavel -- 12.4647 52.3745 12.6563 52.4511
+BrandenburgHavel-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/BrandenburgHavel ${OSM_DIR}/BrandenburgHavel
+
+# bbbike @ WarenMueritz
+WarenMueritz: WarenMueritz-download WarenMueritz-convert
+WarenMueritz-download:
+	mkdir -p ${OSM_DIR}/WarenMueritz
+	${DOWNLOADOSM} -o ${OSM_DIR}/WarenMueritz -- 12.5982 53.4811 12.7647 53.5488
+WarenMueritz-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/WarenMueritz ${OSM_DIR}/WarenMueritz
 
 ##############################################################################################
 

@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.36 2009/03/09 13:02:50 wosch Exp $
+# $Id: bbbike,v 1.37 2009/03/09 23:01:49 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -50,12 +50,14 @@ case $0 in
         *Basel* )       datadir=data-osm/Basel ;;
         *Bielefeld* )   datadir=data-osm/Bielefeld ;;
         *Bonn* )        datadir=data-osm/Bonn ;;
+        *BrandenburgHavel* ) datadir=data-osm/BrandenburgHavel ;;
         *Bremen* )      datadir=data-osm/Bremen ;;
         *Budapest* )    datadir=data-osm/Budapest ;;
         *Cambridge* )   datadir=data-osm/Cambridge ;;
         *Chemnitz* )    datadir=data-osm/Chemnitz ;;
         *Colmar* | *Kolmar* )   datadir=data-osm/Colmar ;;
         *Copenhagen* )  datadir=data-osm/Copenhagen ;;
+        *Cottbus* )  	datadir=data-osm/Cottbus ;;
         *Cracow* | *Krakau* )   datadir=data-osm/Cracow ;;
         *Danzig* )      datadir=data-osm/Danzig ;;
         *Dresden* )     datadir=data-osm/Dresden ;;
@@ -90,6 +92,7 @@ case $0 in
         *Stettin* )  	datadir=data-osm/Stettin ;;
         *Strassburg* )  datadir=data-osm/Strassburg ;;
         *Turin* )  	datadir=data-osm/Turin ;;
+        *WarenMueritz* ) datadir=data-osm/WarenMueritz ;;
         *Wien* )        datadir=data-osm/Wien ;;
         *Zagreb* )      datadir=data-osm/Zagreb ;;
         *Zuerich* )     datadir=data-osm/Zuerich ;;
