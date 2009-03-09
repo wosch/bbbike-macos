@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.58 2009/03/09 10:32:10 wosch Exp $
+# $Id: Makefile.osm,v 1.59 2009/03/09 10:38:38 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -74,8 +74,12 @@ tarball: convert-workarounds
 	mv -f ${OSMBIKE_DATA}.tmp ${OSMBIKE_DATA}
 
 cities: 
+	${MAKE} _cities
+	${MAKE} _cities
+	${MAKE} _cities
+
+_cities: 
 	@for i in ${CITIES}; do \
-	    ${MAKE} -f Makefile.osm $$i-download || \
 	    ${MAKE} -f Makefile.osm $$i-download || \
 	    ${MAKE} -f Makefile.osm $$i-download || \
 	    ${MAKE} -f Makefile.osm $$i-download || \
