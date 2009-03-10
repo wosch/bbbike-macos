@@ -3,7 +3,7 @@
 #
 # bbbike-world-kml - create an Google Earth KML file for all bbbike@world cities
 #
-# $Id: bbbike-world-kml,v 1.5 2009/03/09 23:23:57 wosch Exp $
+# $Id: bbbike-world-kml,v 1.6 2009/03/10 21:34:15 wosch Exp $
 
 use strict;
 use warnings;
@@ -58,7 +58,7 @@ sub bbbike2kml_placemarks {
 
     # list of non-German cities with link to English bbbike.en.cgi
     my %en = map { $_ => 1 }
-      qw/Austin Cambridge Copenhagen New_York Portland Providence San_Francisco Santa_Cruz Paris London Turin Boulder Barcelona/;
+      qw/Austin Cambridge Copenhagen New_York Portland Providence San_Francisco Santa_Cruz Paris London Turin Boulder Barcelona Seattle Chicago PaloAlto CraterLake Davis CambridgeMa Vancouver Miami/;
 
     foreach my $c ( sort { $a->[0] cmp $b->[0] } @data ) {
         my ( $city, $x, $y ) = @$c;

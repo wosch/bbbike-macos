@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.64 2009/03/09 23:34:45 wosch Exp $
+# $Id: Makefile.osm,v 1.65 2009/03/10 21:34:15 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -70,6 +70,14 @@ CITIES=		\
 	WarenMueritz \
 	Barcelona \
 	Boulder \
+	Seattle \
+	Chicago \
+	PaloAlto \
+	CraterLake \
+	Davis \
+	CambridgeMa \
+	Vancouver \
+	Miami \
 	Paris
 
 
@@ -577,6 +585,73 @@ Boulder-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Boulder -- -105.3198 39.963 -105.2017 40.07
 Boulder-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Boulder ${OSM_DIR}/Boulder
+
+# bbbike @ Seattle
+Seattle: Seattle-download Seattle-convert
+Seattle-download:
+	mkdir -p ${OSM_DIR}/Seattle
+	${DOWNLOADOSM} -o ${OSM_DIR}/Seattle -- -122.4612 47.5219 -122.1851 47.6823
+Seattle-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Seattle ${OSM_DIR}/Seattle
+
+# bbbike @ Chicago
+Chicago: Chicago-download Chicago-convert
+Chicago-download:
+	mkdir -p ${OSM_DIR}/Chicago
+	${DOWNLOADOSM} -o ${OSM_DIR}/Chicago -- -87.763 41.7733 41.7733 41.9277
+Chicago-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Chicago ${OSM_DIR}/Chicago
+
+
+# bbbike @ PaloAlto
+PaloAlto: PaloAlto-download PaloAlto-convert
+PaloAlto-download:
+	mkdir -p ${OSM_DIR}/PaloAlto
+	${DOWNLOADOSM} -o ${OSM_DIR}/PaloAlto -- -122.2585 37.3661 -122.0223 37.5176
+PaloAlto-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/PaloAlto ${OSM_DIR}/PaloAlto
+
+# bbbike @ CraterLake
+CraterLake: CraterLake-download CraterLake-convert
+CraterLake-download:
+	mkdir -p ${OSM_DIR}/CraterLake
+	${DOWNLOADOSM} -o ${OSM_DIR}/CraterLake -- -122.2593 42.8404 -121.9531 43.0219
+CraterLake-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/CraterLake ${OSM_DIR}/CraterLake
+
+
+# bbbike @ Davis
+Davis: Davis-download Davis-convert
+Davis-download:
+	mkdir -p ${OSM_DIR}/Davis
+	${DOWNLOADOSM} -o ${OSM_DIR}/Davis -- -121.8085 38.5045 -121.6698 38.5942
+Davis-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Davis ${OSM_DIR}/Davis
+
+# bbbike @ CambridgeMa
+CambridgeMa: CambridgeMa-download CambridgeMa-convert
+CambridgeMa-download:
+	mkdir -p ${OSM_DIR}/CambridgeMa
+	${DOWNLOADOSM} -o ${OSM_DIR}/CambridgeMa -- -71.1986 42.3265 -71.0036 42.4285
+CambridgeMa-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/CambridgeMa ${OSM_DIR}/CambridgeMa
+
+# bbbike @ Vancouver
+Vancouver: Vancouver-download Vancouver-convert
+Vancouver-download:
+	mkdir -p ${OSM_DIR}/Vancouver
+	${DOWNLOADOSM} -o ${OSM_DIR}/Vancouver -- -123.2871 49.1809 -122.9818 49.3422
+Vancouver-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Vancouver ${OSM_DIR}/Vancouver
+
+
+# bbbike @ Miami
+Miami: Miami-download Miami-convert
+Miami-download:
+	mkdir -p ${OSM_DIR}/Miami
+	${DOWNLOADOSM} -o ${OSM_DIR}/Miami -- -80.3244 25.6548 -80.0473 25.8567
+Miami-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Miami ${OSM_DIR}/Miami
 
 ##############################################################################################
 

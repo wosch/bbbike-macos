@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.38 2009/03/09 23:23:57 wosch Exp $
+# $Id: bbbike,v 1.39 2009/03/10 21:34:15 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -98,6 +98,14 @@ case $0 in
         *Wien* )        datadir=data-osm/Wien ;;
         *Zagreb* )      datadir=data-osm/Zagreb ;;
         *Zuerich* )     datadir=data-osm/Zuerich ;;
+        *Seattle* )     datadir=data-osm/Seattle ;;
+        *Chicago* )     datadir=data-osm/Chicago ;;
+        *PaloAlto* )     datadir=data-osm/PaloAlto ;;
+        *CraterLake* )     datadir=data-osm/CraterLake ;;
+        *Davis* )     datadir=data-osm/Davis ;;
+        *CambridgeMa* )     datadir=data-osm/CambridgeMa ;;
+        *Vancouver* )     datadir=data-osm/Vancouver ;;
+        *Miami* )     datadir=data-osm/Miami ;;
 esac
 
 
@@ -118,7 +126,17 @@ case $0 in
 	*Providence* | \
 	*Turin* | \
 	*San_Francisco* | \
-	*Santa_Cruz* ) export LANG=en_US.UTF-8;;
+	*Boulder* | \
+	*Seattle* | \
+	*Chicago* | \
+	*PaloAlto* | \
+	*CraterLake* | \
+	*Davis* | \
+	*CambridgeMa* | \
+	*Vancouver* | \
+	*Miami* | \
+	*Santa_Cruz* ) \
+		export LANG=en_US.UTF-8;;
 esac
 
 ##################################################################################
