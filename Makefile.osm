@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.65 2009/03/10 21:34:15 wosch Exp $
+# $Id: Makefile.osm,v 1.66 2009/03/10 23:29:07 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -598,7 +598,7 @@ Seattle-convert:
 Chicago: Chicago-download Chicago-convert
 Chicago-download:
 	mkdir -p ${OSM_DIR}/Chicago
-	${DOWNLOADOSM} -o ${OSM_DIR}/Chicago -- -87.763 41.7733 41.7733 41.9277
+	${DOWNLOADOSM} -o ${OSM_DIR}/Chicago -- -87.7501 41.7789 -87.5307 41.9326
 Chicago-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Chicago ${OSM_DIR}/Chicago
 
