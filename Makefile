@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.62 2009/03/10 23:29:07 wosch Exp $
+# $Id: Makefile,v 1.63 2009/03/11 09:11:01 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -30,70 +30,70 @@ SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
 BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
-CITIES=         \
-        Amsterdam \
-        Austin \
-        Basel \
-        Cambridge \
-        Cracow \
-        Colmar \
-        Copenhagen \
-        Erlangen \
-        Freiburg \
-        Hannover \
-        Karlsruhe \
-        Laibach \
-        New_York \
-        Portland \
-        San_Francisco \
-        Santa_Cruz \
-        Toronto \
-        Wien \
-        Zuerich \
-        Aachen \
-        Bielefeld \
-        Bonn \
-        Bremen \
-        Dresden \
-        Duesseldorf \
-        Erfurt \
-        FrankfurtOder \
-        Frankfurt \
-        Goettingen \
-        Hamburg \
-        Jena \
-        Koeln \
-        Leipzig \
-        Luebeck \
-        Mainz \
-        Muenster \
-        Rostock \
-        Strassburg \
-        Providence \
-        Ruegen \
-        Chemnitz \
-        Paris \
-        London \
-        Zagreb \
-        Prag \
-        Budapest \
-        Danzig \
-        Goerlitz \
-        Stettin \
-        Turin \
-	Cottbus \
-	BrandenburgHavel \
-	WarenMueritz \
+CITIES=		\
+	Aachen \
+	Amsterdam \
+	Austin \
 	Barcelona \
+	Basel \
+	Bielefeld \
+	Bonn \
 	Boulder \
-	Chicago \
-	PaloAlto \
-	CraterLake \
-	Seattle \
-	Davis \
+	BrandenburgHavel \
+	Bremen \
+	Budapest \
+	Cambridge \
 	CambridgeMa \
-	Vancouver \
+	Chemnitz \
+	Chicago \
+	Colmar \
+	Copenhagen \
+	Cottbus \
+	Cracow \
+	CraterLake \
+	Danzig \
+	Davis \
+	Dresden \
+	Duesseldorf \
+	Erfurt \
+	Erlangen \
+	Frankfurt \
+	FrankfurtOder \
+	Freiburg \
+	Goerlitz \
+	Goettingen \
+	Hamburg \
+	Hannover \
+	Jena \
+	Karlsruhe \
+	Koeln \
+	Laibach \
+	Leipzig \
+	London \
+	Luebeck \
+	Mainz \
 	Miami \
+	Muenster \
+	New_York \
+	PaloAlto \
+	Paris \
+	Portland \
+	Prag \
+	Providence \
+	Rostock \
+	Ruegen \
+	San_Francisco \
+	Santa_Cruz \
+	Seattle \
+	Stettin \
+	Strassburg \
+	Toronto \
+	Turin \
+	Vancouver \
+	WarenMueritz \
+	Wien \
+	Zagreb \
+	Zuerich \
 
 
 all: help
@@ -181,5 +181,5 @@ build-version version:
 
 help:
 	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | rsync | clean | dist-clean ]"
-	@echo "            [ build-version | kml ]"
+	@echo "		   [ build-version | kml ]"
 
