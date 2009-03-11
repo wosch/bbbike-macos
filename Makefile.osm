@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.67 2009/03/11 09:11:01 wosch Exp $
+# $Id: Makefile.osm,v 1.68 2009/03/11 14:51:28 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -104,7 +104,7 @@ _cities:
 
 convert: 
 	rm -rf data-osm.old
-	test -e data-osm && mv data-osm data-osm.old
+	if test -e data-osm; then mv data-osm data-osm.old; fi
 	mkdir -p data-osm
 	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
