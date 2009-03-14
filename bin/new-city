@@ -8,6 +8,7 @@ $a = '
 	${DOWNLOADOSM} -o ${OSM_DIR}/%s -- 8.4483 47.3437 8.6271 47.4185
 %s-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/%s ${OSM_DIR}/%s
+
 ';
 
 foreach my $C (@ARGV) {

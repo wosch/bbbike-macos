@@ -5,12 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.68 2009/03/11 14:51:28 wosch Exp $
+# $Id: Makefile.osm,v 1.69 2009/03/14 17:17:32 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
 OSM2BBD=	perl ./miscsrc/osm2bbd --debug=0 -f -map bbbike
+NICE=		nice -n 15
 
 BBBIKE_WEB_DIR= /usr/local/www/elsif.de/bbbike
 OSM_DIR=	osm
@@ -79,6 +80,18 @@ CITIES=		\
 	Wien \
 	Zagreb \
 	Zuerich \
+	Kaunas \
+	Riga \
+	Reval \
+	SanktPetersburg \
+	Helsinki \
+	Stockholm \
+	Oslo \
+	Dublin \
+	Sofia \
+	Sarajewo \
+	Kiew \
+	Bruessel \
 
 
 all: help
@@ -106,7 +119,7 @@ convert:
 	rm -rf data-osm.old
 	if test -e data-osm; then mv data-osm data-osm.old; fi
 	mkdir -p data-osm
-	for i in ${CITIES}; do ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
+	for i in ${CITIES}; do ${NICE} ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
 convert-workarounds: convert-workarounds2 green-ways missing-files cleanup-files
 
@@ -653,7 +666,122 @@ Miami-download:
 Miami-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Miami ${OSM_DIR}/Miami
 
+
+
+# bbbike @ Kaunas
+Kaunas: Kaunas-download Kaunas-convert
+Kaunas-download:
+	mkdir -p ${OSM_DIR}/Kaunas
+	${DOWNLOADOSM} -o ${OSM_DIR}/Kaunas -- 23.8001 54.8585 24.0157 54.9521
+Kaunas-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Kaunas ${OSM_DIR}/Kaunas
+
+
+
+# bbbike @ Riga
+Riga: Riga-download Riga-convert
+Riga-download:
+	mkdir -p ${OSM_DIR}/Riga
+	${DOWNLOADOSM} -o ${OSM_DIR}/Riga -- 23.9847 56.9117 24.2099 56.9943
+Riga-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Riga ${OSM_DIR}/Riga
+
+
+
+# bbbike @ Reval
+Reval: Reval-download Reval-convert
+Reval-download:
+	mkdir -p ${OSM_DIR}/Reval
+	${DOWNLOADOSM} -o ${OSM_DIR}/Reval -- 24.6189 59.3803 24.8744 59.4872
+Reval-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Reval ${OSM_DIR}/Reval
+
+
+
+# bbbike @ SanktPetersburg
+SanktPetersburg: SanktPetersburg-download SanktPetersburg-convert
+SanktPetersburg-download:
+	mkdir -p ${OSM_DIR}/SanktPetersburg
+	${DOWNLOADOSM} -o ${OSM_DIR}/SanktPetersburg -- 30.151 59.865 30.502 60.016
+SanktPetersburg-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/SanktPetersburg ${OSM_DIR}/SanktPetersburg
+
+
+# bbbike @ Helsinki
+Helsinki: Helsinki-download Helsinki-convert
+Helsinki-download:
+	mkdir -p ${OSM_DIR}/Helsinki
+	${DOWNLOADOSM} -o ${OSM_DIR}/Helsinki -- 24.8391 60.1277 25.0462 60.2061
+Helsinki-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Helsinki ${OSM_DIR}/Helsinki
+
+
+
+# bbbike @ Stockholm
+Stockholm: Stockholm-download Stockholm-convert
+Stockholm-download:
+	mkdir -p ${OSM_DIR}/Stockholm
+	${DOWNLOADOSM} -o ${OSM_DIR}/Stockholm -- 17.9752 59.2945 18.1664 59.3623
+Stockholm-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Stockholm ${OSM_DIR}/Stockholm
+
+
+# bbbike @ Oslo
+Oslo: Oslo-download Oslo-convert
+Oslo-download:
+	mkdir -p ${OSM_DIR}/Oslo
+	${DOWNLOADOSM} -o ${OSM_DIR}/Oslo -- 10.6517 59.8831 10.8323 59.9526
+Oslo-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Oslo ${OSM_DIR}/Oslo
+
+
+# bbbike @ Dublin
+Dublin: Dublin-download Dublin-convert
+Dublin-download:
+	mkdir -p ${OSM_DIR}/Dublin
+	${DOWNLOADOSM} -o ${OSM_DIR}/Dublin -- -6.3485 53.2933 -6.1552 53.3867
+Dublin-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Dublin ${OSM_DIR}/Dublin
+
+
+
+# bbbike @ Sarajewo
+Sarajewo: Sarajewo-download Sarajewo-convert
+Sarajewo-download:
+	mkdir -p ${OSM_DIR}/Sarajewo
+	${DOWNLOADOSM} -o ${OSM_DIR}/Sarajewo -- 18.3664 43.8334 18.4889 43.8915
+Sarajewo-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Sarajewo ${OSM_DIR}/Sarajewo
+
+
+
+# bbbike @ Sofia
+Sofia: Sofia-download Sofia-convert
+Sofia-download:
+	mkdir -p ${OSM_DIR}/Sofia
+	${DOWNLOADOSM} -o ${OSM_DIR}/Sofia -- 23.2146 42.6445 23.4244 42.7505
+Sofia-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Sofia ${OSM_DIR}/Sofia
+
+# bbbike @ Kiew
+Kiew: Kiew-download Kiew-convert
+Kiew-download:
+	mkdir -p ${OSM_DIR}/Kiew
+	${DOWNLOADOSM} -o ${OSM_DIR}/Kiew -- 30.4236 50.3854 30.6385 50.4963
+Kiew-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Kiew ${OSM_DIR}/Kiew
+
+
+# bbbike @ Bruessel
+Bruessel: Bruessel-download Bruessel-convert
+Bruessel-download:
+	mkdir -p ${OSM_DIR}/Bruessel
+	${DOWNLOADOSM} -o ${OSM_DIR}/Bruessel -- 4.2614 50.7981 4.4376 50.8996
+Bruessel-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Bruessel ${OSM_DIR}/Bruessel
+
 ##############################################################################################
+
 
 create-bbbike-web-symlinks:
 	cd ${BBBIKE_WEB_DIR}/cgi && \

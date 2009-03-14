@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.41 2009/03/10 23:29:07 wosch Exp $
+# $Id: bbbike,v 1.42 2009/03/14 17:17:32 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -107,6 +107,18 @@ case $0 in
         *Wien* )        datadir=data-osm/Wien ;;
         *Zagreb* )      datadir=data-osm/Zagreb ;;
         *Zuerich* )     datadir=data-osm/Zuerich ;;
+	*Kaunas* )    datadir=data-osm/Kaunas  ;;
+	*Riga* )    datadir=data-osm/Riga  ;;
+	*Reval* )    datadir=data-osm/Reval  ;;
+	*SanktPetersburg* )    datadir=data-osm/SanktPetersburg  ;;
+	*Helsinki* )    datadir=data-osm/Helsinki  ;;
+	*Stockholm* )    datadir=data-osm/Stockholm  ;;
+	*Oslo* )    datadir=data-osm/Oslo  ;;
+	*Dublin* )    datadir=data-osm/Dublin  ;;
+	*Sofia* )    datadir=data-osm/Sofia  ;;
+	*Sarajewo* )    datadir=data-osm/Sarajewo  ;;
+	*Kiew* )    datadir=data-osm/Kiew  ;;
+	*Bruessel* )    datadir=data-osm/Bruessel  ;;
 
         *) echo "Unknown city: $0" ;;
 esac
@@ -139,6 +151,13 @@ case $0 in
 	*Seattle* | \
 	*Turin* | \
 	*Toronto* | \
+	*SanktPetersburg* | \
+	*Helsinki* | \
+	*Stockholm* | \
+	*Oslo* | \
+	*Dublin* | \
+	*Sofia* | \
+	*Kiew* | \
 	*Vancouver* ) \
 		export LANG=en_US.UTF-8;;
 esac
