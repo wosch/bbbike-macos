@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.69 2009/03/14 17:17:32 wosch Exp $
+# $Id: Makefile.osm,v 1.70 2009/03/14 18:53:43 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
-OSM2BBD=	perl ./miscsrc/osm2bbd --debug=0 -f -map bbbike
-NICE=		nice -n 15
+OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f -map bbbike
+NICE=		nice -n 5
 
 BBBIKE_WEB_DIR= /usr/local/www/elsif.de/bbbike
 OSM_DIR=	osm
@@ -147,7 +147,7 @@ Copenhagen-download:
 	mkdir -p ${OSM_DIR}/Copenhagen
 	${DOWNLOADOSM} -o ${OSM_DIR}/Copenhagen -- 12.275 55.549 12.702 55.831
 Copenhagen-convert:
-	${OSM2BBD} -centerdelta 12.44,55.56 -o ${DATA_OSM_DIR}/Copenhagen ${OSM_DIR}/Copenhagen
+	${OSM2BBD} -centerdelta 12.44,55.56 -lang en -o ${DATA_OSM_DIR}/Copenhagen ${OSM_DIR}/Copenhagen
 
 # bbbike @ Karlsruhe
 Karlsruhe: Karlsruhe-download Karlsruhe-convert
@@ -163,15 +163,15 @@ San_Francisco-download:
 	mkdir -p ${OSM_DIR}/San_Francisco
 	${DOWNLOADOSM} -o ${OSM_DIR}/San_Francisco -- -122.527 37.594 -122.351 37.811
 San_Francisco-convert:
-	${OSM2BBD} -centerdelta -122.55,37.67 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
+	${OSM2BBD} -lang en -centerdelta -122.55,37.67 -o ${DATA_OSM_DIR}/San_Francisco ${OSM_DIR}/San_Francisco
 
 # bbbike @ Santa Cruz
 Santa_Cruz: Santa_Cruz-download Santa_Cruz-convert
 Santa_Cruz-download:
 	mkdir -p ${OSM_DIR}/Santa_Cruz
-	${DOWNLOADOSM} -o ${OSM_DIR}/Santa_Cruz -- -122.087 36.941 -121.917 37.013
+	${DOWNLOADOSM} -lang en -o ${OSM_DIR}/Santa_Cruz -- -122.087 36.941 -121.917 37.013
 Santa_Cruz-convert:
-	${OSM2BBD} -centerdelta -122.12,36.845 -o ${DATA_OSM_DIR}/Santa_Cruz ${OSM_DIR}/Santa_Cruz
+	${OSM2BBD} -lang en -centerdelta -122.12,36.845 -o ${DATA_OSM_DIR}/Santa_Cruz ${OSM_DIR}/Santa_Cruz
 
 # bbbike @ Basel
 Basel: Basel-download Basel-convert
@@ -188,7 +188,7 @@ Amsterdam-download:
 	mkdir -p ${OSM_DIR}/Amsterdam
 	${DOWNLOADOSM} -o ${OSM_DIR}/Amsterdam -- 4.7982 52.3206 5.0265 52.4309
 Amsterdam-convert:
-	${OSM2BBD} -centerdelta 4.77,52.25 -o ${DATA_OSM_DIR}/Amsterdam ${OSM_DIR}/Amsterdam
+	${OSM2BBD} -lang en -centerdelta 4.77,52.25 -o ${DATA_OSM_DIR}/Amsterdam ${OSM_DIR}/Amsterdam
 
 # bbbike @ Erlangen
 Erlangen: Erlangen-download Erlangen-convert
@@ -238,7 +238,7 @@ Portland-download:
 	#${DOWNLOADOSM} -o ${OSM_DIR}/Portland -- -122.99 45.74 -122.37 45.34
 	${DOWNLOADOSM} -o ${OSM_DIR}/Portland -- -122.81 45.43 -122.53 45.59
 Portland-convert:
-	${OSM2BBD} -centerdelta -122.80,45.40 -o ${DATA_OSM_DIR}/Portland ${OSM_DIR}/Portland
+	${OSM2BBD} -lang en -centerdelta -122.80,45.40 -o ${DATA_OSM_DIR}/Portland ${OSM_DIR}/Portland
 
 # bbbike @ Wien
 Wien: Wien-download Wien-convert
@@ -262,7 +262,7 @@ Cracow-download:
 	mkdir -p ${OSM_DIR}/Cracow
 	${DOWNLOADOSM} -o ${OSM_DIR}/Cracow -- 19.88 50.02 20.00 50.09
 Cracow-convert:
-	${OSM2BBD} -centerdelta 19.82,49.94 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
+	${OSM2BBD} -lang en -centerdelta 19.82,49.94 -o ${DATA_OSM_DIR}/Cracow ${OSM_DIR}/Cracow
 
 # bbbike @ Cambridge
 Cambridge: Cambridge-download Cambridge-convert
@@ -270,7 +270,7 @@ Cambridge-download:
 	mkdir -p ${OSM_DIR}/Cambridge
 	${DOWNLOADOSM} -o ${OSM_DIR}/Cambridge -- 0.0593 52.1708 0.2018 52.2577
 Cambridge-convert:
-	${OSM2BBD} -centerdelta 0.00,52.085 -o ${DATA_OSM_DIR}/Cambridge ${OSM_DIR}/Cambridge
+	${OSM2BBD} -lang en -centerdelta 0.00,52.085 -o ${DATA_OSM_DIR}/Cambridge ${OSM_DIR}/Cambridge
 
 rsync-source:
 	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ srand.de:/usr/local/www/srand.de/bbbike
@@ -285,7 +285,7 @@ Austin-download:
 	mkdir -p ${OSM_DIR}/Austin
 	${DOWNLOADOSM} -o ${OSM_DIR}/Austin -- -97.798 30.216 -97.675 30.316
 Austin-convert:
-	${OSM2BBD} -centerdelta -97.87,30.15 -o ${DATA_OSM_DIR}/Austin ${OSM_DIR}/Austin
+	${OSM2BBD} -lang en -centerdelta -97.87,30.15 -o ${DATA_OSM_DIR}/Austin ${OSM_DIR}/Austin
 
 # bbbike @ New York
 New_York: New_York-download New_York-convert
@@ -293,7 +293,7 @@ New_York-download:
 	mkdir -p ${OSM_DIR}/New_York
 	${DOWNLOADOSM} -o ${OSM_DIR}/New_York -- -74.063 40.67 -73.894 40.827
 New_York-convert:
-	${OSM2BBD} -centerdelta -74.12,40.59 -o ${DATA_OSM_DIR}/New_York ${OSM_DIR}/New_York
+	${OSM2BBD} -lang en -centerdelta -74.12,40.59 -o ${DATA_OSM_DIR}/New_York ${OSM_DIR}/New_York
 
 # bbbike @ Toronto
 Toronto: Toronto-download Toronto-convert
@@ -301,7 +301,7 @@ Toronto-download:
 	mkdir -p ${OSM_DIR}/Toronto
 	${DOWNLOADOSM} -o ${OSM_DIR}/Toronto -- -79.674 43.602 -79.077 43.849
 Toronto-convert:
-	${OSM2BBD} -centerdelta -79.674,43.602 -o ${DATA_OSM_DIR}/Toronto ${OSM_DIR}/Toronto
+	${OSM2BBD} -lang en -centerdelta -79.674,43.602 -o ${DATA_OSM_DIR}/Toronto ${OSM_DIR}/Toronto
 
 
 ##############################################################################################
@@ -455,7 +455,7 @@ Providence-download:
 	mkdir -p ${OSM_DIR}/Providence
 	${DOWNLOADOSM} -o ${OSM_DIR}/Providence -- -71.5273 41.7378 -71.3141 41.9006
 Providence-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Providence ${OSM_DIR}/Providence
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Providence ${OSM_DIR}/Providence
 
 
 # bbbike @ Ruegen
@@ -481,7 +481,7 @@ Paris-download:
 	mkdir -p ${OSM_DIR}/Paris
 	${DOWNLOADOSM} -o ${OSM_DIR}/Paris -- 2.2168 48.7974 2.4681 48.9241
 Paris-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Paris ${OSM_DIR}/Paris
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Paris ${OSM_DIR}/Paris
 
 
 # bbbike @ London
@@ -490,7 +490,7 @@ London-download:
 	mkdir -p ${OSM_DIR}/London
 	${DOWNLOADOSM} -o ${OSM_DIR}/London -- -0.2417 51.4403 0.023 51.5621
 London-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/London ${OSM_DIR}/London
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/London ${OSM_DIR}/London
 
 # bbbike @ Zagreb
 Zagreb: Zagreb-download Zagreb-convert
@@ -498,7 +498,7 @@ Zagreb-download:
 	mkdir -p ${OSM_DIR}/Zagreb
 	${DOWNLOADOSM} -o ${OSM_DIR}/Zagreb -- 15.8652 45.7381 16.1155 45.8511
 Zagreb-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Zagreb ${OSM_DIR}/Zagreb
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Zagreb ${OSM_DIR}/Zagreb
 
 # bbbike @ Prag
 Prag: Prag-download Prag-convert
@@ -506,7 +506,7 @@ Prag-download:
 	mkdir -p ${OSM_DIR}/Prag
 	${DOWNLOADOSM} -o ${OSM_DIR}/Prag -- 14.3016 50.0241 14.6009 50.1468
 Prag-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Prag ${OSM_DIR}/Prag
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Prag ${OSM_DIR}/Prag
 
 
 # bbbike @ Budapest
@@ -515,7 +515,7 @@ Budapest-download:
 	mkdir -p ${OSM_DIR}/Budapest
 	${DOWNLOADOSM} -o ${OSM_DIR}/Budapest -- 18.9482 47.434 19.1556 47.5407
 Budapest-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Budapest ${OSM_DIR}/Budapest
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Budapest ${OSM_DIR}/Budapest
 
 
 # bbbike @ Danzig
@@ -556,7 +556,7 @@ Turin-download:
 	mkdir -p ${OSM_DIR}/Turin
 	${DOWNLOADOSM} -o ${OSM_DIR}/Turin -- 7.6221 45.0155 7.7594 45.1106
 Turin-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Turin ${OSM_DIR}/Turin
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Turin ${OSM_DIR}/Turin
 
 # bbbike @ Cottbus
 Cottbus: Cottbus-download Cottbus-convert
@@ -589,7 +589,7 @@ Barcelona-download:
 	mkdir -p ${OSM_DIR}/Barcelona
 	${DOWNLOADOSM} -o ${OSM_DIR}/Barcelona -- 2.0555 41.2953 2.267 41.4718
 Barcelona-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Barcelona ${OSM_DIR}/Barcelona
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Barcelona ${OSM_DIR}/Barcelona
 
 # bbbike @ Boulder
 Boulder: Boulder-download Boulder-convert
@@ -597,7 +597,7 @@ Boulder-download:
 	mkdir -p ${OSM_DIR}/Boulder
 	${DOWNLOADOSM} -o ${OSM_DIR}/Boulder -- -105.3198 39.963 -105.2017 40.07
 Boulder-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Boulder ${OSM_DIR}/Boulder
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Boulder ${OSM_DIR}/Boulder
 
 # bbbike @ Seattle
 Seattle: Seattle-download Seattle-convert
@@ -605,7 +605,7 @@ Seattle-download:
 	mkdir -p ${OSM_DIR}/Seattle
 	${DOWNLOADOSM} -o ${OSM_DIR}/Seattle -- -122.4612 47.5219 -122.1851 47.6823
 Seattle-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Seattle ${OSM_DIR}/Seattle
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Seattle ${OSM_DIR}/Seattle
 
 # bbbike @ Chicago
 Chicago: Chicago-download Chicago-convert
@@ -613,7 +613,7 @@ Chicago-download:
 	mkdir -p ${OSM_DIR}/Chicago
 	${DOWNLOADOSM} -o ${OSM_DIR}/Chicago -- -87.7501 41.7789 -87.5307 41.9326
 Chicago-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Chicago ${OSM_DIR}/Chicago
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Chicago ${OSM_DIR}/Chicago
 
 
 # bbbike @ PaloAlto
@@ -622,7 +622,7 @@ PaloAlto-download:
 	mkdir -p ${OSM_DIR}/PaloAlto
 	${DOWNLOADOSM} -o ${OSM_DIR}/PaloAlto -- -122.2585 37.3661 -122.0223 37.5176
 PaloAlto-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/PaloAlto ${OSM_DIR}/PaloAlto
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/PaloAlto ${OSM_DIR}/PaloAlto
 
 # bbbike @ CraterLake
 CraterLake: CraterLake-download CraterLake-convert
@@ -630,7 +630,7 @@ CraterLake-download:
 	mkdir -p ${OSM_DIR}/CraterLake
 	${DOWNLOADOSM} -o ${OSM_DIR}/CraterLake -- -122.2593 42.8404 -121.9531 43.0219
 CraterLake-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/CraterLake ${OSM_DIR}/CraterLake
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/CraterLake ${OSM_DIR}/CraterLake
 
 
 # bbbike @ Davis
@@ -639,7 +639,7 @@ Davis-download:
 	mkdir -p ${OSM_DIR}/Davis
 	${DOWNLOADOSM} -o ${OSM_DIR}/Davis -- -121.8085 38.5045 -121.6698 38.5942
 Davis-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Davis ${OSM_DIR}/Davis
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Davis ${OSM_DIR}/Davis
 
 # bbbike @ CambridgeMa
 CambridgeMa: CambridgeMa-download CambridgeMa-convert
@@ -647,7 +647,7 @@ CambridgeMa-download:
 	mkdir -p ${OSM_DIR}/CambridgeMa
 	${DOWNLOADOSM} -o ${OSM_DIR}/CambridgeMa -- -71.1986 42.3265 -71.0036 42.4285
 CambridgeMa-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/CambridgeMa ${OSM_DIR}/CambridgeMa
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/CambridgeMa ${OSM_DIR}/CambridgeMa
 
 # bbbike @ Vancouver
 Vancouver: Vancouver-download Vancouver-convert
@@ -655,7 +655,7 @@ Vancouver-download:
 	mkdir -p ${OSM_DIR}/Vancouver
 	${DOWNLOADOSM} -o ${OSM_DIR}/Vancouver -- -123.2871 49.1809 -122.9818 49.3422
 Vancouver-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Vancouver ${OSM_DIR}/Vancouver
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Vancouver ${OSM_DIR}/Vancouver
 
 
 # bbbike @ Miami
@@ -664,7 +664,7 @@ Miami-download:
 	mkdir -p ${OSM_DIR}/Miami
 	${DOWNLOADOSM} -o ${OSM_DIR}/Miami -- -80.3244 25.6548 -80.0473 25.8567
 Miami-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Miami ${OSM_DIR}/Miami
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Miami ${OSM_DIR}/Miami
 
 
 
@@ -704,7 +704,7 @@ SanktPetersburg-download:
 	mkdir -p ${OSM_DIR}/SanktPetersburg
 	${DOWNLOADOSM} -o ${OSM_DIR}/SanktPetersburg -- 30.151 59.865 30.502 60.016
 SanktPetersburg-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/SanktPetersburg ${OSM_DIR}/SanktPetersburg
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/SanktPetersburg ${OSM_DIR}/SanktPetersburg
 
 
 # bbbike @ Helsinki
@@ -713,7 +713,7 @@ Helsinki-download:
 	mkdir -p ${OSM_DIR}/Helsinki
 	${DOWNLOADOSM} -o ${OSM_DIR}/Helsinki -- 24.8391 60.1277 25.0462 60.2061
 Helsinki-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Helsinki ${OSM_DIR}/Helsinki
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Helsinki ${OSM_DIR}/Helsinki
 
 
 
@@ -723,7 +723,7 @@ Stockholm-download:
 	mkdir -p ${OSM_DIR}/Stockholm
 	${DOWNLOADOSM} -o ${OSM_DIR}/Stockholm -- 17.9752 59.2945 18.1664 59.3623
 Stockholm-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Stockholm ${OSM_DIR}/Stockholm
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Stockholm ${OSM_DIR}/Stockholm
 
 
 # bbbike @ Oslo
@@ -732,7 +732,7 @@ Oslo-download:
 	mkdir -p ${OSM_DIR}/Oslo
 	${DOWNLOADOSM} -o ${OSM_DIR}/Oslo -- 10.6517 59.8831 10.8323 59.9526
 Oslo-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Oslo ${OSM_DIR}/Oslo
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Oslo ${OSM_DIR}/Oslo
 
 
 # bbbike @ Dublin
@@ -741,7 +741,7 @@ Dublin-download:
 	mkdir -p ${OSM_DIR}/Dublin
 	${DOWNLOADOSM} -o ${OSM_DIR}/Dublin -- -6.3485 53.2933 -6.1552 53.3867
 Dublin-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Dublin ${OSM_DIR}/Dublin
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Dublin ${OSM_DIR}/Dublin
 
 
 
@@ -761,7 +761,7 @@ Sofia-download:
 	mkdir -p ${OSM_DIR}/Sofia
 	${DOWNLOADOSM} -o ${OSM_DIR}/Sofia -- 23.2146 42.6445 23.4244 42.7505
 Sofia-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Sofia ${OSM_DIR}/Sofia
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Sofia ${OSM_DIR}/Sofia
 
 # bbbike @ Kiew
 Kiew: Kiew-download Kiew-convert
@@ -769,7 +769,7 @@ Kiew-download:
 	mkdir -p ${OSM_DIR}/Kiew
 	${DOWNLOADOSM} -o ${OSM_DIR}/Kiew -- 30.4236 50.3854 30.6385 50.4963
 Kiew-convert:
-	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Kiew ${OSM_DIR}/Kiew
+	${OSM2BBD} -lang en -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Kiew ${OSM_DIR}/Kiew
 
 
 # bbbike @ Bruessel
