@@ -14,7 +14,10 @@ case $name in
 esac
 
 tmpdir=`mktemp -d /tmp/bbbike.XXXXXXXXXXXXXXX`
-env TMPDIR=$tmpdir DATA_DIR="data-osm/$name" BBBIKE_DATADIR="data-osm/$name" $dirname/bbbike.cgi
 
-rm -rf $tmpdir
+trap 'rm -rf "$tmpdir"; exit 1' 1 2 3 13 15
+trap 'rm -rf "$tmpdir"' 0
+
+
+env TMPDIR=$tmpdir DATA_DIR="data-osm/$name" BBBIKE_DATADIR="data-osm/$name" $dirname/bbbike.cgi
 
