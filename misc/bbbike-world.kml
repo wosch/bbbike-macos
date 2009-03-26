@@ -51,6 +51,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Berlin</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Berlin.cgi">Start BBBike @ Berlin</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>13.0109,52.3376,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Bielefeld</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Bielefeld.cgi">Start BBBike @ Bielefeld</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
