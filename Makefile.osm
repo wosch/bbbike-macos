@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.71 2009/03/26 19:07:03 wosch Exp $
+# $Id: Makefile.osm,v 1.72 2009/03/26 21:45:46 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -23,6 +23,7 @@ CITIES=		\
 	Austin \
 	Barcelona \
 	Basel \
+	Berlin \
 	Bielefeld \
 	Bonn \
 	Boulder \
@@ -131,14 +132,20 @@ convert.old:
 	mkdir -p data-osm
 	for i in ${CITIES}; do ${NICE} ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
 
-convert-workarounds: convert-workarounds2 green-ways missing-files cleanup-files
+convert-workarounds: osm2bbd-postprocess osm2bbd-workarounds green-ways missing-files cleanup-files
 
-convert-workarounds2:
+osm2bbd-workarounds:
 	for city in ${CITIES}; do \
 		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
 		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
 		../bbbike-macos/bin/opensearch-suggestion data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
 	done
+
+osm2bbd-postprocess:
+	for city in ${CITIES}; do \
+		./miscsrc/osm2bbd-postprocess -only-largest-city-is-center -skip-inaccessible-streets data-osm/$$city; \
+	done
+
 
 missing-files:
 	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze flaechen wasserstrassen); done # workaround for bug in osm2bbd
@@ -190,6 +197,14 @@ Basel-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Basel -- 7.5298 47.5128 7.6823 47.5943
 Basel-convert:
 	${OSM2BBD} -centerdelta 7.47,47.44 -o ${DATA_OSM_DIR}/Basel ${OSM_DIR}/Basel
+
+# bbbike @ Berlin
+Berlin: Berlin-download Berlin-convert
+Berlin-download:
+	mkdir -p ${OSM_DIR}/Berlin
+	${DOWNLOADOSM} -o ${OSM_DIR}/Berlin -- 13.0109 52.3376 13.7613 52.6753
+Berlin-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Berlin ${OSM_DIR}/Berlin
 
 
 # bbbike @ Amsterdam

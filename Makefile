@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.65 2009/03/14 20:37:14 wosch Exp $
+# $Id: Makefile,v 1.66 2009/03/26 21:45:46 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -36,6 +36,7 @@ CITIES=		\
 	Austin \
 	Barcelona \
 	Basel \
+	Berlin \
 	Bielefeld \
 	Bonn \
 	Boulder \
