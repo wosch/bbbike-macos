@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.72 2009/03/26 21:45:46 wosch Exp $
+# $Id: Makefile.osm,v 1.73 2009/04/07 19:11:51 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -186,7 +186,7 @@ San_Francisco-convert:
 Santa_Cruz: Santa_Cruz-download Santa_Cruz-convert
 Santa_Cruz-download:
 	mkdir -p ${OSM_DIR}/Santa_Cruz
-	${DOWNLOADOSM} -lang en -o ${OSM_DIR}/Santa_Cruz -- -122.087 36.941 -121.917 37.013
+	${DOWNLOADOSM} -o ${OSM_DIR}/Santa_Cruz -- -122.087 36.941 -121.917 37.013
 Santa_Cruz-convert:
 	${OSM2BBD} -lang en -centerdelta -122.12,36.845 -o ${DATA_OSM_DIR}/Santa_Cruz ${OSM_DIR}/Santa_Cruz
 
