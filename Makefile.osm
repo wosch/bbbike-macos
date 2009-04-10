@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.73 2009/04/07 19:11:51 wosch Exp $
+# $Id: Makefile.osm,v 1.74 2009/04/10 15:08:07 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -134,12 +134,16 @@ convert.old:
 
 convert-workarounds: osm2bbd-postprocess osm2bbd-workarounds green-ways missing-files cleanup-files
 
-osm2bbd-workarounds:
+osm2bbd-workarounds opensearch: opensearch-bbbike
 	for city in ${CITIES}; do \
 		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
 		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
-		../bbbike-macos/bin/opensearch-suggestion data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
+		../bbbike-macos/bin/opensearch-suggestion < data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
 	done
+
+opensearch-bbbike:
+	../bbbike-macos/bin/opensearch-suggestion --input-charset=iso-8859-1 < data/strassen > data/opensearch.streetnames
+
 
 osm2bbd-postprocess:
 	for city in ${CITIES}; do \
@@ -833,7 +837,7 @@ dist-clean devel-clean distclean: clean
 
 help:
 	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
-	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
+	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks | opensearch ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
 
