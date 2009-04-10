@@ -14,22 +14,22 @@ my $debug         = 2;
 my $match_anyware = 1;
 
 sub ascii2unicode {
-	my $string = shift;
+    my $string = shift;
 
-	return $string if $string !~ /\t/;
+    return $string if $string !~ /\t/;
 
-	my ($ascii, $unicode) = split(/\t/, $string);
+    my ( $ascii, $unicode ) = split( /\t/, $string );
 
-	return $unicode;
+    return $unicode;
 }
 
 sub street_match {
-	my $file = shift;
-	my $street = shift;
-	my $limit = shift;
+    my $file   = shift;
+    my $street = shift;
+    my $limit  = shift;
 
     # if ( !open( IN, $file ) ) { warn "$!: $file\n"; return; }
-    if ( ! -e $file ) { warn "$!: $file\n"; return; }
+    if ( !-e $file ) { warn "$!: $file\n"; return; }
     open( IN, '-|' ) || exec 'egrep', '-s', '-m', '2000', '-i', $street, $file;
 
     my @data;
@@ -40,13 +40,13 @@ sub street_match {
         # match from beginning
         if (/^$street/i) {
             chomp;
-            push( @data, &ascii2unicode($_ ));
+            push( @data, &ascii2unicode($_) );
         }
 
         # or for long words anyware, second class matches
         elsif ( $match_anyware && $len >= 2 && /$street/i ) {
             chomp;
-            push( @data2, &ascii2unicode($_ )) if scalar(@data2) <= $limit * 90;
+            push( @data2, &ascii2unicode($_) ) if scalar(@data2) <= $limit * 90;
         }
 
         last if scalar(@data) >= $limit * 50;
@@ -54,7 +54,7 @@ sub street_match {
 
     close IN;
 
-    return (\@data, \@data2);
+    return ( \@data, \@data2 );
 }
 
 sub streetnames_suggestions_unique {
@@ -66,7 +66,6 @@ sub streetnames_suggestions_unique {
 
     return @list;
 }
-
 
 sub streetnames_suggestions {
     my %args   = @_;
@@ -81,14 +80,14 @@ sub streetnames_suggestions {
       ? "../data/$opensearch_file"
       : "$opensearch_dir/$city/$opensearch_file";
 
-    my ($d, $d2) = &street_match($file, $street, $limit);
-  
-    # no prefix match, try again with prefix match only 
-    if (scalar(@$d) == 0 && scalar(@$d2)  == 0) {
-    	($d, $d2) = &street_match($file, "^$street", $limit);
+    my ( $d, $d2 ) = &street_match( $file, $street, $limit );
+
+    # no prefix match, try again with prefix match only
+    if ( scalar(@$d) == 0 && scalar(@$d2) == 0 ) {
+        ( $d, $d2 ) = &street_match( $file, "^$street", $limit );
     }
-    
-    my @data = @$d;
+
+    my @data  = @$d;
     my @data2 = @$d2;
 
     warn "Len1: ", scalar(@data), " ", join( " ", @data ), "\n" if $debug >= 2;
@@ -108,7 +107,11 @@ sub streetnames_suggestions {
         @d = grep { /$street\b/i || /\b$street/ } @data2;    # if $len >= 3;
 
         my @result = &strip_list( $limit, @data );
-        push @result, &strip_list( $limit / (scalar(@data) ? 2 : 1), (scalar(@d) ? @d : @data2 ));
+        push @result,
+          &strip_list(
+            $limit / ( scalar(@data) ? 2 : 1 ),
+            ( scalar(@d) ? @d : @data2 )
+          );
         return @result;
     }
 }
