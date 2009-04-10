@@ -1,4 +1,4 @@
-#!/opt/local/bin/perl
+#!/usr/bin/perl
 
 use Getopt::Long;
 use utf8;
@@ -12,8 +12,10 @@ sub unicode2ascii {
     my @list;
     my $s;
 
+    ############################################
     # German
     $s = $string;
+
     $s =~ s/Ä/Ae/g;
     $s =~ s/Ö/Oe/g;
     $s =~ s/Ü/Ue/g;
@@ -27,8 +29,10 @@ sub unicode2ascii {
 
     push( @list, $s ) if $s ne $string;
 
+    ############################################
     # English
     $s = $string;
+
     $s =~ s/Ä/A/g;
     $s =~ s/Ö/O/g;
     $s =~ s/Ü/U/g;
@@ -40,11 +44,87 @@ sub unicode2ascii {
 
     push( @list, $s ) if $s ne $string;
 
+    ############################################
+    # slavic languages (polish, croatian, czech)
+    $s = $string;
+
+    $s =~ s,á,a,g;
+    $s =~ s,ó,o,g;
+    $s =~ s,Ć,C,g;
+    $s =~ s,Č,C,g;
+    $s =~ s,Đ,D,g;
+    $s =~ s,Ł,L,g;
+    $s =~ s,Ś,S,g;
+    $s =~ s,Š,S,g;
+    $s =~ s,Ź,Z,g;
+    $s =~ s,Ż,Z,g;
+    $s =~ s,ć,c,g;
+    $s =~ s,č,c,g;
+    $s =~ s,đ,d,g;
+    $s =~ s,ę,e,g;
+    $s =~ s,ł,l,g;
+    $s =~ s,ń,n,g;
+    $s =~ s,ą,q,g;
+    $s =~ s,ś,s,g;
+    $s =~ s,š,s,g;
+    $s =~ s,Ź,z,g;
+    $s =~ s,ź,z,g;
+    $s =~ s,ż,z,g;
+    $s =~ s,Ž,z,g;
+    $s =~ s,ž,z,g;
+
+    push( @list, $s ) if $s ne $string;
+
+    ############################################
+    # spanish
+    $s = $string;
+
+    $s =~ s,À,A,g;
+    $s =~ s,Ò,o,g;
+    $s =~ s,à,a,g;
+    $s =~ s,á,a,g;
+    $s =~ s,ç,c,g;
+    $s =~ s,è,e,g;
+    $s =~ s,é,e,g;
+    $s =~ s,ë,e,g;
+    $s =~ s,ì,i,g;
+    $s =~ s,í,i,g;
+    $s =~ s,ï,i,g;
+    $s =~ s,ñ,n,g;
+    $s =~ s,ò,o,g;
+    $s =~ s,ó,o,g;
+    $s =~ s,ú,u,g;
+    $s =~ s,ü,u,g;
+
+    push( @list, $s ) if $s ne $string;
+
+    ############################################
+    # danish
+    $s = $string;
+
+    $s =~ s,Å,A,g;
+    $s =~ s,Æ,A,g;
+    $s =~ s,Ø,O,g;
+    $s =~ s,ä,a,g;
+    $s =~ s,å,a,g;
+    $s =~ s,æ,a,g;
+    $s =~ s,é,e,g;
+    $s =~ s,ø,o,g;
+
+    push( @list, $s ) if $s ne $string;
+
     # return unique list
     my %hash = map { $_ => 1 } @list;
     @list = keys %hash;
 
     return @list;
+}
+
+sub usage {
+    warn
+"usage: [--input-charset=iso-8859-1] < data/strassen > data/opensearch.streetnames\n";
+    warn "       [--debug=0..2] [--help]\n";
+    exit(1);
 }
 
 my $debug    = 0;
@@ -57,11 +137,13 @@ my $rc = GetOptions(
     "help"            => \$help,
 );
 
+&usage if !$rc || $help;
+
 binmode( \*STDIN,  ":encoding($icharset)" ) or die "binmode: $!\n";
-binmode( \*STDOUT, ":encoding(utf-8)" )     or die "binmode: $!\n";
+binmode( \*STDOUT, ":encoding(utf8)" )      or die "binmode: $!\n";
 
 my %s;
-while (<>) {
+while (<STDIN>) {
     if ( /^\s*#/ || /^\(/ ) {
         next;
     }
