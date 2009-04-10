@@ -9,8 +9,11 @@ use warnings;
 sub unicode2ascii {
     my $string = shift;
 
-    my $s = $string;
+    my @list;
+    my $s;
 
+    # German
+    $s = $string;
     $s =~ s/Ä/Ae/g;
     $s =~ s/Ö/Oe/g;
     $s =~ s/Ü/Ue/g;
@@ -22,7 +25,26 @@ sub unicode2ascii {
     $s =~ s/è/e/g;
     $s =~ s/á/a/g;
 
-    return $s if $s ne $string;
+    push( @list, $s ) if $s ne $string;
+
+    # English
+    $s = $string;
+    $s =~ s/Ä/A/g;
+    $s =~ s/Ö/O/g;
+    $s =~ s/Ü/U/g;
+    $s =~ s/ä/a/g;
+    $s =~ s/ö/o/g;
+    $s =~ s/ü/u/g;
+    $s =~ s/ß/B/g;
+    $s =~ s/é/e/g;
+
+    push( @list, $s ) if $s ne $string;
+
+    # return unique list
+    my %hash = map { $_ => 1 } @list;
+    @list = keys %hash;
+
+    return @list;
 }
 
 my $debug    = 0;
@@ -50,8 +72,10 @@ while (<>) {
 }
 
 foreach my $street ( sort keys %s ) {
-    if ( my $string = unicode2ascii($street) ) {
-        print $string, "\t", $street, "\n";
+    if ( my @strings = unicode2ascii($street) ) {
+        foreach my $s (@strings) {
+            print $s, "\t", $street, "\n";
+        }
     }
     else {
         print "$street\n";
