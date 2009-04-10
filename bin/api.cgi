@@ -11,8 +11,9 @@ $ENV{LANG} = 'C';
 my $opensearch_file = 'opensearch.streetnames';
 my $opensearch_dir  = '../data-osm';
 
-my $debug         = 0;
+my $debug         = 1;
 my $match_anyware = 1;
+
 
 # performance tuning, egrep may be faster than perl regex
 my $use_egrep = 1;
@@ -24,6 +25,7 @@ sub ascii2unicode {
 
     my ( $ascii, $unicode ) = split( /\t/, $string );
 
+    warn "ascii2unicode: $unicode\n" if $debug >= 1;
     return $unicode;
 }
 
@@ -160,6 +162,8 @@ my $action    = 'opensearch';
 my $street    = $q->param('search') || $q->param('q') || 'borsig';
 my $city      = $q->param('city') || 'bbbike';
 my $namespace = $q->param('namespace') || '0';
+
+binmode(\*STDERR, ":utf8") if $debug >= 1;
 
 print $q->header(
     -type    => 'application/json',
