@@ -12,12 +12,8 @@ $a = '
 ';
 
 foreach my $C (@ARGV) {
-	my $c = $C;
+    my $c = $C;
 
-  	printf("$a", $C, 
-		$c, $c, $c, $c,
-		$C, $C,
-		$c, $C, $C);
+    printf( "$a", $C, $c, $c, $c, $c, $C, $C, $c, $C, $C );
 }
-
 

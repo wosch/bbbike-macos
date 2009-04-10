@@ -14,7 +14,6 @@ my $opensearch_dir  = '../data-osm';
 my $debug         = 1;
 my $match_anyware = 1;
 
-
 # performance tuning, egrep may be faster than perl regex
 my $use_egrep = 1;
 
@@ -163,7 +162,7 @@ my $street    = $q->param('search') || $q->param('q') || 'borsig';
 my $city      = $q->param('city') || 'bbbike';
 my $namespace = $q->param('namespace') || '0';
 
-binmode(\*STDERR, ":utf8") if $debug >= 1;
+binmode( \*STDERR, ":utf8" ) if $debug >= 1;
 
 print $q->header(
     -type    => 'application/json',
