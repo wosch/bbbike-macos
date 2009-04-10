@@ -3,7 +3,7 @@
 use MyCgiSimple;
 
 # use warnings make the script 20% slower!
-#use warnings; 
+#use warnings;
 use strict;
 
 $ENV{LANG} = 'C';
