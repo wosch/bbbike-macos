@@ -1,16 +1,60 @@
-#!/usr/bin/perl
+#!/opt/local/bin/perl
 
+use Getopt::Long;
+use utf8;
+
+use strict;
+use warnings;
+
+sub unicode2ascii {
+    my $string = shift;
+
+    my $s = $string;
+
+    $s =~ s/Ä/Ae/g;
+    $s =~ s/Ö/Oe/g;
+    $s =~ s/Ü/Ue/g;
+    $s =~ s/ä/ae/g;
+    $s =~ s/ö/oe/g;
+    $s =~ s/ü/ue/g;
+    $s =~ s/ß/ss/g;
+    $s =~ s/é/e/g;
+    $s =~ s/è/e/g;
+    $s =~ s/á/a/g;
+
+    return $s if $s ne $string;
+}
+
+my $debug    = 0;
+my $icharset = 'utf8';
+my $help;
+
+my $rc = GetOptions(
+    "debug=i"         => \$debug,
+    "input-charset=s" => \$icharset,
+    "help"            => \$help,
+);
+
+binmode( \*STDIN,  ":encoding($icharset)" ) or die "binmode: $!\n";
+binmode( \*STDOUT, ":encoding(utf-8)" )     or die "binmode: $!\n";
+
+my %s;
 while (<>) {
     if ( /^\s*#/ || /^\(/ ) {
         next;
     }
 
     chomp;
-    $street = ( split(/\t/) )[0];
+    my $street = ( split(/\t/) )[0];
     $s{$street} = 1 if $street;
 }
 
-foreach ( sort keys %s ) {
-    print "$_\n";
+foreach my $street ( sort keys %s ) {
+    if ( my $string = unicode2ascii($street) ) {
+        print $string, "\t", $street, "\n";
+    }
+    else {
+        print "$street\n";
+    }
 }
 
