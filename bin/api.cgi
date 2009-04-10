@@ -14,6 +14,9 @@ my $opensearch_dir  = '../data-osm';
 my $debug         = 0;
 my $match_anyware = 1;
 
+# performance tuning, egrep may be faster than perl regex
+my $use_egrep = 1;
+
 sub ascii2unicode {
     my $string = shift;
 
@@ -29,9 +32,21 @@ sub street_match {
     my $street = shift;
     my $limit  = shift;
 
-    # if ( !open( IN, $file ) ) { warn "$!: $file\n"; return; }
-    if ( !-e $file ) { warn "$!: $file\n"; return; }
-    open( IN, '-|' ) || exec 'egrep', '-s', '-m', '2000', '-i', $street, $file;
+    if ( !-e $file ) {
+        warn "$!: $file\n";
+        return;
+    }
+
+    if ($use_egrep) {
+        open( IN, '-|' ) || exec 'egrep', '-s', '-m', '2000', '-i', $street,
+          $file;
+    }
+    else {
+        if ( !open( IN, $file ) ) { warn "$!: $file\n"; return; }
+    }
+
+    # to slow
+    # binmode(\*IN, ":utf8");
 
     my @data;
     my @data2;
