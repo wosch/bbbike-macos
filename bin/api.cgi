@@ -2,7 +2,8 @@
 
 use MyCgiSimple;
 
-use warnings;
+# use warnings make the script 20% slower!
+#use warnings; 
 use strict;
 
 $ENV{LANG} = 'C';
@@ -10,7 +11,7 @@ $ENV{LANG} = 'C';
 my $opensearch_file = 'opensearch.streetnames';
 my $opensearch_dir  = '../data-osm';
 
-my $debug         = 2;
+my $debug         = 0;
 my $match_anyware = 1;
 
 sub ascii2unicode {
