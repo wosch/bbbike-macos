@@ -1,0 +1,12 @@
+http://de.wikipedia.org/wiki/Kyrillisches_Alphabet
+
+copy the HTML code from de.wikipedia.org, save as a.html
+
+perl -npe 's,<br>,,; s,</td>,<br></td>,g' a.html > b.html
+open in Firefox b.html and cut&pase the list to
+
+the files 'a' and 'b', where a is the cyrillic part and b the latin part.
+
+perl -e 'foreach (`cat "a"`) { chomp; push(@a, $_)}; foreach (`cat "b"`) { chomp; push(@b, $_)}; for($i=0; $i <= $#a; $i++) { ($a, $b) = split(/\s/, $a[$i]); ($c, $d) = split(/\s/, $b[$i]); print qq{s,$a,$c,g;\n}; print qq{s,$b,$d,g;\n}  }' > cyrillic
+
+
