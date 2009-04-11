@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.74 2009/04/10 15:08:07 wosch Exp $
+# $Id: Makefile.osm,v 1.75 2009/04/11 09:46:58 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -94,6 +94,10 @@ CITIES=		\
 	Sarajewo \
 	Kiew \
 	Bruessel \
+	Groningen \
+	Montreal \
+	DenHaag \
+	Rotterdam \
 
 
 all: help
@@ -808,6 +812,41 @@ Bruessel-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Bruessel -- 4.2614 50.7981 4.4376 50.8996
 Bruessel-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Bruessel ${OSM_DIR}/Bruessel
+
+# bbbike @ Groningen
+Groningen: Groningen-download Groningen-convert
+Groningen-download:
+	mkdir -p ${OSM_DIR}/Groningen
+	${DOWNLOADOSM} -o ${OSM_DIR}/Groningen -- 6.4602 53.1568 6.6769 53.281
+Groningen-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Groningen ${OSM_DIR}/Groningen
+
+
+# bbbike @ Montreal
+Montreal: Montreal-download Montreal-convert
+Montreal-download:
+	mkdir -p ${OSM_DIR}/Montreal
+	${DOWNLOADOSM} -o ${OSM_DIR}/Montreal -- -73.787 45.37 -73.404 45.607
+Montreal-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Montreal ${OSM_DIR}/Montreal
+
+# bbbike @ DenHaag
+DenHaag: DenHaag-download DenHaag-convert
+DenHaag-download:
+	mkdir -p ${OSM_DIR}/DenHaag
+	${DOWNLOADOSM} -o ${OSM_DIR}/DenHaag -- 4.2023 52.0097 4.4241 52.1288
+DenHaag-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/DenHaag ${OSM_DIR}/DenHaag
+
+
+# bbbike @ Rotterdam
+Rotterdam: Rotterdam-download Rotterdam-convert
+Rotterdam-download:
+	mkdir -p ${OSM_DIR}/Rotterdam
+	${DOWNLOADOSM} -o ${OSM_DIR}/Rotterdam -- 4.3605 51.8601 4.6053 51.969
+Rotterdam-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Rotterdam ${OSM_DIR}/Rotterdam
+
 
 ##############################################################################################
 

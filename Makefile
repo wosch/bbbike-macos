@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.66 2009/03/26 21:45:46 wosch Exp $
+# $Id: Makefile,v 1.67 2009/04/11 09:46:58 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -107,6 +107,10 @@ CITIES=		\
         Sarajewo \
         Kiew \
         Bruessel \
+        Groningen \
+        Montreal \
+        DenHaag \
+        Rotterdam \
 
 
 all: help
