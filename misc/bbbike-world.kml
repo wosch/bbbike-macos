@@ -203,6 +203,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>DenHaag</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/DenHaag.cgi">Start BBBike @ DenHaag</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>4.2023,52.0097,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Dresden</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Dresden.cgi">Start BBBike @ Dresden</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -280,6 +288,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>9.8519,51.494,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Groningen</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Groningen.cgi">Start BBBike @ Groningen</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>6.4602,53.1568,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
@@ -395,6 +411,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Montreal</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Montreal.en.cgi">Start BBBike @ Montreal</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-73.787,45.37,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Muenster</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Muenster.cgi">Start BBBike @ Muenster</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -480,6 +504,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>12.0204,54.0599,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Rotterdam</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Rotterdam.cgi">Start BBBike @ Rotterdam</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>4.3605,51.8601,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
