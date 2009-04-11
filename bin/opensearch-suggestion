@@ -6,15 +6,9 @@ use utf8;
 use strict;
 use warnings;
 
-sub unicode2ascii {
-    my $string = shift;
-
-    my @list;
-    my $s;
-
-    ############################################
-    # German
-    $s = $string;
+# German
+sub de_7bit {
+    my $s = shift;
 
     $s =~ s/Ä/Ae/g;
     $s =~ s/Ö/Oe/g;
@@ -27,11 +21,12 @@ sub unicode2ascii {
     $s =~ s/è/e/g;
     $s =~ s/á/a/g;
 
-    push( @list, $s ) if $s ne $string;
+    return $s;
+}
 
-    ############################################
-    # English
-    $s = $string;
+# English
+sub de_en {
+    my $s = shift;
 
     $s =~ s/Ä/A/g;
     $s =~ s/Ö/O/g;
@@ -42,11 +37,12 @@ sub unicode2ascii {
     $s =~ s/ß/B/g;
     $s =~ s/é/e/g;
 
-    push( @list, $s ) if $s ne $string;
+    return $s;
+}
 
-    ############################################
-    # slavic languages (polish, croatian, czech)
-    $s = $string;
+# slavic languages (polish, croatian, czech)
+sub slavic {
+    my $s = shift;
 
     $s =~ s,Ë,E,g;
     $s =~ s,á,a,g;
@@ -74,11 +70,12 @@ sub unicode2ascii {
     $s =~ s,Ž,z,g;
     $s =~ s,ž,z,g;
 
-    push( @list, $s ) if $s ne $string;
+    return $s;
+}
 
-    ############################################
-    # spanish
-    $s = $string;
+# spanish
+sub es {
+    my $s = shift;
 
     $s =~ s,À,A,g;
     $s =~ s,Ò,o,g;
@@ -97,11 +94,12 @@ sub unicode2ascii {
     $s =~ s,ú,u,g;
     $s =~ s,ü,u,g;
 
-    push( @list, $s ) if $s ne $string;
+    return $s;
+}
 
-    ############################################
-    # danish
-    $s = $string;
+# danish
+sub da {
+    my $s = shift;
 
     $s =~ s,Å,A,g;
     $s =~ s,Æ,A,g;
@@ -112,11 +110,12 @@ sub unicode2ascii {
     $s =~ s,é,e,g;
     $s =~ s,ø,o,g;
 
-    push( @list, $s ) if $s ne $string;
+    return $s;
+}
 
-    ############################################
-    # Cyrillic
-    $s = $string;
+# Cyrillic to czech
+sub cyrillic_iso9 {
+    my $s = shift;
 
     $s =~ s,А,A,g;
     $s =~ s,а,a,g;
@@ -181,33 +180,112 @@ sub unicode2ascii {
     $s =~ s,Ѣ,Ě,g;
     $s =~ s,ѣ,ě,g;
 
-    # slavic
-    $s =~ s,Ë,E,g;
-    $s =~ s,á,a,g;
-    $s =~ s,ó,o,g;
-    $s =~ s,Ć,C,g;
-    $s =~ s,Č,C,g;
-    $s =~ s,Đ,D,g;
-    $s =~ s,Ł,L,g;
-    $s =~ s,Ś,S,g;
-    $s =~ s,Š,S,g;
-    $s =~ s,Ź,Z,g;
-    $s =~ s,Ż,Z,g;
-    $s =~ s,ć,c,g;
-    $s =~ s,č,c,g;
-    $s =~ s,đ,d,g;
-    $s =~ s,ę,e,g;
-    $s =~ s,ł,l,g;
-    $s =~ s,ń,n,g;
-    $s =~ s,ą,q,g;
-    $s =~ s,ś,s,g;
-    $s =~ s,š,s,g;
-    $s =~ s,Ź,z,g;
-    $s =~ s,ź,z,g;
-    $s =~ s,ż,z,g;
-    $s =~ s,Ž,z,g;
-    $s =~ s,ž,z,g;
-    push( @list, $s ) if $s ne $string;
+    $s =~ s,Я,Ja,g;
+    $s =~ s,я,ja,g;
+    $s =~ s,Ю,Ju,g;
+    $s =~ s,ю,ju,g;
+
+    return $s;
+}
+
+# Cyrillic to German
+sub cyrillic_de {
+    my $s = shift;
+
+    $s =~ s,А,A,g;
+    $s =~ s,а,a,g;
+    $s =~ s,Б,B,g;
+    $s =~ s,б,b,g;
+    $s =~ s,В,W,g;
+    $s =~ s,в,w,g;
+    $s =~ s,Ѓ,G,g;
+    $s =~ s,ѓ,g,g;
+    $s =~ s,Д,D,g;
+    $s =~ s,д,d,g;
+    $s =~ s,Ђ,Đ,g;
+    $s =~ s,ђ,đ,g;
+    $s =~ s,Е,E,g;
+    $s =~ s,е,e,g;
+    $s =~ s,Ё,Jo,g;
+    $s =~ s,ё,jo,g;
+    $s =~ s,Ж,Sch,g;
+    $s =~ s,ж,sch,g;
+    $s =~ s,З,S,g;
+    $s =~ s,з,s,g;
+    $s =~ s,И,I,g;
+    $s =~ s,и,i,g;
+    $s =~ s,Й,J,g;
+    $s =~ s,й,j,g;
+    $s =~ s,К,K,g;
+    $s =~ s,к,k,g;
+    $s =~ s,Л,L,g;
+    $s =~ s,л,l,g;
+    $s =~ s,М,M,g;
+    $s =~ s,м,m,g;
+    $s =~ s,Н,N,g;
+    $s =~ s,н,n,g;
+    $s =~ s,О,O,g;
+    $s =~ s,о,o,g;
+    $s =~ s,П,P,g;
+    $s =~ s,п,p,g;
+    $s =~ s,Р,R,g;
+    $s =~ s,р,r,g;
+    $s =~ s,С,S,g;
+    $s =~ s,с,s,g;
+    $s =~ s,Т,T,g;
+    $s =~ s,т,t,g;
+    $s =~ s,Ќ,Ḱ,g;
+    $s =~ s,ќ,ḱ,g;
+    $s =~ s,Ћ,Ć,g;
+    $s =~ s,ћ,ć,g;
+    $s =~ s,У,U,g;
+    $s =~ s,у,u,g;
+    $s =~ s,Ў,Ǔ,g;
+    $s =~ s,ў,ŭ,g;
+    $s =~ s,Ф,F,g;
+    $s =~ s,ф,f,g;
+    $s =~ s,Ц,Z,g;
+    $s =~ s,ц,z,g;
+    $s =~ s,Ч,Tsch,g;
+    $s =~ s,ч,tsch,g;
+    $s =~ s,Ш,Sch,g;
+    $s =~ s,ш,sch,g;
+    $s =~ s,Ь,′,g;
+    $s =~ s,ь,,g;
+    $s =~ s,Ѣ,Ě,g;
+    $s =~ s,ѣ,ě,g;
+
+    $s =~ s,Я,Ja,g;
+    $s =~ s,я,ja,g;
+    $s =~ s,Ю,Ju,g;
+    $s =~ s,ю,ju,g;
+
+    return $s;
+}
+
+sub unicode2ascii {
+    my $string    = shift;
+    my $languages = shift;
+
+    # define a comma separated list of transcription rules
+    # a colon applies several rules to one string
+    my $lang =
+'de_7bit,de_en,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de';
+
+    $lang = $languages if defined $languages;
+
+    my @list;
+    my $s;
+
+    foreach my $rule ( split( /,/, $lang ) ) {
+        no strict "refs";
+
+        my $s = $string;
+        foreach my $r ( split( /:/, $rule ) ) {
+            $s = &$r($s);
+            push( @list, $s ) if $s ne $string;
+        }
+    }
 
     # return unique list
     my %hash = map { $_ => 1 } @list;
