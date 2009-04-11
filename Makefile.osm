@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.79 2009/04/11 12:01:58 wosch Exp $
+# $Id: Makefile.osm,v 1.80 2009/04/11 12:27:00 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -111,6 +111,7 @@ cities:
 	${MAKE} _cities
 	${MAKE} _cities
 	${MAKE} _cities
+	${MAKE} _cities_complete
 
 _cities2: 
 	@for i in ${CITIES}; do \
@@ -126,6 +127,10 @@ _cities:
 	@echo ${CITIES} ${CITIES} ${CITIES} ${CITIES} ${CITIES} | \
 		perl -npe 's/\s+/-download /g' | \
 		xargs -n 1 -P 3 ${MAKE} -f Makefile.osm
+
+_cities_complete: 
+	${MAKE} -f Makefile.osm `echo ${CITIES} | perl -npe 's/\s+/-download /g'` 
+
 
 # using GNU xargs -P parallel
 convert: 
