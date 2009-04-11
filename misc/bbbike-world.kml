@@ -19,6 +19,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Aarhus</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Aarhus.en.cgi">Start BBBike @ Aarhus</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>10.0894,56.1007,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Amsterdam</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Amsterdam.cgi">Start BBBike @ Amsterdam</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
