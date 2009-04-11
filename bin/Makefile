@@ -11,3 +11,5 @@ ALL=	api.cgi \
 perltidy:
 	perltidy -b ${ALL}
 
+clean:
+	rm -f *.bak *.tdy
