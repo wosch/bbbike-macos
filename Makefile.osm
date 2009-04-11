@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.78 2009/04/11 11:31:33 wosch Exp $
+# $Id: Makefile.osm,v 1.79 2009/04/11 12:01:58 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -112,7 +112,7 @@ cities:
 	${MAKE} _cities
 	${MAKE} _cities
 
-_cities: 
+_cities2: 
 	@for i in ${CITIES}; do \
 	    ${MAKE} -f Makefile.osm $$i-download || \
 	    ${MAKE} -f Makefile.osm $$i-download || \
@@ -122,6 +122,10 @@ _cities:
 		echo "please run me again: $$i"; \
 	done
 
+_cities: 
+	@echo ${CITIES} ${CITIES} ${CITIES} ${CITIES} ${CITIES} | \
+		perl -npe 's/\s+/-download /g' | \
+		xargs -n 1 -P 3 ${MAKE} -f Makefile.osm
 
 # using GNU xargs -P parallel
 convert: 
@@ -853,7 +857,7 @@ Rotterdam-convert:
 Aarhus: Aarhus-download Aarhus-convert
 Aarhus-download:
 	mkdir -p ${OSM_DIR}/Aarhus
-	${DOWNLOADOSM} -o ${OSM_DIR}/Aarhus -- 10.0894 56.1007 10.3225 56.202
+	${DOWNLOADOSM} --step=0.01 -o ${OSM_DIR}/Aarhus -- 10.0894 56.1007 10.3225 56.202
 Aarhus-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Aarhus ${OSM_DIR}/Aarhus
 

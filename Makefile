@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.69 2009/04/11 11:18:52 wosch Exp $
+# $Id: Makefile,v 1.70 2009/04/11 12:01:58 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -197,7 +197,13 @@ kml:
 build-version version:
 	cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s += $$1 } END { print s + 1}'
 
+update: 
+	${MAKE} distclean
+	cd ../bbbike && ${MAKE} -f Makefile.osm rsync-tgz
+	${MAKE} bbbike
+	${MAKE} rsync
+
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync | kml ]"
-	@echo "            [ help | build-version | clean | dist-clean ]"
+	@echo "            [ help | build-version | clean | dist-clean | update ]"
 
