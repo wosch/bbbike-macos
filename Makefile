@@ -5,13 +5,13 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.67 2009/04/11 09:46:58 wosch Exp $
+# $Id: Makefile,v 1.68 2009/04/11 10:39:58 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
 # see target build-version
-BUILD_VERSION=	266
+BUILD_VERSION=	314
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
@@ -197,6 +197,6 @@ build-version version:
 	cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s += $$1 } END { print s + 1}'
 
 help:
-	@echo "usage: make [ help | bbbike-intel | bbbike-powerpc | rsync | clean | dist-clean ]"
-	@echo "		   [ build-version | kml ]"
+	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync | kml ]"
+	@echo "            [ help | build-version | clean | dist-clean ]"
 
