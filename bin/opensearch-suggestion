@@ -259,6 +259,8 @@ sub cyrillic_de {
     $s =~ s,я,ja,g;
     $s =~ s,Ю,Ju,g;
     $s =~ s,ю,ju,g;
+    $s =~ s,Х,Ch,g;
+    $s =~ s,х,ch,g;
 
     return $s;
 }
