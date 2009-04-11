@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.77 2009/04/11 11:18:52 wosch Exp $
+# $Id: Makefile.osm,v 1.78 2009/04/11 11:31:33 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -886,7 +886,8 @@ dist-clean devel-clean distclean: clean
 
 help:
 	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
-	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks | opensearch ]"
+	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
+	@echo "            [ opensearch ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
 
