@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.44 2009/04/11 09:46:58 wosch Exp $
+# $Id: bbbike,v 1.45 2009/04/11 10:53:20 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -123,6 +123,7 @@ case $0 in
         *Groningen* )   datadir=data-osm/Groningen ;;
         *DenHaag* )   datadir=data-osm/DenHaag ;;
         *Rotterdam* )   datadir=data-osm/Rotterdam ;;
+        *Montreal* )   datadir=data-osm/Montreal ;;
 
         *) echo "Unknown city: $0" ;;
 esac
@@ -162,6 +163,7 @@ case $0 in
 	*Dublin* | \
 	*Sofia* | \
 	*Kiew* | \
+	*Montreal* | \
 	*Vancouver* ) \
 		export LANG=en_US.UTF-8;;
 esac
