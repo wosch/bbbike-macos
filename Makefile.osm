@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.75 2009/04/11 09:46:58 wosch Exp $
+# $Id: Makefile.osm,v 1.76 2009/04/11 09:57:03 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -310,7 +310,7 @@ rsync-source:
 	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ elsif.de:/usr/local/www/elsif.de/bbbike
 
 rsync-osm:
-	rsync -azv --delete --max-delete=512 data-osm osm elsif.de:bbbike
+	rsync -azv --exclude='*.bak' --delete --max-delete=512 data-osm osm elsif.de:bbbike
 
 # bbbike @ Austin
 Austin: Austin-download Austin-convert
