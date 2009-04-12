@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.76 2009/04/12 11:37:53 wosch Exp $
+# $Id: Makefile,v 1.77 2009/04/12 19:39:38 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -28,7 +28,10 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
-BBBIKE_SCRIPT=bin/bbbike
+PERL_DIST=	perl-5.10.0.tar.gz
+PERL_RELEASE=	perl-5.10.0
+
+BBBIKE_SCRIPl=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
 CITIES=		\
 	Aachen \
@@ -187,6 +190,23 @@ extract-data-osm-powerpc:
 scp rsync:
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
 
+get-perl:
+	if test -f ${DOWNLOAD_DIR}/${PERL_DIST} && gzip -t ${DOWNLOAD_DIR}/${PERL_DIST}; then : \
+	else \
+	  curl -sSf -o ${DOWNLOAD_DIR}/${PERL_DIST} http://www.cpan.org/src/${PERL_DIST}; \
+	fi
+
+build-perl-intel:
+	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
+	@rm -rf ${BUILD_DIR}/${PERL_RELEASE}
+	@echo "extract perl dist..."
+	@cd ${BUILD_DIR} && tar xfz ../${DOWNLOAD_DIR}/${PERL_DIST}
+	@echo "configure perl..."
+	@cd ${BUILD_DIR}/${PERL_RELEASE};  \
+		env cc='cc' ccflags='-arch i386 -g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/local/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-arch i386 -L/usr/local/lib' \
+		./Configure -ds -e -Dprefix=/tmp/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
+	@echo "build perl..."
+	@cd ${BUILD_DIR}/${PERL_RELEASE} &&  make all test install > make.log 2>&1
 
 clean:
 	rm -rf ${BUILD_DIR} ${BUILD_DIR_POWERPC}
