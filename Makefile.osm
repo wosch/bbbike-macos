@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.81 2009/04/11 17:32:38 wosch Exp $
+# $Id: Makefile.osm,v 1.82 2009/04/12 10:40:03 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -99,22 +99,17 @@ CITIES=		\
 	DenHaag \
 	Rotterdam \
 	Aarhus \
+	Corvallis \
 
 
 all: help
 
-tarball: convert-workarounds
+tarball: convert convert-workarounds
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}.tmp
 	mv -f ${OSMBIKE_DATA}.tmp ${OSMBIKE_DATA}
 
 cities: 
-	${MAKE} _cities
-	${MAKE} _cities
-	${MAKE} _cities
-	${MAKE} _cities
-	${MAKE} _cities
-	${MAKE} _cities
-	${MAKE} _cities
+	@for i in `perl -e 'print "x " x 32'`; do ${MAKE} _cities; done
 	${MAKE} _cities_complete
 
 _cities2: 
@@ -128,7 +123,7 @@ _cities2:
 	done
 
 _cities: 
-	@echo ${CITIES} ${CITIES} ${CITIES} ${CITIES} ${CITIES} | \
+	@echo ${CITIES} | \
 		perl -npe 's/\s+/-download /g' | \
 		xargs -n 1 -P 3 ${MAKE} -f Makefile.osm
 
@@ -870,6 +865,13 @@ Aarhus-download:
 Aarhus-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Aarhus ${OSM_DIR}/Aarhus
 
+# bbbike @ Corvallis
+Corvallis: Corvallis-download Corvallis-convert
+Corvallis-download:
+	mkdir -p ${OSM_DIR}/Corvallis
+	${DOWNLOADOSM} -o ${OSM_DIR}/Corvallis -- -123.3293 44.5253 -123.1965 44.6072
+Corvallis-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Corvallis ${OSM_DIR}/Corvallis
 
 ##############################################################################################
 
