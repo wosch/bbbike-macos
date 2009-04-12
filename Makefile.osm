@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.87 2009/04/12 11:37:53 wosch Exp $
+# $Id: Makefile.osm,v 1.88 2009/04/12 12:34:46 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -169,7 +169,7 @@ osm2bbd-postprocess:
 
 
 missing-files:
-	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze flaechen wasserstrassen); done # workaround for bug in osm2bbd
+	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze flaechen wasserstrassen qualitaet_s); done # workaround for bug in osm2bbd
 
 cleanup-files:
 	#rm -f data-osm/*/meta.*
