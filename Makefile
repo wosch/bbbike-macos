@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.90 2009/04/12 21:37:11 wosch Exp $
+# $Id: Makefile,v 1.91 2009/04/12 22:03:50 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -212,10 +212,12 @@ build-perl-intel:
 		( make -j4 all && make install ) > make.log 2>&1
 
 build-perl-libs:
-	yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i CPAN 
+	yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i CPAN > /tmp/cpan.log 2>&1
+	yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i YAML >> /tmp/cpan.log 2>&1
 	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}; \
 	  yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan XFT=1 ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -I`pwd` \
-		-MCPAN -e 'force install Bundle::BBBike_small' > cpan.log 2>&1
+		-MCPAN -e 'force install Bundle::BBBike_small' >> /tmp/cpan.log 2>&1
+	cp -f /tmp/cpan.log ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}
 
 clean:
 	rm -rf ${BUILD_DIR} ${BUILD_DIR_POWERPC}
