@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.82 2009/04/12 20:14:25 wosch Exp $
+# $Id: Makefile,v 1.83 2009/04/12 20:35:50 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -31,8 +31,9 @@ SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 PERL_DIST=	perl-5.10.0.tar.gz
 PERL_RELEASE=	perl-5.10.0
 
-BBBIKE_SCRIPl=bin/bbbike
+BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
+
 CITIES=		\
 	Aachen \
 	Amsterdam \
