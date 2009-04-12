@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.84 2009/04/12 20:36:22 wosch Exp $
+# $Id: Makefile,v 1.85 2009/04/12 21:14:23 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -30,6 +30,7 @@ SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
 PERL_DIST=	perl-5.10.0.tar.gz
 PERL_RELEASE=	perl-5.10.0
+PERL_FAKEDIR=	/tmp
 
 BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
@@ -148,7 +149,7 @@ create-bbbike-image-powerpc:
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
 create-bbbike-tarball:
-	cd tarball && tar cf - .BBBike-3.17-devel | bzip2 > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
+	cd tarball && tar cf - .${BBBIKE_VERSION} | bzip2 > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
 
 update-files:
@@ -205,10 +206,17 @@ build-perl-intel:
 	@echo "configure perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE};  \
 		env cc='cc' ccflags='-arch i386 -g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/local/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-arch i386 -L/usr/local/lib' \
-		./Configure -ds -e -Dprefix=/tmp/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
+		./Configure -ds -e -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
 	@echo "build perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE}; \
-		( make -j4 all && make test install ) > make.log 2>&1
+		( make -j4 all && make install ) > make.log 2>&1
+
+build-perl-libs:
+	yes "" | ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -fi CPAN
+	yes "" | ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -fi YAML
+	cd ${BUILD_DIR}/${BBBIKE_VERSION}; \
+	  yes "" | ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -I`pwd` \
+		-MCPAN -e 'force install Bundle::BBBike_small'
 
 clean:
 	rm -rf ${BUILD_DIR} ${BUILD_DIR_POWERPC}
