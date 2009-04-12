@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.82 2009/04/12 10:40:03 wosch Exp $
+# $Id: Makefile.osm,v 1.83 2009/04/12 10:53:04 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -100,6 +100,7 @@ CITIES=		\
 	Rotterdam \
 	Aarhus \
 	Corvallis \
+	FortCollins \
 
 
 all: help
@@ -872,6 +873,14 @@ Corvallis-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Corvallis -- -123.3293 44.5253 -123.1965 44.6072
 Corvallis-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Corvallis ${OSM_DIR}/Corvallis
+
+# bbbike @ FortCollins
+FortCollins: FortCollins-download FortCollins-convert
+FortCollins-download:
+	mkdir -p ${OSM_DIR}/FortCollins
+	${DOWNLOADOSM} -o ${OSM_DIR}/FortCollins -- -105.196 40.463 -104.933 40.621
+FortCollins-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/FortCollins ${OSM_DIR}/FortCollins
 
 ##############################################################################################
 

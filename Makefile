@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.71 2009/04/12 10:40:03 wosch Exp $
+# $Id: Makefile,v 1.72 2009/04/12 10:53:04 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -113,6 +113,7 @@ CITIES=		\
         Rotterdam \
         Aarhus \
         Corvallis \
+        FortCollins \
 
 
 all: help
