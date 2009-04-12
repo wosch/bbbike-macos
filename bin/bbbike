@@ -6,7 +6,7 @@
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.51 2009/04/12 11:34:07 wosch Exp $
+# $Id: bbbike,v 1.52 2009/04/12 11:37:53 wosch Exp $
 ##################################################################################
 
 # BBBike version
@@ -88,7 +88,7 @@ case $0 in
         *Mainz* )       datadir=data-osm/Mainz ;;
         *Miami* )     datadir=data-osm/Miami ;;
         *Muenster* )    datadir=data-osm/Muenster ;;
-        *New_York* )    datadir=data-osm/New_York ;;
+        *NewYork* )    datadir=data-osm/NewYork ;;
         *PaloAlto* )     datadir=data-osm/PaloAlto ;;
         *Paris* )       datadir=data-osm/Paris ;;
         *Portland* )    datadir=data-osm/Portland ;;
@@ -96,9 +96,9 @@ case $0 in
         *Providence* )  datadir=data-osm/Providence ;;
         *Rostock* )     datadir=data-osm/Rostock ;;
         *Ruegen* )      datadir=data-osm/Ruegen ;;
-        *San_Francisco* )       datadir=data-osm/San_Francisco ;;
+        *SanFrancisco* )       datadir=data-osm/SanFrancisco ;;
         *SanJose* )       datadir=data-osm/SanJose ;;
-        *Santa_Cruz* )  datadir=data-osm/Santa_Cruz ;;
+        *SantaCruz* )  datadir=data-osm/SantaCruz ;;
         *Seattle* )     datadir=data-osm/Seattle ;;
         *Stettin* )  	datadir=data-osm/Stettin ;;
         *Strassburg* | *Strasbourg* )  datadir=data-osm/Strassburg ;;
@@ -154,14 +154,14 @@ case $0 in
 	*Davis* | \
 	*London* | \
 	*Miami* | \
-	*New_York* | \
+	*NewYork* | \
 	*PaloAlto* | \
 	*Paris* | \
 	*Portland* | \
 	*Providence* | \
-	*San_Francisco* | \
+	*SanFrancisco* | \
 	*SanJose* | \
-	*Santa_Cruz* | \
+	*SantaCruz* | \
 	*Seattle* | \
 	*Turin* | \
 	*Toronto* | \

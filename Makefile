@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.75 2009/04/12 11:34:07 wosch Exp $
+# $Id: Makefile,v 1.76 2009/04/12 11:37:53 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -75,7 +75,7 @@ CITIES=		\
 	Mainz \
 	Miami \
 	Muenster \
-	New_York \
+	NewYork \
 	PaloAlto \
 	Paris \
 	Portland \
@@ -83,8 +83,8 @@ CITIES=		\
 	Providence \
 	Rostock \
 	Ruegen \
-	San_Francisco \
-	Santa_Cruz \
+	SanFrancisco \
+	SantaCruz \
 	Seattle \
 	Stettin \
 	Strassburg \
