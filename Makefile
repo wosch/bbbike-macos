@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.73 2009/04/12 11:05:10 wosch Exp $
+# $Id: Makefile,v 1.74 2009/04/12 11:15:45 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -115,6 +115,7 @@ CITIES=		\
         Corvallis \
         FortCollins \
         Madison \
+        Tuscon \
 
 
 all: help

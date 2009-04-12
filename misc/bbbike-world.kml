@@ -171,6 +171,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Corvallis</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Corvallis.en.cgi">Start BBBike @ Corvallis</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-123.3293,44.5253,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Cottbus</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Cottbus.cgi">Start BBBike @ Cottbus</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
@@ -256,6 +264,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>10.9636,49.5208,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>FortCollins</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/FortCollins.en.cgi">Start BBBike @ FortCollins</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-105.196,40.463,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
@@ -400,6 +416,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>10.574,53.82,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Madison</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Madison.en.cgi">Start BBBike @ Madison</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-89.578,42.971,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
@@ -616,6 +640,14 @@
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>7.6221,45.0155,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Tuscon</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Tuscon.en.cgi">Start BBBike @ Tuscon</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>-111.108,32.114,0.000000</coordinates>
     </Point>
   </Placemark>
   <Placemark>
