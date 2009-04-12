@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.83 2009/04/12 10:53:04 wosch Exp $
+# $Id: Makefile.osm,v 1.84 2009/04/12 11:05:10 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -101,6 +101,7 @@ CITIES=		\
 	Aarhus \
 	Corvallis \
 	FortCollins \
+	Madison \
 
 
 all: help
@@ -881,6 +882,16 @@ FortCollins-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/FortCollins -- -105.196 40.463 -104.933 40.621
 FortCollins-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/FortCollins ${OSM_DIR}/FortCollins
+
+
+# bbbike @ Madison
+Madison: Madison-download Madison-convert
+Madison-download:
+	mkdir -p ${OSM_DIR}/Madison
+	${DOWNLOADOSM} -o ${OSM_DIR}/Madison -- -89.578 42.971 -89.215 43.18
+Madison-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Madison ${OSM_DIR}/Madison
+
 
 ##############################################################################################
 
