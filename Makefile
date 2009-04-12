@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.78 2009/04/12 19:50:55 wosch Exp $
+# $Id: Makefile,v 1.79 2009/04/12 19:56:15 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -191,7 +191,7 @@ scp rsync:
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
 
 get-perl:
-	if test -f ${DOWNLOAD_DIR}/${PERL_DIST} && gzip -t ${DOWNLOAD_DIR}/${PERL_DIST}; then : \
+	if test -f ${DOWNLOAD_DIR}/${PERL_DIST} && gzip -t ${DOWNLOAD_DIR}/${PERL_DIST}; then : ; \
 	else \
 	  curl -sSf -o ${DOWNLOAD_DIR}/${PERL_DIST} http://www.cpan.org/src/${PERL_DIST}; \
 	fi
