@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.85 2009/04/12 11:15:45 wosch Exp $
+# $Id: Makefile.osm,v 1.86 2009/04/12 11:34:07 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -103,6 +103,7 @@ CITIES=		\
 	FortCollins \
 	Madison \
 	Tuscon \
+	SanJose \
 
 
 all: help
@@ -900,6 +901,14 @@ Tuscon-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Tuscon -- -111.108 32.114 -110.704 32.335
 Tuscon-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Tuscon ${OSM_DIR}/Tuscon
+
+# bbbike @ SanJose
+SanJose: SanJose-download SanJose-convert
+SanJose-download:
+	mkdir -p ${OSM_DIR}/SanJose
+	${DOWNLOADOSM} -o ${OSM_DIR}/SanJose -- -122.081 37.21 -121.707 37.46
+SanJose-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/SanJose ${OSM_DIR}/SanJose
 
 ##############################################################################################
 
