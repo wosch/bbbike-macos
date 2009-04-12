@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.86 2009/04/12 21:15:37 wosch Exp $
+# $Id: Makefile,v 1.87 2009/04/12 21:18:34 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -214,7 +214,7 @@ build-perl-intel:
 build-perl-libs:
 	yes "" | ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i CPAN
 	yes "" | ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i YAML
-	cd ${BUILD_DIR}/.${BBBIKE_VERSION}; \
+	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}; \
 	  yes "" | ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -I`pwd` \
 		-MCPAN -e 'force install Bundle::BBBike_small'
 
