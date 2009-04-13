@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.94 2009/04/12 22:44:12 wosch Exp $
+# $Id: Makefile,v 1.95 2009/04/13 07:31:21 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -31,7 +31,7 @@ SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
 PERL_DIST=	perl-5.10.0.tar.gz
 PERL_RELEASE=	perl-5.10.0
-PERL_FAKEDIR=	/tmp
+PERL_FAKEDIR=	/private/tmp
 
 BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
@@ -201,6 +201,8 @@ get-perl:
 
 build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
+
+perl: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel
 
 build-perl-intel: get-perl
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
