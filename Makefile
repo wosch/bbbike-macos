@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.116 2009/04/13 18:14:18 wosch Exp $
+# $Id: Makefile,v 1.117 2009/04/13 19:06:28 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -230,6 +230,7 @@ build-perllibs-powerpc:
 build-perllibs-intel:
 	yes "" | env PATH="${B_PATH}" HOME="${CPAN_HOME}" ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i CPAN > /tmp/cpan.log 2>&1
 	perl -i.bak -npe "s|'make_arg' => q\[\],|'make_arg' => q[${MAKE_ARGS}],|; s|'makepl_arg' => q\[\],|'makepl_arg' => q['XFT=1'],|; " ${PERL_FAKEDIR}/${PERL_RELEASE}/lib/${PERL_VERSION}/CPAN/Config.pm
+	yes "" | env PATH="${B_PATH}" HOME="${CPAN_HOME}" ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -if "YAML" >> /tmp/cpan.log 2>&1
 	yes "" | env PATH="${B_PATH}" HOME="${CPAN_HOME}" ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -if "Tk" >> /tmp/cpan.log 2>&1
 	yes "" | env PATH="${B_PATH}" HOME="${CPAN_HOME}" ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -if "Tk::FireButton" >> /tmp/cpan.log 2>&1
 	cp -f /tmp/cpan.log ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}
