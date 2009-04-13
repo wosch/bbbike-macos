@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.103 2009/04/13 09:31:56 wosch Exp $
+# $Id: Makefile,v 1.104 2009/04/13 09:32:53 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -216,7 +216,7 @@ build-perl-intel:
 	@echo "configure perl..."
 	cd ${BUILD_DIR}/${PERL_RELEASE};  \
 		env PATH="/bin:/usr/bin" cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/lib' \
-		./Configure -ds -e -Dinc_version_list=none -Dlocincpth="/usr/include" -Dloclibpth="/usr/lib" -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
+		./Configure -ds -e -Dextras="Tk" -Dinc_version_list=none -Dlocincpth="/usr/include" -Dloclibpth="/usr/lib" -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
 	@echo "build perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE}; \
 		( PATH="/bin:/usr/bin"; ${MAKE} ${MAKE_ARGS} all && ${MAKE} install ) > make.log 2>&1
