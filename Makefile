@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.108 2009/04/13 10:31:10 wosch Exp $
+# $Id: Makefile,v 1.109 2009/04/13 14:21:26 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -229,11 +229,8 @@ build-perllibs-powerpc:
 	
 build-perllibs-intel:
 	yes "" | env PATH=${PATH} HOME=${CPAN_HOME} ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i CPAN > /tmp/cpan.log 2>&1
-	perl -i.bak -npe "s|'make_arg' => q\[\],|'make_arg' => q[${MAKE_ARGS}],|" ${PERL_FAKEDIR}/${PERL_RELEASE}/lib/${PERL_VERSION}/CPAN/Config.pm
-	yes "" | env PATH=${PATH} HOME=${CPAN_HOME} ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i YAML >> /tmp/cpan.log 2>&1
-	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}; \
-	  yes "" | env PATH=${PATH} HOME=${CPAN_HOME} XFT=1 ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -I`pwd` \
-		-MCPAN -e 'force install Bundle::BBBike_small' >> /tmp/cpan.log 2>&1
+	perl -i.bak -npe "s|'make_arg' => q\[\],|'make_arg' => q[${MAKE_ARGS}],|; s|'makepl_arg' => q\[\],|'makepl_arg' => q['XFT=1'],|; " ${PERL_FAKEDIR}/${PERL_RELEASE}/lib/${PERL_VERSION}/CPAN/Config.pm
+	yes "" | env PATH=${PATH} HOME=${CPAN_HOME} ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -if "Tk" >> /tmp/cpan.log 2>&1
 	cp -f /tmp/cpan.log ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}
 
 clean:
