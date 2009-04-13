@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.97 2009/04/13 07:42:58 wosch Exp $
+# $Id: Makefile,v 1.98 2009/04/13 08:14:26 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -28,13 +28,15 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
-
-PERL_DIST=	perl-5.10.0.tar.gz
-PERL_RELEASE=	perl-5.10.0
+PERL_VERSION=	5.10.0
+PERL_DIST=	perl-${PERL_VERSION}.tar.gz
+PERL_RELEASE=	perl-${PERL_VERSION}
 PERL_FAKEDIR=	/private/tmp
 
 BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
+
+MAKE_ARGS=	-j8
 
 zcat=	gzip -dc
 
@@ -217,13 +219,14 @@ build-perl-intel:
 		./Configure -ds -e -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
 	@echo "build perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE}; \
-		( PATH="/bin:/usr/bin"; make -j4 all && make install ) > make.log 2>&1
+		( PATH="/bin:/usr/bin"; make ${MAKE_ARGS} all && make install ) > make.log 2>&1
 
 build-perllibs-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perllibs-intel
 	
 build-perllibs-intel:
 	yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i CPAN > /tmp/cpan.log 2>&1
+	perl -i.bak -npe "s|'make_arg' => q\[\],|'make_arg' => q[${MAKE_ARGS}],|" ${PERL_FAKEDIR}/${PERL_RELEASE}/lib/${PERL_VERSION}/CPAN/Config.pm
 	yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/cpan -i YAML >> /tmp/cpan.log 2>&1
 	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}; \
 	  yes "" | env PATH="/bin:/usr/bin" HOME=${PERL_FAKEDIR}/${PERL_RELEASE}/cpan XFT=1 ${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -I`pwd` \
