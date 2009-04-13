@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.115 2009/04/13 16:44:50 wosch Exp $
+# $Id: Makefile,v 1.116 2009/04/13 18:14:18 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -35,7 +35,7 @@ PERL_FAKEDIR=	/tmp
 
 BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
-CPAN_HOME=	${PERL_FAKEDIR}/${PERL_RELEASE}/cpan 
+CPAN_HOME=	${PERL_FAKEDIR}/${PERL_RELEASE}/cpan
 B_PATH=		/bin:/usr/bin
 
 MAKE_ARGS=	-j8
@@ -221,7 +221,7 @@ build-perl-intel:
 		env PATH="${B_PATH}" HOME="${CPAN_HOME}" cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/lib' \
 		./Configure -ds -e -Dinc_version_list=none -Dlocincpth="/usr/include" -Dloclibpth="/usr/lib" -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
 	@echo "build perl..."
-	@cd ${BUILD_DIR}/${PERL_RELEASE}; \
+	cd ${BUILD_DIR}/${PERL_RELEASE}; \
 		yes "" | ( env PATH="${B_PATH}" HOME="${CPAN_HOME}" ${MAKE} ${MAKE_ARGS} all && ${MAKE} install ) > make.log 2>&1
 
 build-perllibs-powerpc:
