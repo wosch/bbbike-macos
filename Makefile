@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.105 2009/04/13 09:43:56 wosch Exp $
+# $Id: Makefile,v 1.106 2009/04/13 10:14:27 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -209,6 +209,7 @@ build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
 
 perl-intel: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
+perl-powerpc: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-powerpc build-perllibs-powerpc
 
 build-perl-intel: 
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
