@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.100 2009/04/13 08:39:09 wosch Exp $
+# $Id: Makefile,v 1.101 2009/04/13 08:44:18 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -219,7 +219,7 @@ build-perl-intel:
 		./Configure -ds -e -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
 	@echo "build perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE}; \
-		( PATH="/bin:/usr/bin"; make ${MAKE_ARGS} all && make install ) > make.log 2>&1
+		( PATH="/bin:/usr/bin"; ${MAKE} ${MAKE_ARGS} all && ${MAKE} install ) > make.log 2>&1
 
 build-perllibs-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perllibs-intel
