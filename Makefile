@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.99 2009/04/13 08:31:19 wosch Exp $
+# $Id: Makefile,v 1.100 2009/04/13 08:39:09 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -212,7 +212,7 @@ build-perl-intel:
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
 	@rm -rf ${BUILD_DIR}/${PERL_RELEASE}
 	@echo "extract perl dist..."
-	@cd ${BUILD_DIR} && tar xfz ../${DOWNLOAD_DIR}/${PERL_DIST}
+	@cd ${BUILD_DIR} && ${zcat} ../${DOWNLOAD_DIR}/${PERL_DIST} | tar xf -
 	@echo "configure perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE};  \
 		env PATH="/bin:/usr/bin" cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/local/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/local/lib' \
