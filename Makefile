@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.107 2009/04/13 10:30:32 wosch Exp $
+# $Id: Makefile,v 1.108 2009/04/13 10:31:10 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -238,6 +238,7 @@ build-perllibs-intel:
 
 clean:
 	rm -rf ${BUILD_DIR} ${BUILD_DIR_POWERPC}
+	rm -f /tmp/cpan.log
 	mkdir ${BUILD_DIR} ${BUILD_DIR_POWERPC}
 
 dist-clean devel-clean distclean: clean
