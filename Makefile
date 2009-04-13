@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.95 2009/04/13 07:31:21 wosch Exp $
+# $Id: Makefile,v 1.96 2009/04/13 07:34:54 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -202,20 +202,20 @@ get-perl:
 build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
 
-perl: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel
+perl-intel: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
 
-build-perl-intel: get-perl
+build-perl-intel: 
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
 	@rm -rf ${BUILD_DIR}/${PERL_RELEASE}
 	@echo "extract perl dist..."
 	@cd ${BUILD_DIR} && tar xfz ../${DOWNLOAD_DIR}/${PERL_DIST}
 	@echo "configure perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE};  \
-		env cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/local/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/local/lib' \
+		env PATH="/bin:/usr/bin" cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/local/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/local/lib' \
 		./Configure -ds -e -Dprefix=${PERL_FAKEDIR}/${PERL_RELEASE} -Duseithreads -Duseshrplib > perl-config.log 2>&1 
 	@echo "build perl..."
 	@cd ${BUILD_DIR}/${PERL_RELEASE}; \
-		( make -j4 all && make install ) > make.log 2>&1
+		( PATH="/bin:/usr/bin"; make -j4 all && make install ) > make.log 2>&1
 
 build-perllibs-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perllibs-intel
