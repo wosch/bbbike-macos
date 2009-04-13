@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.113 2009/04/13 16:18:40 wosch Exp $
+# $Id: Makefile,v 1.114 2009/04/13 16:26:36 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -243,6 +243,7 @@ dist-clean devel-clean distclean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
 	rm -f ${BUILD_DIR}/*.dmg
 	cd bin && ${MAKE} clean
+	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
 kml:
 	./bin/bbbike-world-kml Makefile.osm > misc/bbbike-world.kml
