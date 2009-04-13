@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.96 2009/04/13 07:34:54 wosch Exp $
+# $Id: Makefile,v 1.97 2009/04/13 07:42:58 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -35,6 +35,8 @@ PERL_FAKEDIR=	/private/tmp
 
 BBBIKE_SCRIPT=bin/bbbike
 UPDATE_FILES= README.txt ${BBBIKE_SCRIPT}
+
+zcat=	gzip -dc
 
 CITIES=		\
 	Aachen \
@@ -184,10 +186,10 @@ get-data-osm:
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
 extract-data-osm:
-	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
+	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
 extract-data-osm-powerpc:
-	@gzcat ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
+	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
 
 scp rsync:
