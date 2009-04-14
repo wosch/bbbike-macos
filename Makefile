@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.118 2009/04/13 20:24:51 wosch Exp $
+# $Id: Makefile,v 1.119 2009/04/14 07:29:02 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -19,7 +19,11 @@ OSMBIKE_DATA=	data-osm.tgz
 
 PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
 BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
+
 BUILD_DIR_POWERPC=	build-powerpc
+BUILD_DIR_SOLARIS=	build-solaris
+BUILD_DIR_LINUX=	build-linux
+BUILD_DIR_FREEBSD=	build-freebsd
 
 BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
 
@@ -209,6 +213,7 @@ build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
 
 perl-intel: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
+
 perl-powerpc: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-powerpc build-perllibs-powerpc
 
 build-perl-intel: 
@@ -237,7 +242,7 @@ build-perllibs-intel:
 	cp -f /tmp/cpan.log ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}
 
 clean:
-	rm -rf ${BUILD_DIR} ${BUILD_DIR_POWERPC}
+	rm -rf -- ${BUILD_DIR} ${BUILD_DIR}-*
 	rm -f /tmp/cpan.log
 	mkdir ${BUILD_DIR} ${BUILD_DIR_POWERPC}
 
