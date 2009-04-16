@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.90 2009/04/16 20:22:11 wosch Exp $
+# $Id: Makefile.osm,v 1.91 2009/04/16 20:50:39 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -156,10 +156,12 @@ convert-workarounds: osm2bbd-postprocess osm2bbd-workarounds green-ways missing-
 
 osm2bbd-workarounds opensearch: opensearch-bbbike
 	for city in ${CITIES}; do \
+		( \
 		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
 		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
 		../bbbike-macos/bin/opensearch-suggestion < data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
-	done
+		) & sleep 0.2; \
+	done; wait
 
 opensearch-bbbike:
 	../bbbike-macos/bin/opensearch-suggestion --input-charset=iso-8859-1 < data/strassen > data/opensearch.streetnames
@@ -180,7 +182,7 @@ cleanup-files:
 	rm -f data-osm/*/*.bak
 
 green-ways:
-	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green); done
+	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green) & done; wait
 
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
