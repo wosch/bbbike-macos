@@ -18,6 +18,8 @@ tmpdir=`mktemp -d /tmp/bbbike.XXXXXXXXXXXXXXX`
 trap 'rm -rf "$tmpdir"; exit 1' 1 2 3 13 15
 trap 'rm -rf "$tmpdir"' 0
 
+ulimit -t 60
+ulimit -m 512000 # seems not to work
 
 env TMPDIR=$tmpdir DATA_DIR="data-osm/$name" BBBIKE_DATADIR="data-osm/$name" $dirname/bbbike.cgi
 
