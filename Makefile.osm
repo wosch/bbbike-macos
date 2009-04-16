@@ -5,12 +5,12 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.88 2009/04/12 12:34:46 wosch Exp $
+# $Id: Makefile.osm,v 1.89 2009/04/16 20:19:38 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
-DOWNLOADOSM=	./miscsrc/downloadosm --debug=0 --step=0.02
-OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f -map bbbike
+DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
+OSM2BBD=	./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f -map bbbike
 NICE=		nice -n 5
 GXARGS=		`which gxargs xargs | head -1`
 
@@ -104,6 +104,9 @@ CITIES=		\
 	Madison \
 	Tuscon \
 	SanJose \
+	Duisburg \
+	Dortmund \
+	#Ruhrgebiet \
 
 
 all: help
@@ -910,6 +913,33 @@ SanJose-download:
 SanJose-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/SanJose ${OSM_DIR}/SanJose
 
+
+# bbbike @ Duisburg
+Duisburg: Duisburg-download Duisburg-convert
+Duisburg-download:
+	mkdir -p ${OSM_DIR}/Duisburg
+	${DOWNLOADOSM} -o ${OSM_DIR}/Duisburg -- 6.663 51.361 7.111 51.604
+Duisburg-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Duisburg ${OSM_DIR}/Duisburg
+
+
+# bbbike @ Dortmund
+Dortmund: Dortmund-download Dortmund-convert
+Dortmund-download:
+	mkdir -p ${OSM_DIR}/Dortmund
+	${DOWNLOADOSM} -o ${OSM_DIR}/Dortmund -- 7.09 51.39 7.599 51.631
+Dortmund-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Dortmund ${OSM_DIR}/Dortmund
+
+# bbbike @ Ruhrgebiet
+Ruhrgebiet: Ruhrgebiet-download Ruhrgebiet-convert
+Ruhrgebiet-download:
+	mkdir -p ${OSM_DIR}/Ruhrgebiet
+	${DOWNLOADOSM} -o ${OSM_DIR}/Ruhrgebiet -- 6.663 51.39 7.599 51.631
+Ruhrgebiet-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Ruhrgebiet ${OSM_DIR}/Ruhrgebiet
+
+
 ##############################################################################################
 
 
@@ -939,7 +969,7 @@ dist-clean devel-clean distclean: clean
 help:
 	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
 	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
-	@echo "            [ opensearch ]"
+	@echo "            [ convert | convert-workarounds | opensearch ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
 
