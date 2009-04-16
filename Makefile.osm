@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.89 2009/04/16 20:19:38 wosch Exp $
+# $Id: Makefile.osm,v 1.90 2009/04/16 20:22:11 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -935,7 +935,7 @@ Dortmund-convert:
 Ruhrgebiet: Ruhrgebiet-download Ruhrgebiet-convert
 Ruhrgebiet-download:
 	mkdir -p ${OSM_DIR}/Ruhrgebiet
-	${DOWNLOADOSM} -o ${OSM_DIR}/Ruhrgebiet -- 6.663 51.39 7.599 51.631
+	#${DOWNLOADOSM} -o ${OSM_DIR}/Ruhrgebiet -- 6.663 51.39 7.599 51.631
 Ruhrgebiet-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Ruhrgebiet ${OSM_DIR}/Ruhrgebiet
 
