@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.124 2009/04/18 10:56:01 wosch Exp $
+# $Id: Makefile,v 1.125 2009/04/18 21:19:33 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -20,14 +20,15 @@ OSMBIKE_DATA=	data-osm.tgz
 PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
 BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 
-BUILD_DIR_POWERPC=	build-powerpc
-BUILD_DIR_SOLARIS=	build-solaris
-BUILD_DIR_LINUX=	build-linux
-BUILD_DIR_FREEBSD=	build-freebsd
-
 BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
 
-BUILD_DIR=	build
+BUILD_DIR=		build/macos-intel
+BUILD_DIR_POWERPC=	build/macos-powerpc
+BUILD_DIR_SOLARIS=	build/solaris
+BUILD_DIR_LINUX=	build/linux
+BUILD_DIR_FREEBSD=	build/freebsd
+BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_SOLARIS} ${BUILD_DIR_LINUX} ${BUILD_DIR_FREEBSD}
+
 DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
@@ -198,7 +199,7 @@ get-data-osm:
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
 extract-data-osm:
-	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
+	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
 extract-data-osm-powerpc:
 	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
@@ -224,7 +225,7 @@ build-perl-intel:
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
 	@rm -rf ${BUILD_DIR}/${PERL_RELEASE}
 	@echo "extract perl dist..."
-	@cd ${BUILD_DIR} && ${zcat} ../${DOWNLOAD_DIR}/${PERL_DIST} | tar xf -
+	${zcat} ${DOWNLOAD_DIR}/${PERL_DIST} | ( cd ${BUILD_DIR}; tar xf - )
 	@echo "configure perl..."
 	cd ${BUILD_DIR}/${PERL_RELEASE};  \
 		env PATH="${B_PATH}" HOME="${CPAN_HOME}" cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/lib' \
@@ -247,9 +248,9 @@ build-perllibs-intel:
 	${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -MTk -e 'exit 0'
 
 clean:
-	rm -rf -- ${BUILD_DIR} ${BUILD_DIR}-*
+	rm -rf -- ${BUILD_DIR_ALL}
 	rm -f /tmp/cpan.log
-	mkdir ${BUILD_DIR} ${BUILD_DIR_POWERPC}
+	mkdir -p ${BUILD_DIR_ALL}
 
 dist-clean devel-clean distclean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
