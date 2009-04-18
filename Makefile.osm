@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.93 2009/04/18 10:56:01 wosch Exp $
+# $Id: Makefile.osm,v 1.94 2009/04/18 11:45:36 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -115,6 +115,7 @@ all: help
 tarball: convert convert-workarounds
 	tar cf - data-osm | gzip > ${OSMBIKE_DATA}.tmp
 	mv -f ${OSMBIKE_DATA}.tmp ${OSMBIKE_DATA}
+	cp -f ${OSMBIKE_DATA} ../bbbike-macos/download
 
 cities: 
 	@for i in `perl -e 'print "x " x 32'`; do ${MAKE} _cities; done
