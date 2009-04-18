@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile,v 1.123 2009/04/18 10:26:29 wosch Exp $
+# $Id: Makefile,v 1.124 2009/04/18 10:56:01 wosch Exp $
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -135,7 +135,8 @@ CITIES=		\
         SanJose \
         Duisburg \
         Dortmund \
-        #Ruhrgebiet \
+        Darmstadt \
+        Mannheim \
 
 
 all: help

@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.92 2009/04/16 21:42:15 wosch Exp $
+# $Id: Makefile.osm,v 1.93 2009/04/18 10:56:01 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -106,6 +106,8 @@ CITIES=		\
 	SanJose \
 	Duisburg \
 	Dortmund \
+	Darmstadt \
+	Mannheim \
 
 
 all: help
@@ -931,6 +933,22 @@ Dortmund-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Dortmund -- 7.09 51.39 7.599 51.631
 Dortmund-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Dortmund ${OSM_DIR}/Dortmund
+
+# bbbike @ Darmstadt
+Darmstadt: Darmstadt-download Darmstadt-convert
+Darmstadt-download:
+	mkdir -p ${OSM_DIR}/Darmstadt
+	${DOWNLOADOSM} -o ${OSM_DIR}/Darmstadt -- 8.455 49.77 8.842 49.974
+Darmstadt-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Darmstadt ${OSM_DIR}/Darmstadt
+
+# bbbike @ Mannheim
+Mannheim: Mannheim-download Mannheim-convert
+Mannheim-download:
+	mkdir -p ${OSM_DIR}/Mannheim
+	${DOWNLOADOSM} -o ${OSM_DIR}/Mannheim -- 8.306 49.302 8.773 49.587
+Mannheim-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Mannheim ${OSM_DIR}/Mannheim
 
 ## bbbike @ Ruhrgebiet
 #Ruhrgebiet: Ruhrgebiet-download Ruhrgebiet-convert
