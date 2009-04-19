@@ -5,14 +5,16 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.94 2009/04/18 11:45:36 wosch Exp $
+# $Id: Makefile.osm,v 1.95 2009/04/19 20:20:15 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
-OSM2BBD=	./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f -map bbbike
+OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f -map bbbike
 NICE=		nice -n 5
 GXARGS=		`which gxargs xargs | head -1`
+
+MAX_CPU=	8
 
 BBBIKE_WEB_DIR= /usr/local/www/elsif.de/bbbike
 OSM_DIR=	osm
@@ -139,52 +141,46 @@ _cities:
 _cities_complete: 
 	${MAKE} -f Makefile.osm `echo ${CITIES} | perl -npe 's/\s+/-download /g'` 
 
+city-count:
+	@echo ${CITIES}  | wc -w
 
 # using GNU xargs -P parallel
 convert: 
 	rm -rf data-osm.old
 	if test -e data-osm; then mv data-osm data-osm.old; fi
 	mkdir -p data-osm
-	echo ${CITIES} " " | perl -npe 's/\s+/-convert /g' | ${NICE} ${GXARGS} -n 1 -P 4 ${MAKE} -f Makefile.osm
+	echo ${CITIES} " " | perl -npe 's/\s+/-convert /g' | \
+	  ${NICE} ${GXARGS} -n 1 -P ${MAX_CPU} ${MAKE} -f Makefile.osm
 
-# massive parallel
-convert.old: 
-	rm -rf data-osm.old
-	if test -e data-osm; then mv data-osm data-osm.old; fi
-	mkdir -p data-osm
-	for i in ${CITIES}; do ${NICE} ${MAKE} -f Makefile.osm "$$i"-convert & done; wait
+check:
+	for i in ${CITIES}; do echo ${DATA_OSM_DIR}/$$i; done | \
+	  ${NICE} ${GXARGS} -n 1 -P ${MAX_CPU} ./miscsrc/check_bbd --debug=0 -dir
 
-convert-workarounds: osm2bbd-postprocess osm2bbd-workarounds green-ways missing-files cleanup-files
+convert-workarounds: osm2bbd-workarounds
 
 osm2bbd-workarounds opensearch: opensearch-bbbike
-	for city in ${CITIES}; do \
-		( \
-		../bbbike-macos/bin/strasse-str data-osm/$$city/strassen; \
-		../bbbike-macos/bin/berlin-coords-data data-osm/$$city/strassen > data-osm/$$city/Berlin.coords.data; \
-		../bbbike-macos/bin/opensearch-suggestion < data-osm/$$city/strassen > data-osm/$$city/opensearch.streetnames; \
-		) & sleep 0.2; \
-	done; wait
+	for i in ${CITIES}; do echo $$i; done | \
+	  ${NICE} ${GXARGS} -n 1 -P ${MAX_CPU} ../bbbike-macos/bin/osm2bbd-workarounds ${DATA_OSM_DIR}
 
 opensearch-bbbike:
 	../bbbike-macos/bin/opensearch-suggestion --input-charset=iso-8859-1 < data/strassen > data/opensearch.streetnames
 
 
-osm2bbd-postprocess:
-	for city in ${CITIES}; do \
-		./miscsrc/osm2bbd-postprocess -only-largest-city-is-center -skip-inaccessible-streets data-osm/$$city; \
-	done
+#osm2bbd-postprocess:
+#	for i in ${CITIES}; do echo ${DATA_OSM_DIR}/$$i; done | \
+#	  ${NICE} ${GXARGS} -n 1 -P ${MAX_CPU} \
+#	  ./miscsrc/osm2bbd-postprocess -only-largest-city-is-center -skip-inaccessible-streets
+#
+#cleanup-files:
+#	#rm -f data-osm/*/meta.*
+#	rm -f data-osm/*/_*
+#	rm -f data-osm/*/*.bak
+#
+#green-ways:
+#	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green) & done; wait
+#missing-files:
+#	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze flaechen wasserstrassen qualitaet_s); done # workaround for bug in osm2bbd
 
-
-missing-files:
-	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze flaechen wasserstrassen qualitaet_s); done # workaround for bug in osm2bbd
-
-cleanup-files:
-	#rm -f data-osm/*/meta.*
-	rm -f data-osm/*/_*
-	rm -f data-osm/*/*.bak
-
-green-ways:
-	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green) & done; wait
 
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
@@ -990,6 +986,7 @@ help:
 	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
 	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
 	@echo "            [ convert | convert-workarounds | opensearch ]"
+	@echo "            [ city-count ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
 
