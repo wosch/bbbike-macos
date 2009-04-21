@@ -1,10 +1,13 @@
 #!/usr/bin/perl
 
 use Getopt::Long;
+use Text::Unidecode;
 use utf8;
 
 use strict;
 use warnings;
+
+my $lang_supported = 'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
 
 # German
 sub de_7bit {
@@ -24,7 +27,7 @@ sub de_7bit {
     return $s;
 }
 
-# English
+# English: eszet -> B
 sub de_en {
     my $s = shift;
 
@@ -36,6 +39,24 @@ sub de_en {
     $s =~ s/ü/u/g;
     $s =~ s/ß/B/g;
     $s =~ s/é/e/g;
+    $s =~ s/è/e/g;
+
+    return $s;
+}
+
+# English II: eszet -> ss 
+sub de_en_2 {
+    my $s = shift;
+
+    $s =~ s/Ä/A/g;
+    $s =~ s/Ö/O/g;
+    $s =~ s/Ü/U/g;
+    $s =~ s/ä/a/g;
+    $s =~ s/ö/o/g;
+    $s =~ s/ü/u/g;
+    $s =~ s/ß/ss/g;
+    $s =~ s/é/e/g;
+    $s =~ s/è/e/g;
 
     return $s;
 }
@@ -70,6 +91,8 @@ sub slavic {
     $s =~ s,Ž,z,g;
     $s =~ s,ž,z,g;
 
+    $s =~ s/ß/ss/g;
+
     return $s;
 }
 
@@ -94,6 +117,8 @@ sub es {
     $s =~ s,ú,u,g;
     $s =~ s,ü,u,g;
 
+    $s =~ s/ß/ss/g;
+
     return $s;
 }
 
@@ -109,6 +134,8 @@ sub da {
     $s =~ s,æ,a,g;
     $s =~ s,é,e,g;
     $s =~ s,ø,o,g;
+
+    $s =~ s/ß/ss/g;
 
     return $s;
 }
@@ -185,7 +212,16 @@ sub cyrillic_iso9 {
     $s =~ s,Ю,Ju,g;
     $s =~ s,ю,ju,g;
 
+    $s =~ s/ß/ss/g;
+
     return $s;
+}
+
+# Text::Unidecode
+sub text_unidecode {
+    my $s = shift;
+
+    return unidecode($s);
 }
 
 # Cyrillic to German
@@ -262,6 +298,8 @@ sub cyrillic_de {
     $s =~ s,Х,Ch,g;
     $s =~ s,х,ch,g;
 
+    $s =~ s/ß/ss/g;
+
     return $s;
 }
 
@@ -271,10 +309,7 @@ sub unicode2ascii {
 
     # define a comma separated list of transcription rules
     # a colon applies several rules to one string
-    my $lang =
-'de_7bit,de_en,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de';
-
-    $lang = $languages if defined $languages;
+    my $lang = $languages if defined $languages;
 
     my @list;
     my $s;
@@ -299,17 +334,21 @@ sub unicode2ascii {
 sub usage {
     warn
 "usage: [--input-charset=iso-8859-1] < data/strassen > data/opensearch.streetnames\n";
-    warn "       [--debug=0..2] [--help]\n";
+    warn "       [--debug=0..2] [--help] [--lang=l1,l2,l3,l1:l2,l4]\n";
+    warn "\n";
+    warn "       supported transcriptions: $lang_supported\n";
     exit(1);
 }
 
 my $debug    = 0;
 my $icharset = 'utf8';
 my $help;
+my $lang = $lang_supported;
 
 my $rc = GetOptions(
     "debug=i"         => \$debug,
     "input-charset=s" => \$icharset,
+    "lang=s" => \$lang,
     "help"            => \$help,
 );
 
@@ -330,7 +369,7 @@ while (<STDIN>) {
 }
 
 foreach my $street ( sort keys %s ) {
-    if ( my @strings = unicode2ascii($street) ) {
+    if ( my @strings = unicode2ascii($street, $lang) ) {
         foreach my $s (@strings) {
             print $s, "\t", $street, "\n";
         }
