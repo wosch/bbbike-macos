@@ -3,7 +3,7 @@
 #
 # bbbike-world-kml - create an Google Earth KML file for all bbbike@world cities
 #
-# $Id: bbbike-world-kml,v 1.17 2009/04/18 10:15:35 wosch Exp $
+# $Id: bbbike-world-kml,v 1.18 2009/04/21 19:55:41 wosch Exp $
 
 use strict;
 use warnings;
@@ -19,13 +19,13 @@ sub extract_coords_from_makefile {
 
         if (m,\${OSM_DIR}/(\S+)\s+--\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+),) {
             my $city = $1;
-            my $x1    = $2;
-            my $y1    = $3;
-            my $x2    = $4;
-            my $y2    = $5;
+            my $x1   = $2;
+            my $y1   = $3;
+            my $x2   = $4;
+            my $y2   = $5;
 
-	    my $x = ($x2 - $x1) / 2 + $x1;
-	    my $y = ($y2 - $y1) / 2 + $y1;
+            my $x = ( $x2 - $x1 ) / 2 + $x1;
+            my $y = ( $y2 - $y1 ) / 2 + $y1;
 
             push( @data, [ $city, $x, $y ] );
         }

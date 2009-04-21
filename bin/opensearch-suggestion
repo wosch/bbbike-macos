@@ -7,7 +7,8 @@ use utf8;
 use strict;
 use warnings;
 
-my $lang_supported = 'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
+my $lang_supported =
+'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
 
 # German
 sub de_7bit {
@@ -44,7 +45,7 @@ sub de_en {
     return $s;
 }
 
-# English II: eszet -> ss 
+# English II: eszet -> ss
 sub de_en_2 {
     my $s = shift;
 
@@ -337,7 +338,7 @@ sub usage {
     warn "       [--debug=0..2] [--help] [--lang=l1,l2,l3,l1:l2,l4]\n";
     warn "\n";
     warn "supported transliteration rules:\n";
-    warn "  ", join("\n  ", sort split(/,/, $lang_supported)), "\n";
+    warn "  ", join( "\n  ", sort split( /,/, $lang_supported ) ), "\n";
     warn "\n";
     warn "default: $lang_supported\n";
     exit(1);
@@ -351,7 +352,7 @@ my $lang = $lang_supported;
 my $rc = GetOptions(
     "debug=i"         => \$debug,
     "input-charset=s" => \$icharset,
-    "lang=s" => \$lang,
+    "lang=s"          => \$lang,
     "help"            => \$help,
 );
 
@@ -372,7 +373,7 @@ while (<STDIN>) {
 }
 
 foreach my $street ( sort keys %s ) {
-    if ( my @strings = unicode2ascii($street, $lang) ) {
+    if ( my @strings = unicode2ascii( $street, $lang ) ) {
         foreach my $s (@strings) {
             print $s, "\t", $street, "\n";
         }
