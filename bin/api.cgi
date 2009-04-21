@@ -10,6 +10,7 @@ $ENV{LANG} = 'C';
 
 my $opensearch_file = 'opensearch.streetnames';
 my $opensearch_dir  = '../data-osm';
+my $opensearch_dir2  = '../data-opensearch';
 
 my $debug         = 1;
 my $match_anyware = 1;
@@ -96,6 +97,10 @@ sub streetnames_suggestions {
       $city eq 'bbbike'
       ? "../data/$opensearch_file"
       : "$opensearch_dir/$city/$opensearch_file";
+
+    if (! -f $file && -f "$opensearch_dir2/$city/$opensearch_file") {
+	$file = "$opensearch_dir2/$city/$opensearch_file";
+    }
 
     my ( $d, $d2 ) = &street_match( $file, $street, $limit );
 
