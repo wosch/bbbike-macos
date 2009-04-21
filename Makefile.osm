@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.96 2009/04/21 20:43:56 wosch Exp $
+# $Id: Makefile.osm,v 1.97 2009/04/21 21:18:24 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -14,103 +14,102 @@ OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f
 NICE=		nice -n 5
 GXARGS=		`which gxargs xargs | head -1`
 
-MAX_CPU=	8
+MAX_CPU=	10
 
 BBBIKE_WEB_DIR= /usr/local/www/elsif.de/bbbike
 OSM_DIR=	osm
 DATA_OSM_DIR=	data-osm
 CITIES=		\
-	Aachen \
-	Amsterdam \
-	Austin \
-	Barcelona \
-	Basel \
 	Berlin \
-	Bielefeld \
-	Bonn \
-	Boulder \
-	BrandenburgHavel \
-	Bremen \
-	Budapest \
-	Cambridge \
 	CambridgeMa \
-	Chemnitz \
-	Chicago \
-	Colmar \
-	Copenhagen \
-	Cottbus \
-	Cracow \
-	CraterLake \
-	Danzig \
-	Davis \
-	Dresden \
-	Duesseldorf \
-	Erfurt \
-	Erlangen \
-	Frankfurt \
-	FrankfurtOder \
-	Freiburg \
-	Goerlitz \
-	Goettingen \
-	Hamburg \
-	Hannover \
-	Jena \
-	Karlsruhe \
-	Koeln \
-	Laibach \
-	Leipzig \
-	London \
-	Luebeck \
-	Mainz \
-	Miami \
-	Muenster \
-	NewYork \
-	PaloAlto \
-	Paris \
-	Portland \
-	Prag \
-	Providence \
-	Rostock \
 	Ruegen \
-	SanFrancisco \
-	SantaCruz \
-	Seattle \
-	Stettin \
-	Strassburg \
-	Toronto \
-	Turin \
-	Vancouver \
-	WarenMueritz \
-	Wien \
-	Zagreb \
-	Zuerich \
-	Kaunas \
-	Riga \
-	Reval \
-	SanktPetersburg \
-	Helsinki \
-	Stockholm \
-	Oslo \
-	Dublin \
-	Sofia \
-	Sarajewo \
-	Kiew \
-	Bruessel \
-	Groningen \
-	Montreal \
-	DenHaag \
-	Rotterdam \
-	Aarhus \
-	Corvallis \
-	FortCollins \
-	Madison \
-	Tuscon \
 	SanJose \
-	Duisburg \
+	Copenhagen \
+	Hamburg \
+	Frankfurt \
+	Prag \
+	Tuscon \
+	Toronto \
+	Dresden \
 	Dortmund \
-	Darmstadt \
+	Bonn \
+	Duisburg \
+	London \
+	Koeln \
+	Duesseldorf \
+	Portland \
+	Hannover \
 	Mannheim \
-
+	Madison \
+	Providence \
+	Bremen \
+	Rotterdam \
+	PaloAlto \
+	Reval \
+	Montreal \
+	Wien \
+	SanFrancisco \
+	Miami \
+	Mainz \
+	Paris \
+	DenHaag \
+	FortCollins \
+	Amsterdam \
+	NewYork \
+	Seattle \
+	Karlsruhe \
+	Helsinki \
+	Leipzig \
+	Bielefeld \
+	SanktPetersburg \
+	Darmstadt \
+	Bruessel \
+	Rostock \
+	Aarhus \
+	Chicago \
+	Cottbus \
+	Zuerich \
+	Stockholm \
+	Danzig \
+	Vancouver \
+	Jena \
+	Budapest \
+	Strassburg \
+	Luebeck \
+	Basel \
+	Sofia \
+	Erlangen \
+	Aachen \
+	Groningen \
+	Freiburg \
+	Austin \
+	Kiew \
+	Dublin \
+	Boulder \
+	Goettingen \
+	Stettin \
+	Laibach \
+	Oslo \
+	Chemnitz \
+	Erfurt \
+	Cambridge \
+	Barcelona \
+	Zagreb \
+	Muenster \
+	SantaCruz \
+	CraterLake \
+	Riga \
+	Davis \
+	Cracow \
+	Kaunas \
+	Corvallis \
+	BrandenburgHavel \
+	Goerlitz \
+	Turin \
+	FrankfurtOder \
+	WarenMueritz \
+	Sarajewo \
+	Colmar \
 
 all: help
 
@@ -119,11 +118,11 @@ tarball: convert convert-workarounds
 	mv -f ${OSMBIKE_DATA}.tmp ${OSMBIKE_DATA}
 	cp -f ${OSMBIKE_DATA} ../bbbike-macos/download
 
-cities: 
+cities:
 	@for i in `perl -e 'print "x " x 32'`; do ${MAKE} _cities; done
 	${MAKE} _cities_complete
 
-_cities2: 
+_cities2:
 	@for i in ${CITIES}; do \
 	    ${MAKE} -f Makefile.osm $$i-download || \
 	    ${MAKE} -f Makefile.osm $$i-download || \
@@ -133,19 +132,19 @@ _cities2:
 		echo "please run me again: $$i"; \
 	done
 
-_cities: 
+_cities:
 	@echo ${CITIES} | \
 		perl -npe 's/\s+/-download /g' | \
 		xargs -n 1 -P 3 ${MAKE} -f Makefile.osm
 
-_cities_complete: 
-	${MAKE} -f Makefile.osm `echo ${CITIES} | perl -npe 's/\s+/-download /g'` 
+_cities_complete:
+	${MAKE} -f Makefile.osm `echo ${CITIES} | perl -npe 's/\s+/-download /g'`
 
 city-count:
 	@echo ${CITIES}  | wc -w
 
 # using GNU xargs -P parallel
-convert: 
+convert:
 	rm -rf data-osm.old
 	if test -e data-osm; then mv data-osm data-osm.old; fi
 	mkdir -p data-osm
@@ -184,7 +183,7 @@ opensearch-bbbike:
 
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
-Copenhagen-download: 
+Copenhagen-download:
 	mkdir -p ${OSM_DIR}/Copenhagen
 	${DOWNLOADOSM} -o ${OSM_DIR}/Copenhagen -- 12.275 55.549 12.702 55.831
 Copenhagen-convert:
