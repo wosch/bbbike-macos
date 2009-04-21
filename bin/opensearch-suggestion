@@ -307,7 +307,7 @@ sub unicode2ascii {
     my $string    = shift;
     my $languages = shift;
 
-    # define a comma separated list of transcription rules
+    # define a comma separated list of transliteration rules
     # a colon applies several rules to one string
     my $lang = $languages if defined $languages;
 
@@ -333,10 +333,13 @@ sub unicode2ascii {
 
 sub usage {
     warn
-"usage: [--input-charset=iso-8859-1] < data/strassen > data/opensearch.streetnames\n";
+"usage: [--input-charset=iso-8859-1] < strassen > opensearch.streetnames\n";
     warn "       [--debug=0..2] [--help] [--lang=l1,l2,l3,l1:l2,l4]\n";
     warn "\n";
-    warn "       supported transcriptions: $lang_supported\n";
+    warn "supported transliteration rules:\n";
+    warn "  ", join("\n  ", sort split(/,/, $lang_supported)), "\n";
+    warn "\n";
+    warn "default: $lang_supported\n";
     exit(1);
 }
 
