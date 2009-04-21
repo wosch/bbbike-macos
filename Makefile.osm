@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.95 2009/04/19 20:20:15 wosch Exp $
+# $Id: Makefile.osm,v 1.96 2009/04/21 20:43:56 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -163,7 +163,7 @@ osm2bbd-workarounds opensearch: opensearch-bbbike
 	  ${NICE} ${GXARGS} -n 1 -P ${MAX_CPU} ../bbbike-macos/bin/osm2bbd-workarounds ${DATA_OSM_DIR}
 
 opensearch-bbbike:
-	../bbbike-macos/bin/opensearch-suggestion --input-charset=iso-8859-1 < data/strassen > data/opensearch.streetnames
+	perl ../bbbike-macos/bin/opensearch-suggestion --input-charset=iso-8859-1 < data/strassen > data/opensearch.streetnames
 
 
 #osm2bbd-postprocess:
