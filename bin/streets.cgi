@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-use MyCgiSimple;
+use CGI qw(escape);
 
 # use warnings make the script 20% slower!
 #use warnings;
@@ -8,7 +8,7 @@ use strict;
 
 $ENV{LANG} = 'C';
 
-my $opensearch_file = 'opensearch.streetnames';
+my $opensearch_file = 'opensearch.streetnames.gps';
 my $opensearch_dir  = '../data-osm';
 my $opensearch_dir2  = '../data-opensearch';
 
@@ -21,12 +21,16 @@ my $use_egrep = 1;
 sub ascii2unicode {
     my $string = shift;
 
-    return $string if $string !~ /\t/;
+    warn "yyy: $string\n";
 
-    my ( $ascii, $unicode ) = split( /\t/, $string );
+    my ( $ascii, $unicode, $gps ) = split( /\t/, $string );
 
-    warn "ascii2unicode: $unicode\n" if $debug >= 1;
-    return $unicode;
+    if ( !defined $gps) {
+	return [$ascii, $unicode];	
+    } else {
+        warn "ascii2unicode: $unicode\n" if $debug >= 1;
+	return [$unicode, $gps];	
+    }
 }
 
 sub street_match {
@@ -39,8 +43,9 @@ sub street_match {
         return;
     }
 
+    warn "XXX: $street\n";
     if ($use_egrep) {
-        open( IN, '-|' ) || exec 'egrep', '-s', '-m', '2000', '-i', $street,
+        open( IN, '-|' ) || exec 'egrep', '-s', '-m', '2000', "$street",
           $file;
     }
     else {
@@ -56,23 +61,14 @@ sub street_match {
     while (<IN>) {
 
         # match from beginning
-        if (/^$street/i) {
+        if (/$street/) {
+            warn "abc: $_";
             chomp;
-            push( @data, &ascii2unicode($_) );
+            return &ascii2unicode($_);
         }
-
-        # or for long words anyware, second class matches
-        elsif ( $match_anyware && $len >= 2 && /$street/i ) {
-            chomp;
-            push( @data2, &ascii2unicode($_) ) if scalar(@data2) <= $limit * 90;
-        }
-
-        last if scalar(@data) >= $limit * 50;
     }
 
     close IN;
-
-    return ( \@data, \@data2 );
 }
 
 sub streetnames_suggestions_unique {
@@ -91,7 +87,7 @@ sub streetnames_suggestions {
     my $street = $args{'street'};
     my $limit  = 16;
 
-    $street =~ s/([()|{}\]\[])/\\$1/;
+    $street =~ s/([\(\)\|\{\}\]\[])/\\$1/g;
 
     my $file =
       $city eq 'bbbike'
@@ -102,40 +98,16 @@ sub streetnames_suggestions {
 	$file = "$opensearch_dir2/$city/$opensearch_file";
     }
 
-    my ( $d, $d2 ) = &street_match( $file, $street, $limit );
+    my $street = &street_match( $file, $street, $limit );
 
-    # no prefix match, try again with prefix match only
-    if ( scalar(@$d) == 0 && scalar(@$d2) == 0 ) {
-        ( $d, $d2 ) = &street_match( $file, "^$street", $limit );
-    }
+    return if ref $street ne 'ARRAY';
 
-    my @data  = @$d;
-    my @data2 = @$d2;
 
-    warn "Len1: ", scalar(@data), " ", join( " ", @data ), "\n" if $debug >= 2;
-    warn "Len2: ", scalar(@data2), " ", join( " ", @data2 ), "\n"
-      if $debug >= 2;
+    my ( $name, $gps ) = ($street->[0], $street->[1]);
+    my ($x, $y) = split(/,/, $gps);
 
-    # less results
-    if ( scalar(@data) + scalar(@data2) < $limit ) {
-        return ( @data, @data2 );
-    }
+    return "$y,$x"; # . escape($name);
 
-    # trim results, exact matches first
-    else {
-
-        # match words
-        my @d;
-        @d = grep { /$street\b/i || /\b$street/ } @data2;    # if $len >= 3;
-
-        my @result = &strip_list( $limit, @data );
-        push @result,
-          &strip_list(
-            $limit / ( scalar(@data) ? 2 : 1 ),
-            ( scalar(@d) ? @d : @data2 )
-          );
-        return @result;
-    }
 }
 
 sub strip_list {
@@ -160,30 +132,14 @@ sub strip_list {
 
 # GET /w/api.php?action=opensearch&search=berlin&namespace=0 HTTP/1.1
 
-my $q = new MyCgiSimple;
+my $q = new CGI;
 
 my $action    = 'opensearch';
-my $street    = $q->param('search') || $q->param('q') || 'borsig';
-my $city      = $q->param('city') || 'bbbike';
+my $street    = $q->param('search') || $q->param('q') || 'Zellescher We';
+my $city      = $q->param('city') || 'germany';
 my $namespace = $q->param('namespace') || '0';
 
 binmode( \*STDERR, ":utf8" ) if $debug >= 1;
 
-print $q->header(
-    -type    => 'application/json',
-    -charset => 'utf8',
-    -expires => '+1d'
-);
-
-my @suggestion =
-  &streetnames_suggestions_unique( 'city' => $city, 'street' => $street );
-
-if ( $namespace == 1 ) {
-    print join( "\n", @suggestion ), "\n";
-}
-else {
-    print qq/["$street",[/;
-    print qq{"}, join( '","', @suggestion ), qq{"} if scalar(@suggestion) > 0;
-    print qq,]],;
-}
+print $q->redirect("http://maps.google.ca/maps?q=" . &streetnames_suggestions('city' => $city, 'street' => $street));
 
