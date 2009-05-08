@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.97 2009/04/21 21:18:24 wosch Exp $
+# $Id: Makefile.osm,v 1.98 2009/05/08 23:15:07 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -968,6 +968,8 @@ create-bbbike-web-symlinks:
 	ln -fs `pwd`/misc/index.html ${BBBIKE_WEB_DIR}
 	ln -fs `pwd`/misc/world.cgi ${BBBIKE_WEB_DIR}/cgi
 	ln -fs `pwd`/misc/world.cgi.config ${BBBIKE_WEB_DIR}/cgi
+	ln -fs `pwd`/misc/streets.html ${BBBIKE_WEB_DIR}
+	ln -fs `pwd`/bin/streets.cgi ${BBBIKE_WEB_DIR}/cgi
 
 
 scp rsync rsync-tgz:
