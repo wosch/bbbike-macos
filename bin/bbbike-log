@@ -2,15 +2,23 @@
 
 PATH=$HOME/bin:$PATH; export PATH
 
-cd /var/log/lighttpd || exit 2
+if cd /var/log/lighttpd 2>/dev/null; then
+  : ${logfiles="bbbike.log*"}
+else 
+  if cd /var/log/apache2 2>/dev/null; then
+    : ${logfiles="access_log*"}
+  else 
+    exit 2
+  fi
+fi
 
-: ${logfiles="bbbike.log*"}
-
-: ${log_html=$HOME/bbbike/log.html}
+: ${log_html=$HOME/projects/bbbike/log.html}
 : ${max_pictures=1024}
-: ${bbbike_host="http://recv.de:8080"}
+: ${bbbike_host=""}
 
-zcat -f `ls -rt $logfiles` | zegrep -h 'GET /cgi/[A-Zb]' | 
+zcat='gzip -dc'
+
+$zcat -f `ls -rt $logfiles` | zegrep -h 'GET (/~wosch/bbbike)?/cgi/[A-Zb]' | 
 	egrep  'imagetype=png.*geometry=240x180' | 
 	awk '{print $7}'| 
 	perl -ne 'print if !$cache{$_}; $cache{$_} = 1' | perl -e 'while(<>) { push @a, $_ }; print reverse @a' |
