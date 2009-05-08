@@ -5,7 +5,7 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.98 2009/05/08 23:15:07 wosch Exp $
+# $Id: Makefile.osm,v 1.99 2009/05/08 23:16:38 wosch Exp $
 
 
 OSMBIKE_DATA=	data-osm.tgz
@@ -958,7 +958,10 @@ Mannheim-convert:
 ##############################################################################################
 
 
-create-bbbike-web-symlinks:
+create-bbbike-web-symlinks-bbbike.en.cgi:
+	cd ${BBBIKE_WEB_DIR}/cgi && ln -fs bbbike.cgi bbbike.en.cgi
+
+create-bbbike-web-symlinks: create-bbbike-web-symlinks-bbbike.en.cgi
 	cd ${BBBIKE_WEB_DIR}/cgi && \
 	for city in ${CITIES}; do \
 		ln -fs world.cgi $$city.cgi; \
