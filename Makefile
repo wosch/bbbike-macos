@@ -185,6 +185,7 @@ update-files-powerpc:
 
 
 get-tarball:
+	mkdir -p ${DOWNLOAD_DIR}
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
 	  test -f ${PERL_TARBALL} || curl -s -S -f -o ${PERL_TARBALL} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL}
