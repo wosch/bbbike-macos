@@ -387,6 +387,14 @@
     </Point>
   </Placemark>
   <Placemark>
+    <name>Kassel</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Kassel.cgi">Start BBBike @ Kassel</a></span>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>9.4815,51.3045,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
     <name>Kaunas</name>
     <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Kaunas.cgi">Start BBBike @ Kaunas</a></span>]]></description>
     <styleUrl>#style1</styleUrl>

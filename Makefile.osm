@@ -110,6 +110,7 @@ CITIES=		\
 	WarenMueritz \
 	Sarajewo \
 	Colmar \
+	Kassel \
 
 all: help
 
@@ -945,6 +946,15 @@ Mannheim-download:
 	${DOWNLOADOSM} -o ${OSM_DIR}/Mannheim -- 8.306 49.302 8.773 49.587
 Mannheim-convert:
 	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Mannheim ${OSM_DIR}/Mannheim
+
+# bbbike @ Kassel
+Kassel: Kassel-download Kassel-convert
+Kassel-download:
+	mkdir -p ${OSM_DIR}/Kassel
+	${DOWNLOADOSM} -o ${OSM_DIR}/Kassel -- 9.369 51.233 9.594 51.376
+Kassel-convert:
+	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Kassel ${OSM_DIR}/Kassel
+
 
 ## bbbike @ Ruhrgebiet
 #Ruhrgebiet: Ruhrgebiet-download Ruhrgebiet-convert

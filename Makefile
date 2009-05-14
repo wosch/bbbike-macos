@@ -138,6 +138,7 @@ CITIES=		\
         Dortmund \
         Darmstadt \
         Mannheim \
+        Kassel \
 
 
 all: help
