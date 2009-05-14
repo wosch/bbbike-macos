@@ -983,6 +983,7 @@ create-bbbike-web-symlinks: create-bbbike-web-symlinks-bbbike.en.cgi
 	ln -fs `pwd`/misc/world.cgi.config ${BBBIKE_WEB_DIR}/cgi
 	ln -fs `pwd`/misc/streets.html ${BBBIKE_WEB_DIR}
 	ln -fs `pwd`/bin/streets.cgi ${BBBIKE_WEB_DIR}/cgi
+	ln -fs `pwd`/Makefile.osm ${BBBIKE_WEB_DIR}
 
 
 scp rsync rsync-tgz:
