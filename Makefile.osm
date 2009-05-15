@@ -120,8 +120,8 @@ tarball: convert convert-workarounds
 	cp -f ${OSMBIKE_DATA} ../bbbike-macos/download
 
 cities:
-	@for i in `perl -e 'print "x " x 32'`; do ${MAKE} _cities; done
-	${MAKE} _cities_complete
+	@for i in `perl -e 'print "x " x 16'`; do ${MAKE} -f Makefile.osm _cities; done
+	${MAKE} -f Makefile.osm _cities_complete
 
 _cities2:
 	@for i in ${CITIES}; do \
