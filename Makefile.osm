@@ -10,7 +10,7 @@
 
 OSMBIKE_DATA=	data-osm.tgz
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
-OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline --debug=0 -f -map bbbike
+OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline -experiment add_postal_code --debug=0 -f -map bbbike
 NICE=		nice -n 5
 GXARGS=		`which gxargs xargs | head -1`
 
