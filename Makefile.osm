@@ -144,6 +144,13 @@ _cities_complete:
 city-count:
 	@echo ${CITIES}  | wc -w
 
+city-population:
+	@for i in ${CITIES}; do \
+		printf "$$i "; \
+		find osm/$$i -name '*.gz' -print0 | xargs -0 -n1 -P8 zegrep population | \
+			perl -ne 's,.*:,,; print "$$1\n" if /(\d+)/' | sort -n | tail -1; \
+	done
+
 # using GNU xargs -P parallel
 convert:
 	rm -rf data-osm.old
@@ -1002,7 +1009,7 @@ help:
 	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
 	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
 	@echo "            [ convert | convert-workarounds | opensearch ]"
-	@echo "            [ city-count ]"
+	@echo "            [ city-count | city-population ]"
 	@echo ""
 	@echo "            [ ${CITIES} ]"
 
