@@ -148,7 +148,7 @@ city-population:
 	@for i in ${CITIES}; do \
 		printf "$$i "; \
 		find osm/$$i -name '*.gz' -print0 | xargs -0 -n1 -P8 zegrep population | \
-			perl -ne 's,.*:,,; print "$$1\n" if /(\d+)/' | sort -n | tail -1; \
+			perl -e 'while(<>) { s,.*:,,; print "$$1\n" if /(\d+)/ }; print "0\n" ' | sort -n | tail -1; \
 	done
 
 # using GNU xargs -P parallel
