@@ -267,7 +267,7 @@ kml:
 	./bin/bbbike-world-kml Makefile.osm > misc/bbbike-world.kml
 		
 build-version version:
-	cvs -q log | perl -ne 'print if s/head: 1.//' | awk '{ s += $$1 } END { print s + 1}'
+	@git show | head -1 | perl -npe 's/^commit\s+//'
 
 update: 
 	${MAKE} distclean
