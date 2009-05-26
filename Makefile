@@ -11,7 +11,7 @@ BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
 
 # see target build-version
-BUILD_VERSION=	17d7c7104b71bed87ec048cd83469b684f9f40a
+BUILD_VERSION=	`${MAKE} -s build-version` 
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
