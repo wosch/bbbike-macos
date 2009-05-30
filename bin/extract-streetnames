@@ -1,0 +1,361 @@
+#!/usr/bin/perl -w
+# -*- perl -*-
+
+#
+# Author: Slaven Rezic
+#
+# Copyright (C) 2009 Slaven Rezic. All rights reserved.
+# This program is free software; you can redistribute it and/or
+# modify it under the same terms as Perl itself.
+#
+# Mail: slaven@rezic.de
+# WWW:  http://www.rezic.de/eserte/
+#
+
+use strict;
+use FindBin;
+use lib ("$FindBin::RealBin/..",
+	 "$FindBin::RealBin/../lib",
+	);
+
+use Fcntl qw(SEEK_SET);
+use File::Temp qw(tempfile);
+use Karte::Polar;
+use Karte::Standard;
+use Strassen::Core;
+use Strassen::Strasse;
+
+my $datadir = shift || "$FindBin::RealBin/../data";
+
+my($nodefh, $nodefile) = tempfile(UNLINK => 1, SUFFIX => "_node.xml");
+binmode $nodefh, ':utf8';
+my($wayfh, $wayfile) = tempfile(UNLINK => 1, SUFFIX => "_way.xml");
+binmode $wayfh, ':utf8';
+
+my $next_node_id = 1;
+my $next_way_id = 1;
+my %node_id;
+
+my %oneway;
+my %no_access;
+
+my %cat_to_highway = ('B'  => 'primary',
+		      'HH' => 'primary',
+		      'H'  => 'secondary',
+		      'N'  => 'residential',
+		      'NN' => 'cycleway', # XXX
+		      '?'  => 'motorway', # cheating
+		      '??' => 'motorway', # cheating
+		     );
+
+my %cat_to_railway = ('U' => 'subway',
+		      'S' => 'light_rail',
+		      'R' => 'rail',
+		     );
+
+my %cat_to_area_landuse = ('Forest'     => 'forest',
+			   'Cemetery'   => 'cemetery',
+			   'Industrial' => 'industrial',
+			   # 'Ae' => 'airport', # does not exist
+			   'Orchard'    => 'allotments',
+			   'Sport'      => 'sports',
+			   'Green'      => 'village_green',
+			  );
+my %cat_to_area_leisure = ('P'          => 'park',
+			   'Pabove'     => 'park',
+			  );
+
+my($min_lat, $max_lat, $min_lon, $max_lon);
+
+my $gesperrt = Strassen->new_stream("$datadir/gesperrt");
+$gesperrt->read_stream
+    (sub {
+	 my($r, $dir) = @_;
+	 my($cat) = $r->[Strassen::CAT] =~ m{^([^:]+)};
+	 my @node_ids = map {
+	     my($px,$py) = $Karte::Polar::obj->trim_accuracy($Karte::Polar::obj->standard2map(split /,/, $_));
+	     my $node_id = maybe_add_node($px,$py);
+	     $node_id;
+	 } @{ $r->[Strassen::COORDS] };
+	 for my $node_id_i (1 .. $#node_ids) {
+	     if ($cat eq '1') {
+		 $oneway{$node_ids[$node_id_i].' '.$node_ids[$node_id_i-1]} = 1; # in osm oneway is the open direction, not the closed
+	     } elsif ($cat eq '2') {
+		 $no_access{$node_ids[$node_id_i-1].' '.$node_ids[$node_id_i]} = 1;
+		 $no_access{$node_ids[$node_id_i].' '.$node_ids[$node_id_i-1]} = 1;
+	     }
+	 }
+     });
+
+Strassen->new_stream("$datadir/flaechen")->read_stream(\&handle_area_like);
+
+Strassen->new_stream("$datadir/wasserstrassen")->read_stream(\&handle_waterway_like);
+Strassen->new_stream("$datadir/wasserumland")->read_stream(\&handle_waterway_like);
+Strassen->new_stream("$datadir/wasserumland2")->read_stream(\&handle_waterway_like);
+
+Strassen->new_stream("$datadir/faehren")->read_stream(\&handle_ferry_like);
+
+Strassen->new_stream("$datadir/strassen")->read_stream(\&handle_highway_like);
+Strassen->new_stream("$datadir/landstrassen")->read_stream(\&handle_highway_like);
+Strassen->new_stream("$datadir/landstrassen2")->read_stream(\&handle_highway_like);
+Strassen->new_stream("$datadir/../tmp/fragezeichen-nextcheck.bbd")->read_stream(\&handle_highway_like);
+
+Strassen->new_stream("$datadir/ubahn")->read_stream(\&handle_railway_like);
+Strassen->new_stream("$datadir/sbahn")->read_stream(\&handle_railway_like);
+Strassen->new_stream("$datadir/rbahn")->read_stream(\&handle_railway_like);
+
+sub handle_highway_like {
+    my($r, $dir) = @_;
+
+    my($cat) = $r->[Strassen::CAT] =~ m{^([^:]+)};
+    if ($cat eq 'Pl') {
+	# XXX maybe handle later...
+	return;
+    }
+    my $highway_tag = $cat_to_highway{$cat};
+    if (!defined $highway_tag) {
+	warn "Ignore cat='$r->[Strassen::CAT]'...\n";
+	return;
+    }
+
+    my @node_ids = get_node_ids($r);
+
+    # split streets
+    my @segments;
+    my $last_tags;
+    my @last_tags;
+    my $begin_split_index = 0;
+    for my $node_idx (1 .. $#node_ids) {
+	my $forward_spec = $node_ids[$node_idx-1].' '.$node_ids[$node_idx];
+	my $backward_spec = $node_ids[$node_idx].' '.$node_ids[$node_idx-1];
+	my @this_tags = (
+			 ($oneway{$forward_spec}||''),
+			 ($oneway{$backward_spec}||''),
+			 ($no_access{$forward_spec}||''),
+			);
+	my $this_tags = join(" ", @this_tags);
+	if (defined $last_tags) {
+	    if ($last_tags ne $this_tags) {
+		# we need to split
+		push @segments, [[@node_ids[$begin_split_index..$node_idx-1]], [@last_tags]];
+		$begin_split_index = $node_idx-1;
+		$last_tags = $this_tags;
+		@last_tags = @this_tags;
+	    }
+	} else {
+	    $last_tags = $this_tags;
+	    @last_tags = @this_tags;
+	}
+    }
+    push @segments, [[@node_ids[$begin_split_index..$#node_ids]], [@last_tags]];
+
+    my($name, @cityparts) = Strasse::split_street_citypart($r->[Strassen::NAME]);
+    _xmlify($name);
+
+    for my $segment (@segments) {
+	my @node_ids = @{$segment->[0]};
+	my($oneway, $oneway_reversed, $no_access) = @{$segment->[1]};
+
+	if ($oneway_reversed) {
+	    @node_ids = reverse @node_ids;
+	    $oneway = 1;
+	}
+	    
+	print $wayfh qq{<way id="$next_way_id" visible="true">\n};
+	for my $node_id (@node_ids) {
+	    print $wayfh qq{  <nd ref="$node_id"/>\n};
+	}
+	print $wayfh qq{  <tag k="name" v="$name" />\n};
+	print $wayfh qq{  <tag k="highway" v="$highway_tag" />\n};
+	if ($oneway) {
+	    print $wayfh qq{  <tag k="oneway" v="yes" />\n};
+	}
+	if ($no_access) {
+	    print $wayfh qq{  <tag k="access" v="no" />\n};
+	    print $wayfh qq{  <tag k="bicycle" v="no" />\n}; # access=no is not enough
+	}
+
+	if (0) {
+	    print $wayfh qq{  <tag k="addr:street" v="$name" />\n};
+	    print $wayfh qq{  <tag k="addr:housenumber" v="0" />\n}; # XXX pure faked
+	    print $wayfh qq{  <tag k="addr:country" v="DE" />\n};
+	    if (@cityparts) {
+		# parse street numbers out
+		@cityparts = grep {
+		    my($type, $nr) = Strasse::parse_street_type_nr($_);
+		    !defined $type;
+		} @cityparts;
+		if (@cityparts) {
+		    _xmlify($cityparts[0]);
+		    # XXX hack: use only first
+		    print $wayfh qq{  <tag k="addr:city" v="$cityparts[0]" />\n};
+		}
+	    }
+	}
+
+	print $wayfh qq{</way>\n};
+	$next_way_id++;
+    }
+}
+
+sub handle_railway_like {
+    my($r, $dir) = @_;
+
+    my($cat) = $r->[Strassen::CAT] =~ m{^([^:]+)};
+    return if $cat !~ m{^([USR])[ABC]?$};
+    my $railway_cat = $cat_to_railway{$1};
+    return if !defined $cat;
+
+    my @node_ids = get_node_ids($r);
+
+    my $name = $r->[Strassen::NAME];
+    _xmlify($name);
+
+    print $wayfh qq{<way id="$next_way_id" visible="true">\n};
+    for my $node_id (@node_ids) {
+	print $wayfh qq{  <nd ref="$node_id"/>\n};
+    }
+    print $wayfh qq{  <tag k="name" v="$name" />\n} if defined $name && length $name;
+    print $wayfh qq{  <tag k="railway" v="$railway_cat" />\n};
+    print $wayfh qq{</way>\n};
+    $next_way_id++;
+}
+
+sub handle_waterway_like {
+    my($r, $dir) = @_;
+
+    my($is_area, $cat);
+    if ($r->[Strassen::CAT] =~ m{^F:([^:]+)}) {
+	$is_area = 1;
+	$cat = $1;
+    } else {
+	$cat = $r->[Strassen::CAT] =~ m{^([^:]+)};
+    }
+    # XXX handling W0,W1 etc. missing
+
+    my @node_ids = get_node_ids($r);
+
+    my $name = $r->[Strassen::NAME];
+    _xmlify($name);
+
+    print $wayfh qq{<way id="$next_way_id" visible="true">\n};
+    for my $node_id (@node_ids) {
+	print $wayfh qq{  <nd ref="$node_id"/>\n};
+    }
+    print $wayfh qq{  <tag k="name" v="$name" />\n} if defined $name && length $name;
+    if ($is_area) {
+	print $wayfh qq{  <tag k="natural" v="water" />\n};
+    } else {
+	print $wayfh qq{  <tag k="waterway" v="river" />\n};
+    }
+    print $wayfh qq{</way>\n};
+    $next_way_id++;
+}
+
+sub handle_ferry_like {
+    my($r, $dir) = @_;
+
+    my @node_ids = get_node_ids($r);
+
+    my $name = $r->[Strassen::NAME];
+    _xmlify($name);
+
+    print $wayfh qq{<way id="$next_way_id" visible="true">\n};
+    for my $node_id (@node_ids) {
+	print $wayfh qq{  <nd ref="$node_id"/>\n};
+    }
+    print $wayfh qq{  <tag k="name" v="$name" />\n} if defined $name && length $name;
+    print $wayfh qq{  <tag k="route" v="ferry" />\n};
+    # XXX description from comments_ferry missing
+    print $wayfh qq{</way>\n};
+    $next_way_id++;
+}
+
+sub handle_area_like {
+    my($r, $dir) = @_;
+
+    if ($r->[Strassen::CAT] !~ m{^F:([^:]+)}) {
+	return; # should never happen
+    }
+    my $cat = $1;
+    my($landuse, $leisure);
+    $landuse = $cat_to_area_landuse{$cat};
+    if (!defined $landuse) {
+	$leisure = $cat_to_area_leisure{$cat};
+	if (!defined $leisure) {
+	    #warn "Ignoring $cat...\n";
+	    return;
+	}
+    }
+
+    my @node_ids = get_node_ids($r);
+
+    my $name = $r->[Strassen::NAME];
+    _xmlify($name);
+
+    print $wayfh qq{<way id="$next_way_id" visible="true">\n};
+    for my $node_id (@node_ids) {
+	print $wayfh qq{  <nd ref="$node_id"/>\n};
+    }
+    print $wayfh qq{  <tag k="name" v="$name" />\n} if defined $name && length $name;
+    if (defined $landuse) {
+	print $wayfh qq{  <tag k="landuse" v="$landuse" />\n};
+    } else {
+	print $wayfh qq{  <tag k="leisure" v="$leisure" />\n};
+    }
+    print $wayfh qq{</way>\n};
+    $next_way_id++;
+}
+
+seek $nodefh, 0, SEEK_SET
+    or die $!;
+seek $wayfh, 0, SEEK_SET
+    or die $!;
+
+binmode STDOUT, ':utf8';
+print qq{<osm version="0.6" generator="bbd2osm">\n};
+print qq{<bound box="$min_lat,$min_lon,$max_lat,$max_lon" origin="http://www.bbbike.de" />\n};
+while(<$nodefh>) {
+    print $_;
+}
+while(<$wayfh>) {
+    print $_;
+}
+print qq{</osm>\n};
+
+sub get_node_ids {
+    my $r = shift;
+    my @node_ids;
+    for my $sxy (@{ $r->[Strassen::COORDS] }) {
+	my($px,$py) = $Karte::Polar::obj->trim_accuracy($Karte::Polar::obj->standard2map(split /,/, $sxy));
+	my $this_node_id = maybe_add_node($px, $py);
+	push @node_ids, $this_node_id;
+    }
+    @node_ids;
+}
+
+sub maybe_add_node {
+    my($px, $py) = @_;
+    my $pxy = $px.','.$py;
+    my $this_node_id = $node_id{$pxy};
+    if (!defined $this_node_id) {
+	$this_node_id = $node_id{$pxy} = $next_node_id++;
+	print $nodefh qq{<node id="$this_node_id" lat="$py" lon="$px" user="eserte" visible="true" />\n};
+
+	$min_lon = $px if !defined $min_lon || $min_lon > $px;
+	$max_lon = $px if !defined $max_lon || $max_lon < $px;
+	$min_lat = $py if !defined $min_lat || $min_lat > $py;
+	$max_lat = $py if !defined $max_lat || $max_lat < $py;
+
+    }
+    $this_node_id;
+}
+
+sub _xmlify {
+    $_[0] =~ s{&}{&#38;}g; # XXX hack to xml-ify
+    $_[0] =~ s{"}{&#34;}g;
+    $_[0] =~ s{<}{&#60;}g;
+    $_[0] =~ s{>}{&#62;}g;
+}
+
+__END__
