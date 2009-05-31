@@ -79,7 +79,6 @@ sub extract_nodes {
                       $reader->getAttribute('v');
                 }
                 else {
-                    warn "XXX ", $reader->name, "\n";
                     last;
                 }
             }
