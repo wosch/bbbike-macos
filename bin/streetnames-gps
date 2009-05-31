@@ -1,4 +1,4 @@
-#!/opt/local/bin/perl 
+#!/usr/local/bin/perl 
 # -*- perl -*-
 
 use IO::File;
@@ -12,6 +12,7 @@ $VERSION = 0.1;
 
 my $debug               = 0;
 my $unique_street_names = 1;
+my $sort                = 1;
 
 sub usage () {
     <<EOF;
@@ -19,12 +20,14 @@ usage: $0 [--debug={0..2}] [--unique-street-names={0,1}] streets nodes
 
 --debug=0..2      		debug option
 --unique-street-names=0,1	print each streetname only once
+--sort=0,1			sorted output
 EOF
 }
 
 GetOptions(
     "unique-street-names" => \$unique_street_names,
     "debug=i"             => \$debug,
+    "sort=i"              => \$sort,
 ) or die usage;
 
 my $streets = $ARGV[0];
@@ -41,6 +44,14 @@ while (<$s>) {
 }
 
 my $p = new IO::File $points, "r" or die "open $points: $!\n";
+
+my $fd_sort;
+if ($sort) {
+    open $fd_sort, "|-", "sort", "-uf"
+      or die "Can't run sort: $!";
+    select($fd_sort);
+}
+
 my %streets;
 while (<$p>) {
     chomp;
@@ -55,6 +66,7 @@ while (<$p>) {
             $streets{$street} = 1 if $unique_street_names;
         }
     }
-
 }
+
+close($fd_sort) if $fd_sort;
 
