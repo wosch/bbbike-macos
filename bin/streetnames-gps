@@ -14,7 +14,7 @@ my %hash;
 my $streets = $ARGV[0];
 my $points  = $ARGV[1];
 
-die "usage: $0 streetdb pointdb\n" if ( $streets && $points );
+die "usage: $0 streetdb pointdb\n" if !( $streets && $points );
 
 my $s = new IO::File $streets, "r" or die "open $streets: $!\n";
 while (<$s>) {
