@@ -1,359 +1,47 @@
 #!/usr/bin/perl -w
 # -*- perl -*-
 
-#
-# $Id: osm2bbd,v 2.12 2009/03/03 22:06:54 eserte Exp $
-# Author: Slaven Rezic
-#
-# Copyright (C) 2008,2009 Slaven Rezic. All rights reserved.
-# This program is free software; you can redistribute it and/or
-# modify it under the same terms as Perl itself.
-#
-# Mail: slaven@rezic.de
-# WWW:  http://www.rezic.de/eserte/
-#
-
+use XML::LibXML::Reader;
 use strict;
-use FindBin;
-use lib "$FindBin::RealBin/..";
+use warnings;
 
 use vars qw($VERSION);
 $VERSION = 0.11;
 
-use Cwd qw(cwd realpath);
 use Data::Dumper;
-use File::Basename qw(basename);
-use File::Spec qw();
 use Getopt::Long;
-use IO::File;
-use List::Util qw(max);
 
-sub epoch2isodate (;$);
-sub touch ($);
-
-use constant DO_ASSERTS => 1;
-use constant SORTED_TAGS => 1;
-if (SORTED_TAGS) {
-    require Tie::IxHash;
-}
-
-my $o;
-my $f;
-my $v;
-my $encoding = "utf-8";
 my $debug = 1; # 0: quiet, 1: normal, 2: verbose
-my $ignore_unhandled;
-my $ignore_underline;
-
-my $map;
-my $center;
-my $center_delta;
-
-my $parsefor;
-my $country = '';
-my $lang = '';
-use constant MAXLINELENGTH => 12288; # the limit of BBBikeXS
-my $splitlonglines = 1; # XXX this may change once BBBikeXS has no length restriction anymore
+my $v;
 my $xmlparser;
-
-my %experiments;
-my %known_experiments = map {($_,1)} qw(add_postal_code);
 
 sub usage () {
     <<EOF;
-usage: $0 [-v] [-f] [-encoding enc] [-center lon,lat] [-map bbbike [-centerdelta lon,lat]] [-country country] -o directory osmfile ...
+usage: $0 [--debug={0..2}] osm_file
 
 -v                Show parser progress
--f                Force overwriting existing output directory
--enc ...          Specify different encoding, standard is utf-8
--map bbbike       Use BBBike coordinates instead of WGS 84 coordinates in the
-                  output. Recommended until BBBike is able to fully handle
-                  WGS 84 coordinates.
--center lon,lat   Set the center of the map. If not set, then the plotting
-		  software decides on a center itself, usually the center
-		  of the bounding box.
--centerdelta lon,lat If -map bbbike is used, then specify the 0,0 point.
-		     Defaults to standard Berlin setting.
--o directory      A non-existing directory to output the bbd files.
--parsefor ...     Parse only for the given key=value pair,
-                  key as string and val as regexp
--country ...      Optimize output for given country (see documentation for
-                  supported countries)
--lang ...         Optimize output for given language (see documentation for
-                  supported languages)
--ignore-unhandled do not create the _unhandled layer
--ignore-underline do not create any of the "_*" layers
+--debug=0..2	  debug option
 osmfile ...       Files downloaded by downloadosm,
                   or directory containing .osm files
 EOF
 }
 
-my $prog = realpath $0;
-my @commandline = ($^X, $0, @ARGV);
-my $cwd = cwd;
-
-GetOptions("o=s" => \$o,
-	   "f" => \$f,
+GetOptions(
 	   "v" => \$v,
 	   "debug=i" => \$debug,
-	   "map=s" => \$map,
-	   "center=s" => \$center,
-	   "centerdelta=s" => \$center_delta,
-	   "encoding=s" => \$encoding,
-	   "parsefor=s" => \$parsefor,
-	   "country=s" => \$country,
-	   "lang=s" => \$lang,
-	   "splitlonglines!" => \$splitlonglines,
-	   "xmlparser=s" => \$xmlparser,
-	   "ignore-unhandled!" => \$ignore_unhandled,
-	   "ignore-underline!" => \$ignore_underline,
-	   'experiment=s@' => sub {
-	       my $exp = $_[1];
-	       if (!$known_experiments{$exp}) {
-		   die <<EOF;
-Unknown experiment '$exp'. Known experiments are:
-@{[ sort keys %known_experiments ]}
-EOF
-	       }
-	       $experiments{$exp}++;
-	   },
 	  )
     or die usage;
 
 my @osm_files = @ARGV;
-if (!@osm_files) {
-    die <<EOF . "\n" . usage;
-Please specify one or more osm files. To download an osm file, you can use
-the script downloadosm (usually to be found in the same directory as this
-script) or raw wget, for example
+usage if !@osm_files
 
-  wget -O filename.osm http://www.openstreetmap.org/api/0.5/map?bbox=x0,y0,x1,y1
-
-Note that the bbox must not be too large, otherwise you get a 400 bad request
-error.
-EOF
-}
-
-if ($center && $center !~ m{^[-+]?[\d\.]+,[-+]?[\d\.]+$}) {
-    die "The value for the -center option has to be in the form lon,lat\n";
-}
-
-my($parsefor_key, $parsefor_val);
-if ($parsefor) {
-    if (!(($parsefor_key, $parsefor_val) = $parsefor =~ m{^(.*)=(.*)$})) {
-	die "-parsefor value <$parsefor> must be in the form key=val";
-    }
-    $parsefor_val = qr{$parsefor_val};
-}
-
-if (!$parsefor) {
-    if (!$o) {
-	die "Please specify (non-existent) output directory with -o option.\n" . usage;
-    }
-    if (!$f && -e $o) {
-	die "Output directory <$o> must not exist (or specify -f to force overwrite).\n";
-    }
-}
-
-# fallback
-sub M ($) { $_[0] }
-sub Mfmt  { sprintf(shift, @_) }
-
-if ($lang) {
-    $lang = '' if $lang eq 'de';
-}
-if ($lang) {
-    die "Language '$lang' is not supported, please specify either 'de' or 'en'" unless $lang eq 'en';
-}
-
-my %unhandled;
-my %out;
-my %resolve_node_later;
-my %resolved;
-my @bbox_wgs84;
-my %global_directives;
-my %place_to_population;
-
-%global_directives =
-    (
-     "_building"     => ["layer_stack: above:i"],
-     "_motortraffic" => ["category_image.Parking: ../misc/verkehrszeichen/Zeichen_314.svg:24x24=1:3000,xxx"],
-     "borders" => ["line_color: #000000", # per bbd.pod
-		   "str_color: #000000", # in reality
-		   # Z4: Landesgrenzen
-		   # Z5: gibt's in NRW
-		   (map { "line_dash.Z$_: 8,5,2,5" } (1 .. 10)),
-		  ],
-    );
-
-# see http://www.mail-archive.com/talk@openstreetmap.org/msg06041.html
-my %grade_to_Q = (1 => "Q0",
-		  2 => "Q1",
-		  3 => "Q2",
-		  4 => "Q3",
-		  5 => "Q3-",
-		 );
-
-sub add_underline {
-    return if $ignore_underline;
-    my($or_ref, $name, $cat) = @_;
-    push @$or_ref, [$name, $cat];
-}
-
-my $do_amenity = sub {
-    my($is_area, $amenity, $tagref) = @_;
-    my @or;
-    my $F = $is_area ? "F:" : "";
-    if ($amenity eq 'place_of_worship') {
-	my $religion = $tagref->{'religion'};
-	if (!$religion || $religion eq 'christian') {
-	    push @or, ["sehenswuerdigkeit", $F."SW|IMG:church"];
-	} elsif ($religion eq 'jewish') {
-	    push @or, ["sehenswuerdigkeit", $F."SW|IMG:synagogue"];
-	} elsif ($religion eq 'muslim') {
-	    push @or, ["sehenswuerdigkeit", $F."SW|IMG:mosque"];
-	} else {
-	    $unhandled{"amenity-religion-$religion"}++;
-	}
-    } elsif ($amenity eq 'museum') {
-	push @or, ["sehenswuerdigkeit", $F."SW|IMG:museum"];
-    } elsif ($amenity eq 'hospital') {
-	push @or, ["sehenswuerdigkeit", $F."SW|IMG:hospital"];
-    } elsif ($amenity =~ m{^theat(?:er|re)$}) {
-	push @or, ["sehenswuerdigkeit", $F."SW|IMG:theater"];
-    } elsif ($amenity =~ m{^(?:shopping|shopping_centre)$}) {
-	push @or, ["sehenswuerdigkeit", $F."Shop"];
-    } elsif ($amenity =~ m{^(?:arts_center|courthouse|library|police|post_office|public_building|townhall|university|embassy|prison)$}) {
-	push @or, ["sehenswuerdigkeit", $F."SW"];
-    } elsif ($amenity =~ m{^(?:biergarten|cafe|cafeteria|pub|bar)$}) {
-	push @or, ["kneipen", $F."X"];
-    } elsif ($amenity =~ m{^(?:fast_food|restaurant)$}) {
-	push @or, ["restaurants", $F."X"];
-    } elsif ($amenity eq 'cinema') {
-	push @or, ["kinos", $F."X"];
-    } elsif ($amenity =~ m{^(?:kindergarten|school)$}) {
-	add_underline(\@or, "_education", $F."X");
-    } elsif ($amenity =~ m{^(?:parking|car_rental)$}) {
-	add_underline(\@or, "_motortraffic", $F."#f0f0f0|IMG:Parking");
-    } else {
-	$unhandled{"amenity-$amenity"}++;
-    }
-    @or;
-};
-
-my $do_historic = sub {
-    my($is_area, $historic) = @_;
-    my @or;
-    my $F = $is_area ? "F:" : "";
-    if ($historic eq 'monument') {
-	push @or, ["sehenswuerdigkeit", $F."SW|IMG:monument"];
-    } elsif ($historic =~ m{^(?:castle|memorial|archaeological_site|ruins)$}) {
-	push @or, ["sehenswuerdigkeit", $F."SW"];
-    } else {
-	$unhandled{"historic-$historic"}++;
-    }
-    @or;
-};
-
-my $do_tourism = sub {
-    my($is_area, $tourism) = @_;
-    my @or;
-    my $F = $is_area ? "F:" : "";
-    if ($tourism eq 'attraction') {
-	push @or, ["sehenswuerdigkeit", $F."SW"];
-    } elsif ($tourism eq 'museum') {
-	push @or, ["sehenswuerdigkeit", $F."SW|IMG:museum"];
-    } else {
-	$unhandled{"tourism-$tourism"}++;
-    }
-    @or;
-};
-
-my $do_unhandled = sub {
-    my($name_ref, $tagref) = @_;
-
-    for my $key (keys %$tagref) {
-	next if $key =~ m{^(?:
-			    name
-			  | created_by
-			  | source
-			  | url
-			 )$}x;
-	my $val = $tagref->{$key};
-	if ($$name_ref) { $$name_ref .= "; " }
-	$$name_ref .= "$key:$val";
-    }
-};
-
-my $conv = sub {
-    my($lon,$lat) = @_;
-    "$lon,$lat";
-};
-if ($map) {
-    if ($map ne 'bbbike') {
-	die "Only -map bbbike is supported.\n";
-    }
-    require Karte::Polar;
-    require Karte::Standard;
-
-    my($dx,$dy) = (0,0);
-    if ($center_delta) {
-	my($c_lon,$c_lat) = split /,/, $center_delta;
-	($dx,$dy) = $Karte::Standard::obj->trim_accuracy($Karte::Polar::obj->map2standard($c_lon,$c_lat));
-    }
-
-    $conv = sub {
-	my($lon,$lat) = @_;
-	my($x,$y) = $Karte::Standard::obj->trim_accuracy($Karte::Polar::obj->map2standard($lon,$lat));
-	($x-$dx).",".($y-$dy);
-    };
-}
-
-if ($center) {
-    $center = $conv->(split /,/, $center);
-}
-
-{
-    # expand directories
-    # XXX Should be really a recursive function, probably
-    my @new_osm_files;
-    for my $osm_file (@osm_files) {
-	if (-d $osm_file) {
-	    push @new_osm_files, grep { -f $_ && -s $_ } glob(File::Spec->catfile($osm_file,"*.{osm,osm.gz}")); # XXX argh, grep duplicates functionality, see "recursive" suggestion above
-	} elsif (-z $osm_file) {
-	    # May happen while loading data, so ignore this
-	    warn "Ignore empty file <$osm_file>...\n";
-	} else {
-	    push @new_osm_files, $osm_file;
-	}
-    }
-    @osm_files = @new_osm_files;
-}
-
-my $tp;
-eval {
-    die "No terminal" if !is_interactive();
-    require Time::Progress;
-    $tp = Time::Progress->new;
-    $tp->attr(min => 0, max => 2 * $#osm_files + 1);
-    $tp->restart;
-    print STDERR "Two passes are following: nodes and ways\n";
-};
 
 ######################################################################
 # NODES
 my %node2ll;
 my $osm_file_i = 0;
 for my $osm_file (@osm_files) {
-    if ($v) {
-	if ($tp) {
-	    print STDERR $tp->report("\r  nodes done %p elapsed: %L, ETA %E (" . substr(basename($osm_file),0,28) . ")", $osm_file_i++);
-	} else {
-	    warn "Parse $osm_file for nodes...\n";
-	}
-    }
     my($dom, $reader) = open_osm($osm_file);
-    set_info_handler($osm_file, $dom, $reader);
 
  PARSE: {
 
