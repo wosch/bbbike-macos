@@ -6,7 +6,10 @@ ALL=	api.cgi \
 	new-city \
 	opensearch-suggestion \
 	strasse-str \
-	livesearch.cgi
+	livesearch.cgi \
+	streetnames-gps \
+	extract-streetnames \
+
 
 perltidy:
 	perltidy -b ${ALL}

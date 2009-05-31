@@ -10,7 +10,7 @@ use warnings;
 use vars qw($VERSION);
 $VERSION = 0.1;
 
-my $debug = 0;
+my $debug               = 0;
 my $unique_street_names = 1;
 
 sub usage () {
@@ -23,11 +23,9 @@ EOF
 }
 
 GetOptions(
-    "unique-street-names"       => \$unique_street_names,
-    "debug=i" => \$debug,
+    "unique-street-names" => \$unique_street_names,
+    "debug=i"             => \$debug,
 ) or die usage;
-
-
 
 my $streets = $ARGV[0];
 my $points  = $ARGV[1];
@@ -50,11 +48,11 @@ while (<$p>) {
 
     if ( exists $hash{$point} ) {
         foreach my $street ( @{ $hash{$point} } ) {
-	    next if $unique_street_names && exists $streets{$street};
+            next if $unique_street_names && exists $streets{$street};
 
             print $street, "\t", $lon, "\t", $lat, "\n";
 
-	    $streets{$street} = 1 if $unique_street_names;
+            $streets{$street} = 1 if $unique_street_names;
         }
     }
 
