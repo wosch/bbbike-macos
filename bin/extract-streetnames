@@ -57,7 +57,8 @@ sub extract_nodes {
             my @nodes;
             my $zip_code;
 
-            while (1) {
+            while ( $reader->nextElement == 1 ) {
+
                 my $node_name = $reader->name;
                 if ( $node_name eq 'nd' ) {
                     push @nodes, $reader->getAttribute('ref');
@@ -69,15 +70,16 @@ sub extract_nodes {
                 else {
                     last;
                 }
-                $reader->nextElement == 1 or last;
             }
 
-            my $name = $tag{'name'} || '';
-            $name .= ' [ZIP ' . $tag{'postal_code'} . ']'
-              if exists $tag{'postal_code'};
+            if ( $tag{'highway'} ) {
+                my $name = $tag{'name'} || '';
+                $name .= ' [ZIP ' . $tag{'postal_code'} . ']'
+                  if exists $tag{'postal_code'} && $name;
 
-            if ($name) {
-                print $fd_streets $nodes[0], "\t", $name, "\n";
+                if ($name) {
+                    print $fd_streets $nodes[0], "\t", $name, "\n";
+                }
             }
         }
 
@@ -101,6 +103,8 @@ for my $osm_file (@osm_files) {
         $fh = \*STDIN;
     }
 
+    binmode( $fh, ":utf8" );
+
     $reader = XML::LibXML::Reader->new( IO => $fh );
 
     #my $reader = XML::LibXML::Reader->new( location => $osm_file );
@@ -114,6 +118,8 @@ for my $osm_file (@osm_files) {
 
     my $fd_nodes   = File::Temp->new( UNLINK => 0 ) or die "File::Temp: $!\n";
     my $fd_streets = File::Temp->new( UNLINK => 0 ) or die "File::Temp: $!\n";
+    binmode( $fd_nodes,   ":utf8" );
+    binmode( $fd_streets, ":utf8" );
 
     extract_nodes( $reader, $fd_nodes, $fd_streets );
 
