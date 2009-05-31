@@ -2,6 +2,7 @@
 # -*- perl -*-
 
 use IO::File;
+use Getopt::Long;
 
 use strict;
 use warnings;
@@ -9,13 +10,31 @@ use warnings;
 use vars qw($VERSION);
 $VERSION = 0.1;
 
-my %hash;
+my $debug = 0;
+my $unique_street_names = 1;
+
+sub usage () {
+    <<EOF;
+usage: $0 [--debug={0..2}] [--unique-street-names={0,1}] streets nodes
+
+--debug=0..2      		debug option
+--unique-street-names=0,1	print each streetname only once
+EOF
+}
+
+GetOptions(
+    "unique-street-names"       => \$unique_street_names,
+    "debug=i" => \$debug,
+) or die usage;
+
+
 
 my $streets = $ARGV[0];
 my $points  = $ARGV[1];
 
-die "usage: $0 streetdb pointdb\n" if !( $streets && $points );
+die &usage if !( $streets && $points );
 
+my %hash;
 my $s = new IO::File $streets, "r" or die "open $streets: $!\n";
 while (<$s>) {
     chomp;
@@ -24,14 +43,20 @@ while (<$s>) {
 }
 
 my $p = new IO::File $points, "r" or die "open $points: $!\n";
+my %streets;
 while (<$p>) {
     chomp;
     my ( $point, $lon, $lat ) = split(/\t/);
 
     if ( exists $hash{$point} ) {
         foreach my $street ( @{ $hash{$point} } ) {
+	    next if $unique_street_names && exists $streets{$street};
+
             print $street, "\t", $lon, "\t", $lat, "\n";
+
+	    $streets{$street} = 1 if $unique_street_names;
         }
     }
 
 }
+
