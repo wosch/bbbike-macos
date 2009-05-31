@@ -14,24 +14,30 @@ $VERSION = 0.1;
 use Data::Dumper;
 use Getopt::Long;
 
-my $debug = 1;    # 0: quiet, 1: normal, 2: verbose
-my $v;
+my $debug  = 1;    # 0: quiet, 1: normal, 2: verbose
+my $sort   = 1;
+my $uniq   = 1;
+my $unlink = 0;
+
 my $xmlparser;
 
 sub usage () {
     <<EOF;
-usage: $0 [--debug={0..2}] osm_file
+usage: $0 [--debug={0..2}] [ --sort=0|1 ] [ --uniq=0|1 ] [ --unlink=0|1 ] osm_file
 
--v                Show parser progress
 --debug=0..2	  debug option
+--sort=0|1
+--uniq=0|1
+--unlink=0|1
 osmfile ...       Files downloaded by downloadosm,
                   or directory containing .osm files
 EOF
 }
 
 GetOptions(
-    "v"       => \$v,
     "debug=i" => \$debug,
+    "sort=i"  => \$sort,
+    "uniq=i"  => \$uniq,
 ) or die usage;
 
 my @osm_files = @ARGV;
@@ -86,6 +92,52 @@ sub extract_nodes {
     } while ( $reader->nextElement == 1 );
 }
 
+sub street_names {
+    my %args = @_;
+
+    my $streets = $args{'streets'};
+    my $points  = $args{'points'};
+    my $sort    = $args{'sort'};
+
+    my %hash;
+    my $s = new IO::File $streets, "r" or die "open $streets: $!\n";
+    while (<$s>) {
+        chomp;
+        my ( $point, $street ) = split(/\t/);
+        push( @{ $hash{$point} }, $street );
+    }
+
+    my $p = new IO::File $points, "r" or die "open $points: $!\n";
+
+    my $fd_sort;
+    if ($sort) {
+        open $fd_sort, "|-", "sort", "-uf"
+          or die "Can't run sort: $!";
+        select($fd_sort);
+    }
+
+    my %streets;
+    while (<$p>) {
+        chomp;
+        my ( $point, $lon, $lat ) = split(/\t/);
+
+        if ( exists $hash{$point} ) {
+            foreach my $street ( @{ $hash{$point} } ) {
+                next if $uniq && exists $streets{$street};
+
+                print $street, "\t", $lon, "\t", $lat, "\n";
+
+                $streets{$street} = 1 if $uniq;
+            }
+        }
+    }
+
+    if ($sort) {
+        close($fd_sort);
+        select STDOUT;
+    }
+}
+
 ######################################################################
 #
 # main
@@ -120,14 +172,20 @@ for my $osm_file (@osm_files) {
 "The file '$osm_file' is not starting with a <osm> tag, probably not an osm file?";
     }
 
-    my $fd_nodes = File::Temp->new( UNLINK => 0, SUFFIX => '.nodes' )
+    my $fd_nodes = File::Temp->new( UNLINK => $unlink, SUFFIX => '.nodes' )
       or die "File::Temp: $!\n";
-    my $fd_streets = File::Temp->new( UNLINK => 0, SUFFIX => '.streets' )
+    my $fd_streets = File::Temp->new( UNLINK => $unlink, SUFFIX => '.streets' )
       or die "File::Temp: $!\n";
     binmode( $fd_nodes,   ":utf8" );
     binmode( $fd_streets, ":utf8" );
 
     extract_nodes( $reader, $fd_nodes, $fd_streets );
+
+    &street_names(
+        'streets' => $fd_streets->filename,
+        'points'  => $fd_nodes->filename,
+        'sort'    => $sort
+    );
 
     print "Nodes:   ", $fd_nodes->filename,   "\n";
     print "Streets: ", $fd_streets->filename, "\n";
