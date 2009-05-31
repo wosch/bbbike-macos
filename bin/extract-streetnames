@@ -48,7 +48,11 @@ sub extract_nodes {
     my $fd_nodes   = shift;
     my $fd_streets = shift;
 
-    do {
+    my $flag = 0;
+    while ( $flag || $reader->nextElement == 1 ) {
+        $flag = 0;
+        last if !$reader->name;
+
         if ( $reader->name eq 'node' ) {
             my $id  = $reader->getAttribute('id');
             my $lat = $reader->getAttribute('lat');
@@ -57,6 +61,7 @@ sub extract_nodes {
             print $fd_nodes $id, "\t", $lon, "\t", $lat, "\n";
 
         }
+
         elsif ( $reader->name eq 'way' ) {
 
             my %tag;
@@ -74,6 +79,7 @@ sub extract_nodes {
                       $reader->getAttribute('v');
                 }
                 else {
+                    warn "XXX ", $reader->name, "\n";
                     last;
                 }
             }
@@ -87,9 +93,10 @@ sub extract_nodes {
                     print $fd_streets $nodes[0], "\t", $name, "\n";
                 }
             }
-        }
 
-    } while ( $reader->nextElement == 1 );
+            $flag = 1;
+        }
+    }
 }
 
 sub street_names {
@@ -143,6 +150,8 @@ sub street_names {
 # main
 #
 
+die &usage if !@osm_files;
+
 my $reader;
 my $fh;
 for my $osm_file (@osm_files) {
@@ -187,7 +196,9 @@ for my $osm_file (@osm_files) {
         'sort'    => $sort
     );
 
-    print "Nodes:   ", $fd_nodes->filename,   "\n";
-    print "Streets: ", $fd_streets->filename, "\n";
+    if ( !$unlink ) {
+        warn "Nodes:   ", $fd_nodes->filename,   "\n";
+        warn "Streets: ", $fd_streets->filename, "\n";
+    }
 }
 
