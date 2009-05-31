@@ -1,4 +1,4 @@
-#!/opt/local/bin/perl 
+#!/usr/local/bin/perl 
 # -*- perl -*-
 
 use XML::LibXML::Reader;
@@ -120,8 +120,8 @@ for my $osm_file (@osm_files) {
 "The file '$osm_file' is not starting with a <osm> tag, probably not an osm file?";
     }
 
-    my $fd_nodes   = File::Temp->new( UNLINK => 0 ) or die "File::Temp: $!\n";
-    my $fd_streets = File::Temp->new( UNLINK => 0 ) or die "File::Temp: $!\n";
+    my $fd_nodes   = File::Temp->new( UNLINK => 0, SUFFIX => '.nodes' ) or die "File::Temp: $!\n";
+    my $fd_streets = File::Temp->new( UNLINK => 0, SUFFIX => '.streets' ) or die "File::Temp: $!\n";
     binmode( $fd_nodes,   ":utf8" );
     binmode( $fd_streets, ":utf8" );
 
