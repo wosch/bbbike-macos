@@ -35,38 +35,51 @@ my $points  = $ARGV[1];
 
 die &usage if !( $streets && $points );
 
-my %hash;
-my $s = new IO::File $streets, "r" or die "open $streets: $!\n";
-while (<$s>) {
-    chomp;
-    my ( $point, $street ) = split(/\t/);
-    push( @{ $hash{$point} }, $street );
-}
+&street_names( 'streets' => $streets, 'points' => $points, 'sort' => $sort );
 
-my $p = new IO::File $points, "r" or die "open $points: $!\n";
+sub street_names {
+    my %args = @_;
 
-my $fd_sort;
-if ($sort) {
-    open $fd_sort, "|-", "sort", "-uf"
-      or die "Can't run sort: $!";
-    select($fd_sort);
-}
+    my $streets = $args{'streets'};
+    my $points  = $args{'points'};
+    my $sort    = $args{'sort'};
 
-my %streets;
-while (<$p>) {
-    chomp;
-    my ( $point, $lon, $lat ) = split(/\t/);
+    my %hash;
+    my $s = new IO::File $streets, "r" or die "open $streets: $!\n";
+    while (<$s>) {
+        chomp;
+        my ( $point, $street ) = split(/\t/);
+        push( @{ $hash{$point} }, $street );
+    }
 
-    if ( exists $hash{$point} ) {
-        foreach my $street ( @{ $hash{$point} } ) {
-            next if $unique_street_names && exists $streets{$street};
+    my $p = new IO::File $points, "r" or die "open $points: $!\n";
 
-            print $street, "\t", $lon, "\t", $lat, "\n";
+    my $fd_sort;
+    if ($sort) {
+        open $fd_sort, "|-", "sort", "-uf"
+          or die "Can't run sort: $!";
+        select($fd_sort);
+    }
 
-            $streets{$street} = 1 if $unique_street_names;
+    my %streets;
+    while (<$p>) {
+        chomp;
+        my ( $point, $lon, $lat ) = split(/\t/);
+
+        if ( exists $hash{$point} ) {
+            foreach my $street ( @{ $hash{$point} } ) {
+                next if $unique_street_names && exists $streets{$street};
+
+                print $street, "\t", $lon, "\t", $lat, "\n";
+
+                $streets{$street} = 1 if $unique_street_names;
+            }
         }
     }
-}
 
-close($fd_sort) if $fd_sort;
+    if ($sort) {
+        close($fd_sort);
+        select STDOUT;
+    }
+}
 
