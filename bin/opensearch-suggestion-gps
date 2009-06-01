@@ -352,18 +352,21 @@ sub unicode2ascii {
 # e.g.: Karl-Marx-Allee -> ('Marx-Allee', 'Allee')
 #
 # ignore stopwords like 'Avenue', 'St' etc.
-sub worldlist {
+sub wordlist {
 	my $string = shift;
 
 	my @list;
 	my $s = $string;
         $s =~ s/\s+\[.*?\]//; # remove zip codes 
-	$s =~ s/^\[s+"'()//;
+	$s =~ s/^[\[\s"'()]+//;
+	$s =~ s/[\[\s"'()]+$//;
 
 	while($s && length($s) >= 3) {
-		if ($s =~ s/^[\S-]+// ) {
+		if ($s =~ s/^([\S-]+)[\s-]// ) {
+			warn qq{Removed "$1" from "$string"\n} if $debug >= 3;
+
 			last if exists $stopwords{$s};	
-			push(@list, $s);
+			push(@list, $s) if  length($s) >= 3;
 		} else {
 			last;
 		}
@@ -371,7 +374,6 @@ sub worldlist {
 	}	
 
 	return @list;
-
 }
 
 sub usage {
@@ -425,22 +427,26 @@ while (<STDIN>) {
     }
 
     $s{$street} = $coord if $street && !exists $s{$street};
-
-    
-    my @wordlist = &wordlist($street);
-    if ($substring && @wordlist) {
-	map { $s{$_} = $coord if $_ && exists $s{$_ } } @wordlist; 
-    }
 }
 
-foreach my $street ( sort keys %s ) {
-    if ( my @strings = unicode2ascii( $street, $lang ) ) {
+while (my ($street, $val) = each %s ) {
+    my @wordlist = &wordlist($street);
+    warn "$street: ", join('/', @wordlist), "\n" if $debug >=2 && @wordlist;
+    
+    my @list = $street;
+    push (@list, @wordlist) if $substring && @wordlist;
+
+    foreach my $street2 (@list) {
+    if ( my @strings = unicode2ascii( $street2, $lang ) ) {
         foreach my $s (@strings) {
-            print $s, "\t", $street, "\t", $s{$street}, "\n";
+            print $s, "\t", $street, "\t", $val, "\n";
         }
     }
     else {
-        print $street, "\t\t", $s{$street}, "\n";
+        print $street2, "\t"; 
+	print $street if $street ne $street2;
+	print "\t", $val, "\n";
+    }
     }
 }
 
