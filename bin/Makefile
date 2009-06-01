@@ -1,7 +1,6 @@
 all: perltidy
 
-ALL=	api.cgi \
-	bbbike-world-kml \
+ALL=	bbbike-world-kml \
 	berlin-coords-data \
 	new-city \
 	opensearch-suggestion \
