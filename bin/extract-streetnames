@@ -17,7 +17,7 @@ use Getopt::Long;
 my $debug  = 1;    # 0: quiet, 1: normal, 2: verbose
 my $sort   = 1;
 my $uniq   = 1;
-my $unlink = 0;
+my $unlink = 1;
 
 my $xmlparser;
 
@@ -58,7 +58,7 @@ sub extract_nodes {
             my $lat = $reader->getAttribute('lat');
             my $lon = $reader->getAttribute('lon');
 
-            print $fd_nodes $id, "\t", $lon, "\t", $lat, "\n";
+            print $fd_nodes $id, "\t", $lon, ",", $lat, "\n";
 
         }
 
@@ -125,13 +125,13 @@ sub street_names {
     my %streets;
     while (<$p>) {
         chomp;
-        my ( $point, $lon, $lat ) = split(/\t/);
+        my ( $point, $coords ) = split(/\t/);
 
         if ( exists $hash{$point} ) {
             foreach my $street ( @{ $hash{$point} } ) {
                 next if $uniq && exists $streets{$street};
 
-                print $street, "\t", $lon, "\t", $lat, "\n";
+                print $street, "\t", $coords, "\n";
 
                 $streets{$street} = 1 if $uniq;
             }
