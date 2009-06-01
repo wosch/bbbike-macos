@@ -390,7 +390,7 @@ foreach my $street ( sort keys %s ) {
         }
     }
     else {
-        print $street, "\t", $s{$street}, "\n";
+        print $street, "\t\t", $s{$street}, "\n";
     }
 }
 
