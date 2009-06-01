@@ -11,16 +11,15 @@ use warnings;
 my $debug    = 0;
 my $icharset = 'utf8';
 my $help;
-my $lang_supported = 'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
-my $lang = $lang_supported;
+my $lang_supported =
+'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
+my $lang      = $lang_supported;
 my $substring = 1;
 
-my @stopwords =
-  qw(
-Rd Dr Ln St Road Ct Ave N E S W Way [ZIP de Cir Pl Rue Street Avenue Via NE NW SW SE Straße County Drive Calle Lane Trl Hill Place Creek Blvd Close Court Am Old Park Lake du Ridge Ter la Forest des Loop Crescent Weg Route West Point Highway - State Cv East North South View Chemin Grove Farm del Hollow Valley der Oak Im Hwy De ул. Run Mill River Pky Aly Terrace Green Circle Trail Rua Mountain Strada Bay San Ranch Gardens La Natl Develop Boulevard Glen Pine C Van Impasse Church utca Avenida Hills van Cove An Branch Bridge Vista Springs Woods Oaks Walk Wood Canyon Meadow Camino Township Cemetery Spring Allée Little R Rock J Heights A Pond New Brook School Mc Village John Path Mount Private Saint Zum Carrer Tree Tr B Farm-to-Market White Landing Camp rue Acres Beach Red El Service Square St. calle The Spur Manor Auf 2 Bend 1 Gate Island Fork Crest Upper Los Blue Estates In D Lee Fire Cedar Pass Indian Lower Hall den Town Club House di High Meadows Country Line Sq L Smith Big Santa Plaza Cross Bluff Stone F M Pointe Trce);
+my @stopwords = qw(
+  Rd Dr Ln St Road Ct Ave N E S W Way [ZIP de Cir Pl Rue Street Avenue Via NE NW SW SE Straße County Drive Calle Lane Trl Hill Place Creek Blvd Close Court Am Old Park Lake du Ridge Ter la Forest des Loop Crescent Weg Route West Point Highway - State Cv East North South View Chemin Grove Farm del Hollow Valley der Oak Im Hwy De ул. Run Mill River Pky Aly Terrace Green Circle Trail Rua Mountain Strada Bay San Ranch Gardens La Natl Develop Boulevard Glen Pine C Van Impasse Church utca Avenida Hills van Cove An Branch Bridge Vista Springs Woods Oaks Walk Wood Canyon Meadow Camino Township Cemetery Spring Allée Little R Rock J Heights A Pond New Brook School Mc Village John Path Mount Private Saint Zum Carrer Tree Tr B Farm-to-Market White Landing Camp rue Acres Beach Red El Service Square St. calle The Spur Manor Auf 2 Bend 1 Gate Island Fork Crest Upper Los Blue Estates In D Lee Fire Cedar Pass Indian Lower Hall den Town Club House di High Meadows Country Line Sq L Smith Big Santa Plaza Cross Bluff Stone F M Pointe Trce);
 
 my %stopwords;
-
 
 #####################################################################
 
@@ -348,32 +347,33 @@ sub unicode2ascii {
 
 # split a street name into a word list and return a list
 # of names without the first, second etc. word
-# 
+#
 # e.g.: Karl-Marx-Allee -> ('Marx-Allee', 'Allee')
 #
 # ignore stopwords like 'Avenue', 'St' etc.
 sub wordlist {
-	my $string = shift;
+    my $string = shift;
 
-	my @list;
-	my $s = $string;
-        $s =~ s/\s+\[.*?\]//; # remove zip codes 
-	$s =~ s/^[\[\s"'()]+//;
-	$s =~ s/[\[\s"'()]+$//;
+    my @list;
+    my $s = $string;
+    $s =~ s/\s+\[.*?\]//;     # remove zip codes
+    $s =~ s/^[\[\s"'()]+//;
+    $s =~ s/[\[\s"'()]+$//;
 
-	while($s && length($s) >= 3) {
-		if ($s =~ s/^([\S-]+)[\s-]// ) {
-			warn qq{Removed "$1" from "$string"\n} if $debug >= 3;
+    while ( $s && length($s) >= 3 ) {
+        if ( $s =~ s/^([\S-]+)[\s-]// ) {
+            warn qq{Removed "$1" from "$string"\n} if $debug >= 3;
 
-			last if exists $stopwords{$s};	
-			push(@list, $s) if  length($s) >= 3;
-		} else {
-			last;
-		}
-			
-	}	
+            last if exists $stopwords{$s};
+            push( @list, $s ) if length($s) >= 3;
+        }
+        else {
+            last;
+        }
 
-	return @list;
+    }
+
+    return @list;
 }
 
 sub usage {
@@ -385,8 +385,8 @@ usage: [--input-charset=iso-8859-1] < strassen > opensearch.streetnames
 supported transliteration rules:
 EOF
 
-warn join( "\n  ", sort split( /,/, $lang_supported ) ), "\n";
-warn "default: $lang_supported\n";
+    warn join( "\n  ", sort split( /,/, $lang_supported ) ), "\n";
+    warn "default: $lang_supported\n";
     exit(1);
 }
 
@@ -394,7 +394,7 @@ my $rc = GetOptions(
     "debug=i"         => \$debug,
     "input-charset=s" => \$icharset,
     "lang=s"          => \$lang,
-    "substring=i"          => \$substring,
+    "substring=i"     => \$substring,
     "help"            => \$help,
 );
 
@@ -429,24 +429,30 @@ while (<STDIN>) {
     $s{$street} = $coord if $street && !exists $s{$street};
 }
 
-while (my ($street, $val) = each %s ) {
+open $fd_sort, "|-", "sort", "-uf"
+  or die "Can't run sort: $!";
+select($fd_sort);
+
+while ( my ( $street, $val ) = each %s ) {
     my @wordlist = &wordlist($street);
-    warn "$street: ", join('/', @wordlist), "\n" if $debug >=2 && @wordlist;
-    
+    warn "$street: ", join( '/', @wordlist ), "\n" if $debug >= 2 && @wordlist;
+
     my @list = $street;
-    push (@list, @wordlist) if $substring && @wordlist;
+    push( @list, @wordlist ) if $substring && @wordlist;
 
     foreach my $street2 (@list) {
-    if ( my @strings = unicode2ascii( $street2, $lang ) ) {
-        foreach my $s (@strings) {
-            print $s, "\t", $street, "\t", $val, "\n";
+        if ( my @strings = unicode2ascii( $street2, $lang ) ) {
+            foreach my $s (@strings) {
+                print $s, "\t", $street, "\t", $val, "\n";
+            }
+        }
+        else {
+            print $street2, "\t";
+            print $street if $street ne $street2;
+            print "\t", $val, "\n";
         }
     }
-    else {
-        print $street2, "\t"; 
-	print $street if $street ne $street2;
-	print "\t", $val, "\n";
-    }
-    }
 }
+select STDOUT;
 
+exit 0;
