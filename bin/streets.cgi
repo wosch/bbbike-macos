@@ -8,11 +8,11 @@ use strict;
 
 $ENV{LANG} = 'C';
 
-my $opensearch_file = 'opensearch.streetnames.gps';
+my $opensearch_file = 'opensearch.streetnames';
 my $opensearch_dir  = '../data-osm';
 my $opensearch_dir2  = '../data-opensearch';
 
-my $debug         = 1;
+my $debug         = 2;
 my $match_anyware = 1;
 
 # performance tuning, egrep may be faster than perl regex
@@ -135,8 +135,8 @@ sub strip_list {
 my $q = new CGI;
 
 my $action    = 'opensearch';
-my $street    = $q->param('search') || $q->param('q') || 'Zellescher We';
-my $city      = $q->param('city') || 'germany';
+my $street    = $q->param('search') || $q->param('q') || 'Garibaldi Court';
+my $city      = $q->param('city') || 'europe';
 my $namespace = $q->param('namespace') || '0';
 
 binmode( \*STDERR, ":utf8" ) if $debug >= 1;
