@@ -363,14 +363,22 @@ binmode( \*STDOUT, ":encoding(utf8)" )      or die "binmode: $!\n";
 
 my %s;
 while (<STDIN>) {
-    if ( /^\s*#/ || /^\(/ ) {
+    if ( /^\s*#/ || /^[\(" ]/ ) {
         next;
     }
 
     chomp;
 
     my ($street,$gps) = ( split(/\t/) )[0,1];
-    my $coord = (split(/\s+/, $gps))[1];
+
+    my $coord;
+    # find the coordinates in the rest of the string
+    foreach my $c ((split(/\s+/, $gps))[0,1]) {
+	if ($c =~ /,/) {
+		$coord = $c;
+		last;
+	}
+    }
 
     $s{$street} = $coord if $street && !exists $s{$street};
 }
