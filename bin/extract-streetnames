@@ -58,7 +58,7 @@ sub extract_nodes {
             my $lat = $reader->getAttribute('lat');
             my $lon = $reader->getAttribute('lon');
 
-            print $fd_nodes $id, "\t", $lon, "\t", $lat, "\n";
+            print $fd_nodes $id, "\t", $lon, ",", $lat, "\n";
 
         }
 
