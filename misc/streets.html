@@ -57,6 +57,7 @@
   "0" /></a></h1>
 
   <div style="position:absolute; top:5px; right:10px;">
+<!--
     <img class="selectedflag" src=
     "http://bbbike.elsif.de/images/de_flag.png" alt="Deutsch"
     border="0" /> <a href=
@@ -64,6 +65,7 @@
     "unselectedflag" src=
     "http://bbbike.elsif.de/images/gb_flag.png" alt="English"
     border="0" /></a>
+-->
   </div>
 
   <div>
@@ -193,14 +195,14 @@
         <form action="cgi/streets.cgi" target="_blank">
           <input type="hidden" name="action" value="opensearch" />
           <input type="hidden" name="namespace" value="1" />
-          <input id="suggest_start_world" size="40" type="text"
+          <input id="suggest_start_planet" size="40" type="text"
           name="search" autocomplete="yes" /> <input type="hidden"
-          name="city" value="world" /> <input type="submit" />
+          name="city" value="planet" /> <input type="submit" />
         </form><script type="text/javascript">
 //<![CDATA[
         jQuery.noConflict();
         jQuery(function() {
-        jQuery("#suggest_start_world").suggest("cgi/api.cgi?action=opensearch&city=world&namespace=1&search=", 
+        jQuery("#suggest_start_planet").suggest("cgi/api.cgi?action=opensearch&city=planet&namespace=1&search=", 
             
          { minchars: 1, delay: 200, onSelect: function() {} }); });
          // { onSelect: function() {alert("You selected: " + this.value)}}); });
