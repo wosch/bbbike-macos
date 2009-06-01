@@ -7,8 +7,22 @@ use utf8;
 use strict;
 use warnings;
 
-my $lang_supported =
-'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
+#####################################################################
+my $debug    = 0;
+my $icharset = 'utf8';
+my $help;
+my $lang_supported = 'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
+my $lang = $lang_supported;
+my $substring = 1;
+
+my @stopwords =
+  qw(
+Rd Dr Ln St Road Ct Ave N E S W Way [ZIP de Cir Pl Rue Street Avenue Via NE NW SW SE Straße County Drive Calle Lane Trl Hill Place Creek Blvd Close Court Am Old Park Lake du Ridge Ter la Forest des Loop Crescent Weg Route West Point Highway - State Cv East North South View Chemin Grove Farm del Hollow Valley der Oak Im Hwy De ул. Run Mill River Pky Aly Terrace Green Circle Trail Rua Mountain Strada Bay San Ranch Gardens La Natl Develop Boulevard Glen Pine C Van Impasse Church utca Avenida Hills van Cove An Branch Bridge Vista Springs Woods Oaks Walk Wood Canyon Meadow Camino Township Cemetery Spring Allée Little R Rock J Heights A Pond New Brook School Mc Village John Path Mount Private Saint Zum Carrer Tree Tr B Farm-to-Market White Landing Camp rue Acres Beach Red El Service Square St. calle The Spur Manor Auf 2 Bend 1 Gate Island Fork Crest Upper Los Blue Estates In D Lee Fire Cedar Pass Indian Lower Hall den Town Club House di High Meadows Country Line Sq L Smith Big Santa Plaza Cross Bluff Stone F M Pointe Trce);
+
+my %stopwords;
+
+
+#####################################################################
 
 # German
 sub de_7bit {
@@ -332,27 +346,53 @@ sub unicode2ascii {
     return @list;
 }
 
-sub usage {
-    warn
-"usage: [--input-charset=iso-8859-1] < strassen > opensearch.streetnames\n";
-    warn "       [--debug=0..2] [--help] [--lang=l1,l2,l3,l1:l2,l4]\n";
-    warn "\n";
-    warn "supported transliteration rules:\n";
-    warn "  ", join( "\n  ", sort split( /,/, $lang_supported ) ), "\n";
-    warn "\n";
-    warn "default: $lang_supported\n";
-    exit(1);
+# split a street name into a word list and return a list
+# of names without the first, second etc. word
+# 
+# e.g.: Karl-Marx-Allee -> ('Marx-Allee', 'Allee')
+#
+# ignore stopwords like 'Avenue', 'St' etc.
+sub worldlist {
+	my $string = shift;
+
+	my @list;
+	my $s = $string;
+        $s =~ s/\s+\[.*?\]//; # remove zip codes 
+	$s =~ s/^\[s+"'()//;
+
+	while($s && length($s) >= 3) {
+		if ($s =~ s/^[\S-]+// ) {
+			last if exists $stopwords{$s};	
+			push(@list, $s);
+		} else {
+			last;
+		}
+			
+	}	
+
+	return @list;
+
 }
 
-my $debug    = 0;
-my $icharset = 'utf8';
-my $help;
-my $lang = $lang_supported;
+sub usage {
+    warn <<EOF;
+usage: [--input-charset=iso-8859-1] < strassen > opensearch.streetnames
+       [--debug=0..2] [--help] [--lang=l1,l2,l3,l1:l2,l4]
+       [--substring=0..1]\n"; 
+
+supported transliteration rules:
+EOF
+
+warn join( "\n  ", sort split( /,/, $lang_supported ) ), "\n";
+warn "default: $lang_supported\n";
+    exit(1);
+}
 
 my $rc = GetOptions(
     "debug=i"         => \$debug,
     "input-charset=s" => \$icharset,
     "lang=s"          => \$lang,
+    "substring=i"          => \$substring,
     "help"            => \$help,
 );
 
@@ -360,6 +400,9 @@ my $rc = GetOptions(
 
 binmode( \*STDIN,  ":encoding($icharset)" ) or die "binmode: $!\n";
 binmode( \*STDOUT, ":encoding(utf8)" )      or die "binmode: $!\n";
+
+# init stop word list
+map { $stopwords{$_} = 1 } @stopwords;
 
 my %s;
 while (<STDIN>) {
@@ -369,18 +412,25 @@ while (<STDIN>) {
 
     chomp;
 
-    my ($street,$gps) = ( split(/\t/) )[0,1];
+    my ( $street, $gps ) = ( split(/\t/) )[ 0, 1 ];
 
     my $coord;
+
     # find the coordinates in the rest of the string
-    foreach my $c ((split(/\s+/, $gps))[0,1]) {
-	if ($c =~ /,/) {
-		$coord = $c;
-		last;
-	}
+    foreach my $c ( ( split( /\s+/, $gps ) )[ 0, 1 ] ) {
+        if ( $c =~ /,/ ) {
+            $coord = $c;
+            last;
+        }
     }
 
     $s{$street} = $coord if $street && !exists $s{$street};
+
+    
+    my @wordlist = &wordlist($street);
+    if ($substring && @wordlist) {
+	map { $s{$_} = $coord if $_ && exists $s{$_ } } @wordlist; 
+    }
 }
 
 foreach my $street ( sort keys %s ) {
