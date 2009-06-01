@@ -4,6 +4,7 @@ ALL=	bbbike-world-kml \
 	berlin-coords-data \
 	new-city \
 	opensearch-suggestion \
+	opensearch-suggestion-gps \
 	strasse-str \
 	livesearch.cgi \
 	streetnames-gps \
