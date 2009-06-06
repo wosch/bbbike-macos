@@ -264,7 +264,7 @@ dist-clean devel-clean distclean: clean
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
 kml:
-	./bin/bbbike-world-kml Makefile.osm > misc/bbbike-world.kml
+	./bin/bbbike-world-kml misc/cities.csv > misc/bbbike-world.kml
 		
 build-version version:
 	@git show | head -1 | perl -npe 's/^commit\s+//'

@@ -676,7 +676,7 @@
   </Placemark>
   <Placemark>
     <name>Toronto</name>
-    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Toronto.cgi">Start BBBike @ Toronto</a></span>]]></description>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Toronto.en.cgi">Start BBBike @ Toronto</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>-79.3755,43.7255,0.000000</coordinates>
