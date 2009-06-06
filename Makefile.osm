@@ -177,7 +177,7 @@ _c = ${CITIES}
 _cd = $(_c:=-download)
 _cc = $(_c:=-convert)
 
-DB=../bbbike-macos/bin/foo
+DB=../bbbike-macos/bin/bbbike-db
 
 $(_cd):
 	mkdir -p ${OSM_DIR}/`basename $@ -download`
