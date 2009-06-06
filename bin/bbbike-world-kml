@@ -5,31 +5,37 @@
 #
 # $Id: bbbike-world-kml,v 1.18 2009/04/21 19:55:41 wosch Exp $
 
+use IO::File;
 use strict;
 use warnings;
 
+sub usage () {
+    <<EOF;
+usage: $0 bbbike-db
+
+EOF
+}
+
 sub extract_coords_from_makefile {
+    my $db = shift;
 
     my @data;
 
-    while (<>) {
+    my $fh = new IO::File $db, "r" or die "open: $!\n";
+    while (<$fh>) {
         next if /^\s*#/;
-
         chomp;
 
-        if (m,\${OSM_DIR}/(\S+)\s+--\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+),) {
-            my $city = $1;
-            my $x1   = $2;
-            my $y1   = $3;
-            my $x2   = $4;
-            my $y2   = $5;
+        my ( $city, $name, $lang, $area, $coord ) = split(/:/);
+        my ( $x1, $y1, $x2, $y2 ) = split( /\s+/, $coord );
 
-            my $x = ( $x2 - $x1 ) / 2 + $x1;
-            my $y = ( $y2 - $y1 ) / 2 + $y1;
+        my $x = ( $x2 - $x1 ) / 2 + $x1;
+        my $y = ( $y2 - $y1 ) / 2 + $y1;
 
-            push( @data, [ $city, $x, $y ] );
-        }
+        push( @data, [ $city, $lang, $x, $y ] );
+
     }
+    close $fh;
 
     return @data;
 }
@@ -61,15 +67,11 @@ EOF
 sub bbbike2kml_placemarks {
     my @data = @_;
 
-    # list of non-German cities with link to English bbbike.en.cgi
-    my %en = map { $_ => 1 }
-      qw/Austin Cambridge Copenhagen NewYork Portland Providence SanFrancisco SantaCruz Paris London Turin Boulder Barcelona Seattle Chicago PaloAlto CraterLake Davis CambridgeMa Vancouver Miami SanktPetersburg Helsinki Stockholm Oslo Dublin Sofia Kiew Montreal Aarhus Corvallis FortCollins Madison Tuscon SanJose/;
-
     foreach my $c ( sort { $a->[0] cmp $b->[0] } @data ) {
-        my ( $city, $x, $y ) = @$c;
+        my ( $city, $lang, $x, $y ) = @$c;
 
         my $bbbike_url = "http://bbbike.elsif.de/cgi/$city"
-          . ( exists $en{$city} ? '.en.cgi' : '.cgi' );
+          . ( $lang eq '' ? '.cgi' : ".$lang.cgi" );
 
         print <<EOF;
   <Placemark>
@@ -92,7 +94,9 @@ sub bbbike2kml {
     &bbbike2kml_footer;
 }
 
-my @data = &extract_coords_from_makefile;
+my $db = $ARGV[0];
+die &usage if !$db;
 
+my @data = &extract_coords_from_makefile($db);
 &bbbike2kml(@data);
 
