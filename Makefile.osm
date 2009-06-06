@@ -173,22 +173,6 @@ opensearch-bbbike:
 	perl ../bbbike-macos/bin/opensearch-suggestion --input-charset=iso-8859-1 < data/strassen > data/opensearch.streetnames
 
 
-#osm2bbd-postprocess:
-#	for i in ${CITIES}; do echo ${DATA_OSM_DIR}/$$i; done | \
-#	  ${NICE} ${GXARGS} -n 1 -P ${MAX_CPU} \
-#	  ./miscsrc/osm2bbd-postprocess -only-largest-city-is-center -skip-inaccessible-streets
-#
-#cleanup-files:
-#	#rm -f data-osm/*/meta.*
-#	rm -f data-osm/*/_*
-#	rm -f data-osm/*/*.bak
-#
-#green-ways:
-#	for i in data-osm/*; do (cd $$i && perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green) & done; wait
-#missing-files:
-#	@for i in data-osm/*; do (cd $$i && touch ubahn ubahnhof sbahn sbahnhof rbahn rbahnhof Berlin.coords.data Potsdam.coords.data plaetze flaechen wasserstrassen qualitaet_s); done # workaround for bug in osm2bbd
-
-
 # bbbike @ Copenhagen
 Copenhagen: Copenhagen-download Copenhagen-convert
 Copenhagen-download:
@@ -360,8 +344,6 @@ Toronto-download:
 Toronto-convert:
 	${OSM2BBD} -lang en -centerdelta -79.674,43.602 -o ${DATA_OSM_DIR}/Toronto ${OSM_DIR}/Toronto
 
-
-##############################################################################################
 # bbbike @ Aachen
 Aachen: Aachen-download Aachen-convert
 Aachen-download:
@@ -973,7 +955,7 @@ Kassel-convert:
 #	${OSM2BBD} -centerdelta 8.41,47.25 -o ${DATA_OSM_DIR}/Ruhrgebiet ${OSM_DIR}/Ruhrgebiet
 
 
-##############################################################################################
+######################################################################
 
 
 create-bbbike-web-symlinks-bbbike.en.cgi:
