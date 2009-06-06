@@ -180,8 +180,8 @@ _cc = $(_c:=-convert)
 DB=../bbbike-macos/bin/bbbike-db
 
 $(_cd):
-	mkdir -p ${OSM_DIR}/`basename $@ -download`
-	${DOWNLOADOSM} -o ${OSM_DIR}/`basename $@ -download` -- `${DB} --coord $@`
+	c=`basename $@ -download`; mkdir -p ${OSM_DIR}/$$c; \
+	${DOWNLOADOSM} -o ${OSM_DIR}/$$c -- `${DB} --coord $$c`
 
 $(_cc):
 	${OSM2BBD} -lang `${DB} --lang $@` -o ${DATA_OSM_DIR}/`basename $@ -convert` ${OSM_DIR}/`basename $@ -convert`
