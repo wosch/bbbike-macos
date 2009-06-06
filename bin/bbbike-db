@@ -53,8 +53,7 @@ while (<$fh>) {
 }
 close $fh;
 
-use Data::Dumper;
-print Dumper( \%hash );
+#use Data::Dumper; print Dumper( \%hash );
 if ( exists $hash{$city} ) {
     if ($lang) {
         print $hash{$city}->{lang} ? $hash{$city}->{lang} : "de";
