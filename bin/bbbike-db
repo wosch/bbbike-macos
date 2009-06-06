@@ -11,7 +11,7 @@ $VERSION = 0.1;
 
 use Getopt::Long;
 
-my $debug  = 1;    # 0: quiet, 1: normal, 2: verbose
+my $debug = 1;    # 0: quiet, 1: normal, 2: verbose
 
 sub usage () {
     <<EOF;
@@ -26,43 +26,49 @@ my $coord;
 
 GetOptions(
     "debug=i" => \$debug,
-    "lang"  => \$lang,
-    "coord"  => \$coord,
+    "lang"    => \$lang,
+    "coord"   => \$coord,
 ) or die usage;
 
-usage if !@ARGV;
+my $city = shift or die &usage;
 
-my $city = shift;
 my $db = $0;
 
 $db =~ s,/+[^/]+$,/../misc/cities.csv,;
 my %hash;
 
 my $fh = new IO::File $db, "r" or die "open: $!\n";
-while(<$fh>) {
-	next if /^\s*#/;
-	chomp;
+while (<$fh>) {
+    next if /^\s*#/;
+    chomp;
 
-	my ($city, $name, $lang, $area, $coords) = split(/:/);
-	$hash { $city } = { city => $city,
-			name => $name,
-			lang => $lang,
-			area => $area,
-			coords => $coords };
+    my ( $city, $name, $lang, $area, $coord ) = split(/:/);
+    $hash{$city} = {
+        city  => $city,
+        name  => $name,
+        lang  => $lang,
+        area  => $area,
+        coord => $coord
+    };
 }
 close $fh;
 
-if (exists $hash{$city} ) {
-	if ($lang) {
-		print $hash{$city}->{lang}, "\n";
-	} elsif ($coord) {
-		print $hash{$city}->{coord}, "\n";
-	} else {
-		warn "unknown directive\n";
-		&usage;
-		
-	}
-} else {
-	warn "Unknown city: $city\n";
-	&usage;
+use Data::Dumper;
+print Dumper( \%hash );
+if ( exists $hash{$city} ) {
+    if ($lang) {
+        print $hash{$city}->{lang} ? $hash{$city}->{lang} : "de";
+        print "\n";
+    }
+    elsif ($coord) {
+        print $hash{$city}->{coord}, "\n";
+    }
+    else {
+        warn "unknown directive\n";
+        die &usage;
+    }
+}
+else {
+    warn "Unknown city: $city\n";
+    &usage;
 }
