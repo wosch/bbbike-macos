@@ -17,8 +17,9 @@ sub osm_round {
     my $real = shift;
     my $number = shift || 100_000;
 
-    my $round = int($real * $number + 0.5) / $number;
-       warn "$real <-> $round ", $real - $round, "\n" if $debug >=2 && $real != $round;
+    my $round = int( $real * $number + 0.5 ) / $number;
+    warn "$real <-> $round ", $real - $round, "\n"
+      if $debug >= 2 && $real != $round;
 
     return $round;
 }
@@ -31,25 +32,29 @@ usage: $0 [--debug={0..2}] [options] city
 --lang
 --coord
 --centerdelta
+--area=area
 EOF
 }
 
 my $lang;
 my $coord;
 my $centerdelta;
+my $area;
 
 GetOptions(
-    "debug=i" => \$debug,
-    "lang"    => \$lang,
-    "coord"   => \$coord,
-    "centerdelta"   => \$centerdelta,
+    "debug=i"     => \$debug,
+    "lang"        => \$lang,
+    "coord"       => \$coord,
+    "centerdelta" => \$centerdelta,
+    "area=s"      => \$area,
 ) or die usage;
 
-my $city = shift or die &usage;
+my $city = shift;
+die &usage if !( $city || defined $area );
+
 $city =~ s/-(convert|download)$//;
 
 my $db = $0;
-
 $db =~ s,/+[^/]+$,/../misc/cities.csv,;
 my %hash;
 
@@ -62,12 +67,19 @@ while (<$fh>) {
     $hash{$city} = {
         city  => $city,
         name  => $name,
-        lang  => $lang,
-        area  => $area,
+        lang  => $lang || "de",
+        area  => $area || "de",
         coord => $coord
     };
 }
 close $fh;
+
+if ( defined $area ) {
+    while ( my ( $key, $val ) = each %hash ) {
+        print $key, "\n" if $hash{$key}->{area} eq $area;
+    }
+    exit 0;
+}
 
 #use Data::Dumper; print Dumper( \%hash );
 if ( exists $hash{$city} ) {
@@ -76,12 +88,14 @@ if ( exists $hash{$city} ) {
         print "\n";
     }
     elsif ($coord) {
-        my ($x1, $y1, $x2, $y2) = map { &osm_round($_, 100) } split(/\s+/, $hash{$city}->{coord});
-	print "$x1 $y1 $x2 $y2\n";
+        my ( $x1, $y1, $x2, $y2 ) =
+          map { &osm_round( $_, 100 ) } split( /\s+/, $hash{$city}->{coord} );
+        print "$x1 $y1 $x2 $y2\n";
     }
     elsif ($centerdelta) {
-        my ($x1, $y1, $x2, $y2) = map { &osm_round($_, 100) } split(/\s+/, $hash{$city}->{coord});
-	print "$x1,$y1\n";
+        my ( $x1, $y1, $x2, $y2 ) =
+          map { &osm_round( $_, 100 ) } split( /\s+/, $hash{$city}->{coord} );
+        print "$x1,$y1\n";
     }
     else {
         warn "unknown directive\n";
