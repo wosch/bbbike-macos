@@ -429,8 +429,9 @@ while (<STDIN>) {
     $s{$street} = $coord if $street && !exists $s{$street};
 }
 
-open $fd_sort, "|-", "sort", "-uf"
+open my $fd_sort, "|-", "sort", "-uf"
   or die "Can't run sort: $!";
+binmode( $fd_sort, ":utf8" );
 select($fd_sort);
 
 while ( my ( $street, $val ) = each %s ) {
