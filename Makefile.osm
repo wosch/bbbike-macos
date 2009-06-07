@@ -215,6 +215,15 @@ create-bbbike-web-symlinks: create-bbbike-web-symlinks-bbbike.en.cgi
 	ln -fs `pwd`/bin/streets.cgi ${BBBIKE_WEB_DIR}/cgi
 	ln -fs `pwd`/Makefile.osm ${BBBIKE_WEB_DIR}
 
+TAGCLOUD=	../bbbike-macos/bin/tagcloud 
+tagcloud:
+	${DB} --area=de | perl -npe 's,^,^,; s,$$,:,' > tmp/cities.tmp && \
+		egrep -f tmp/cities.tmp ../bbbike-macos/misc/population.csv | ${TAGCLOUD} --lang=de > tmp/cities.de
+	${DB} --area=eu | perl -npe 's,^,^,; s,$$,:,' > tmp/cities.tmp && \
+		egrep -f tmp/cities.tmp ../bbbike-macos/misc/population.csv | ${TAGCLOUD} --lang=en > tmp/cities.eu
+	${DB} --area=other | perl -npe 's,^,^,; s,$$,:,' > tmp/cities.tmp && \
+		egrep -f tmp/cities.tmp ../bbbike-macos/misc/population.csv | ${TAGCLOUD} --lang=en > tmp/cities.other
+	rm -f tmp/cities.tmp
 
 scp rsync rsync-tgz:
 	rsync -av ${OSMBIKE_DATA} wolfram.schneider.org:www/src/bbbike

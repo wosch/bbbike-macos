@@ -10,6 +10,7 @@ ALL=	bbbike-world-kml \
 	streetnames-gps \
 	extract-streetnames \
 	bbbike-db \
+	tagcloud \
 
 
 perltidy:
