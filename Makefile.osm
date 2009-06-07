@@ -195,6 +195,14 @@ ${CITIES}:
 	
 ######################################################################
 
+rsync-source:
+	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ srand.de:/usr/local/www/srand.de/bbbike
+	rsync -azv -C --exclude osm   --safe-links  $$HOME/projects/bbbike/ elsif.de:/usr/local/www/elsif.de/bbbike
+
+rsync-osm:
+	rsync -azv --exclude='*.bak' --delete --max-delete=512 data-osm osm elsif.de:bbbike
+	rsync -azv --exclude='*.bak' data/opensearch.streetnames elsif.de:bbbike/data
+
 
 create-bbbike-web-symlinks-bbbike.en.cgi:
 	cd ${BBBIKE_WEB_DIR}/cgi && ln -fs bbbike.cgi bbbike.en.cgi
@@ -237,7 +245,7 @@ dist-clean devel-clean distclean: clean
 	mkdir -p osm
 
 help:
-	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-source | rsync-osm ]"
+	@echo "usage: make [ help | cities | convert | rsync-tgz | rsync-osm ]"
 	@echo "            [ tarball | clean | dist-clean | create-bbbike-web-symlinks ]"
 	@echo "            [ convert | convert-workarounds | opensearch ]"
 	@echo "            [ city-count | city-population | update-city-population ]"
