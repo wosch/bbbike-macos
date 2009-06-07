@@ -13,6 +13,8 @@ while(<>) {
 	
 	my ($city, $population) = split(/\s+/);
 
+	$population = 1 if $population <= 0;
+
 	$cloud->add( $city, "cgi/$city$ext", $population);
 }
 
