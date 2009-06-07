@@ -31,6 +31,7 @@ GetOptions(
 ) or die usage;
 
 my $city = shift or die &usage;
+$city =~ s/-(convert|download)$//;
 
 my $db = $0;
 
