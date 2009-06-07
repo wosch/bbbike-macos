@@ -50,9 +50,9 @@ GetOptions(
 ) or die usage;
 
 my $city = shift;
-die &usage if !( $city || defined $area );
+die &usage if !( $city || $area );
 
-$city =~ s/-(convert|download)$//;
+$city =~ s/-(convert|download)$// if $city;
 
 my $db = $0;
 $db =~ s,/+[^/]+$,/../misc/cities.csv,;
