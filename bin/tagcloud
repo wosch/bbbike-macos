@@ -4,19 +4,19 @@ use HTML::TagCloud;
 use strict;
 use warnings;
 
-my $cloud = HTML::TagCloud->new(levels=>16);
+my $cloud = HTML::TagCloud->new(levels=>8);
 
 my $ext = '.cgi';
 
 while(<>) {
 	chomp;
 	
-	my ($city, $population) = split(/\s+/);
+	my ($city, $population) = split(/[\s:]+/);
 
 	$population = 1 if $population <= 0;
 
 	$cloud->add( $city, "cgi/$city$ext", $population);
 }
 
-print $cloud->html_and_css;
+print $cloud->html;
 
