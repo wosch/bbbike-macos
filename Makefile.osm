@@ -5,16 +5,15 @@
 #
 # For more information about BBBike, visit http://www.bbbike.de
 #
-# $Id: Makefile.osm,v 1.99 2009/05/08 23:16:38 wosch Exp $
 
 
-OSMBIKE_DATA=	data-osm.tgz
-DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
-OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline -experiment add_postal_code --debug=0 -f -map bbbike
+MAX_PARALLELS_OSM_DOWNLOADS=	3
 NICE=		nice -n 5
+DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
+OSMBIKE_DATA=	data-osm.tgz
+OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline -experiment add_postal_code --debug=0 -f -map bbbike
+MAX_CPU=	`../bbbike-macos/bin/ncpu`
 GXARGS=		`which gxargs xargs | head -1`
-
-MAX_CPU=	10
 
 BBBIKE_WEB_DIR= /usr/local/www/elsif.de/bbbike
 OSM_DIR=	osm
@@ -136,7 +135,7 @@ _cities2:
 _cities:
 	@echo ${CITIES} | \
 		perl -npe 's/\s+/-download /g' | \
-		xargs -n 1 -P 3 ${MAKE} -f Makefile.osm
+		xargs -n 1 -P ${MAX_PARALLELS_OSM_DOWNLOADS} ${MAKE} -f Makefile.osm
 
 _cities_complete:
 	${MAKE} -f Makefile.osm `echo ${CITIES} | perl -npe 's/\s+/-download /g'`
