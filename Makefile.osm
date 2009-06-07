@@ -146,7 +146,7 @@ city-count:
 city-population:
 	@for i in ${CITIES}; do \
 		printf "$$i "; \
-		find osm/$$i -name '*.gz' -print0 | xargs -0 -n1 -P8 zegrep population | \
+		find osm/$$i -name '*.gz' -print0 | xargs -0 -n16 -P ${MAX_CPU} gzip -dc | egrep population | \
 			perl -e 'while(<>) { s,.*:,,; print "$$1\n" if /(\d+)/ }; print "0\n" ' | sort -n | sort -u | awk '{ s += $$1 } END { print s }'; \
 	done
 
