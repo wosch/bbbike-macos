@@ -1,12 +1,13 @@
+# City : Real Name : language : area : coord
 Berlin::::13.0109 52.3376 13.7613 52.6753
 CambridgeMa:Cambridge (Massachusetts):en:other:-71.1986 42.3265 -71.0036 42.4285
 Ruegen:R&uuml;gen:::12.904 54.199 13.81 54.708
 SanJose:San Jos&eacute;:en:other:-122.081 37.21 -121.707 37.46
 Copenhagen::en:eu:12.275 55.549 12.702 55.831
 Hamburg::::9.77 53.426 10.24 53.663
-Frankfurt:Frankfurt am Main::::::8.44 50.02 8.979 50.185
+Frankfurt:Frankfurt am Main:::8.44 50.02 8.979 50.185
 Prag:::eu:14.3016 50.0241 14.6009 50.1468
-Tuscon:en::other:-111.108 32.114 -110.704 32.335
+Tuscon::en:other:-111.108 32.114 -110.704 32.335
 Toronto::en:other:-79.674 43.602 -79.077 43.849
 Dresden::::13.61 50.97 13.922 51.119
 Dortmund::::7.09 51.39 7.599 51.631
@@ -21,9 +22,9 @@ Mannheim::::8.306 49.302 8.773 49.587
 Madison::en:other:-89.578 42.971 -89.215 43.18
 Providence::en:other:-71.5273 41.7378 -71.3141 41.9006
 Bremen::::8.704 53.007 9.001 53.137
-Rotterdam::en:eu:4.3605 51.8601 4.6053 51.969
+Rotterdam:::eu:4.3605 51.8601 4.6053 51.969
 PaloAlto:Palo Alto:en:other:-122.2585 37.3661 -122.0223 37.5176
-Reval::eu::24.6189 59.3803 24.8744 59.4872
+Reval:::eu:24.6189 59.3803 24.8744 59.4872
 Montreal::en:other:-73.787 45.37 -73.404 45.607
 Wien::::16.2779 48.1592 16.4976 48.2636
 SanFrancisco:San Francisco:en:other:-122.527 37.594 -122.351 37.811
@@ -47,7 +48,7 @@ Aarhus:&Aring;rhus:en:eu:10.0894 56.1007 10.3225 56.202
 Chicago::en:other:-87.7501 41.7789 -87.5307 41.9326
 Cottbus::::14.2561 51.7092 14.435 51.8101
 Zuerich:Z&uuml;rich::eu:8.4483 47.3437 8.6271 47.4185
-Stockholm::::17.9752 59.2945 18.1664 59.3623
+Stockholm::en::17.9752 59.2945 18.1664 59.3623
 Danzig:::eu:18.411 54.303 18.812 54.57
 Vancouver::en:other:-123.2871 49.1809 -122.9818 49.3422
 Jena::::11.5241 50.8597 11.6696 50.9705
@@ -83,9 +84,10 @@ Kaunas:::eu:23.8001 54.8585 24.0157 54.9521
 Corvallis::en:other:-123.3293 44.5253 -123.1965 44.6072
 BrandenburgHavel:Brandenburg (Havel):::12.4647 52.3745 12.6563 52.4511
 Goerlitz:G&ouml;rlitz:::14.9082 51.0989 15.0494 51.1891
-Turin::::7.6221 45.0155 7.7594 45.1106
+Turin::en::7.6221 45.0155 7.7594 45.1106
 FrankfurtOder:Frankfurt (Oder):::14.4804 52.3074 14.6026 52.3724
 WarenMueritz:Waren (M&uuml;ritz):::12.5982 53.4811 12.7647 53.5488
 Sarajewo:::eu:18.3664 43.8334 18.4889 43.8915
 Colmar:::eu:7.305 48.0471 7.4086 48.1236
 Kassel::::9.369 51.233 9.594 51.376
+#Ruhrgebiet::::6.663 51.39 7.599 51.631

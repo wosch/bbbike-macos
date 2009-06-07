@@ -9,6 +9,7 @@ ALL=	bbbike-world-kml \
 	livesearch.cgi \
 	streetnames-gps \
 	extract-streetnames \
+	bbbike-db \
 
 
 perltidy:
