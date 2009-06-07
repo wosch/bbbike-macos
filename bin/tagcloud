@@ -1,0 +1,20 @@
+#!/opt/local/bin/perl
+
+use HTML::TagCloud;
+use strict;
+use warnings;
+
+my $cloud = HTML::TagCloud->new(levels=>16);
+
+my $ext = '.cgi';
+
+while(<>) {
+	chomp;
+	
+	my ($city, $population) = split(/\s+/);
+
+	$cloud->add( $city, "cgi/$city$ext", $population);
+}
+
+print $cloud->html_and_css;
+
