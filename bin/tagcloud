@@ -46,5 +46,5 @@ while (<>) {
     $cloud->add( $city, "cgi/$city$ext", $population );
 }
 
-print &id2class( $cloud->html);
+print &id2class( $cloud->html );
 
