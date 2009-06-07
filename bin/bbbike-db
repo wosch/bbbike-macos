@@ -13,6 +13,16 @@ use Getopt::Long;
 
 my $debug = 1;    # 0: quiet, 1: normal, 2: verbose
 
+sub osm_round {
+    my $real = shift;
+    my $number = shift || 100_000;
+
+    my $round = int($real * $number + 0.5) / $number;
+       warn "$real <-> $round ", $real - $round, "\n" if $debug >=2 && $real != $round;
+
+    return $round;
+}
+
 sub usage () {
     <<EOF;
 usage: $0 [--debug={0..2}] [options] city
@@ -66,10 +76,11 @@ if ( exists $hash{$city} ) {
         print "\n";
     }
     elsif ($coord) {
-        print $hash{$city}->{coord}, "\n";
+        my ($x1, $y1, $x2, $y2) = map { &osm_round($_, 100) } split(/\s+/, $hash{$city}->{coord});
+	print "$x1 $y1 $x2 $y2\n";
     }
     elsif ($centerdelta) {
-        my ($x1, $y1, $x2, $y2) = split(/\s+/, $hash{$city}->{coord});
+        my ($x1, $y1, $x2, $y2) = map { &osm_round($_, 100) } split(/\s+/, $hash{$city}->{coord});
 	print "$x1,$y1\n";
     }
     else {
