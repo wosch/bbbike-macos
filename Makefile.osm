@@ -185,7 +185,7 @@ $(_cd):
 
 $(_cc):
 	c=`basename $@ -convert`; \
-		${OSM2BBD} -lang `${DB} --lang $$c` -o ${DATA_OSM_DIR}/$$c ${OSM_DIR}/$$c
+		${OSM2BBD} -centerdelta `${DB} --centerdelta $$c` -lang `${DB} --lang $$c` -o ${DATA_OSM_DIR}/$$c ${OSM_DIR}/$$c
 
 ${CITIES}:
 	${MAKE} -f Makefile.osm $@-download $@-convert
