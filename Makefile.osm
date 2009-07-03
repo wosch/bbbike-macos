@@ -11,7 +11,7 @@ MAX_PARALLELS_OSM_DOWNLOADS=	3
 NICE=		nice -n 5
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
 OSMBIKE_DATA=	data-osm.tgz
-OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline -experiment add_postal_code --debug=0 -f -map bbbike
+OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline -experiment add_postal_code --debug=0 -f -map bbbike -experiment polar_coord_hack
 MAX_CPU=	`../bbbike-macos/bin/ncpu`
 GXARGS=		`which gxargs xargs | head -1`
 
@@ -187,8 +187,8 @@ $(_cd):
 		${DOWNLOADOSM} -o ${OSM_DIR}/$$c -- `${DB} --coord $$c`
 
 $(_cc):
-	c=`basename $@ -convert`; \
-		${OSM2BBD} -centerdelta `${DB} --centerdelta $$c` -lang `${DB} --lang $$c` -o ${DATA_OSM_DIR}/$$c ${OSM_DIR}/$$c
+	#c=`basename $@ -convert`; ${OSM2BBD} -centerdelta `${DB} --centerdelta $$c` -lang `${DB} --lang $$c` -o ${DATA_OSM_DIR}/$$c ${OSM_DIR}/$$c
+	c=`basename $@ -convert`; ${OSM2BBD} -lang `${DB} --lang $$c` -o ${DATA_OSM_DIR}/$$c ${OSM_DIR}/$$c
 
 ${CITIES}:
 	${MAKE} -f Makefile.osm $@-download $@-convert
