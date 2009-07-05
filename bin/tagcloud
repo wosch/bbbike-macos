@@ -6,15 +6,15 @@ use strict;
 use warnings;
 
 my $debug = 1;      # 0: quiet, 1: normal, 2: verbose
-my $lang  = 'de';
+my $selected_area  = 'de';
 my $level = 12;
 
 sub usage () {
     <<EOF;
-usage: $0 [--debug={0..2}] [--level=number ] [ --lang=lang ] < population.csv
+usage: $0 [--debug={0..2}] [--level=number ] [ --area=area ] < population.csv
 
 --debug=0..2    debug option
---lang=		de | en
+--area=		de | eu | other
 --level=16
 EOF
 }
@@ -28,23 +28,31 @@ sub id2class {
 
 GetOptions(
     "debug=i" => \$debug,
-    "lang=s"  => \$lang,
+    "area=s"  => \$selected_area,
     "level=i" => \$level,
 ) or die usage;
 
 my $cloud = HTML::TagCloud->new( levels => $level );
 
-my $ext = $lang ne 'de' ? ".$lang.cgi" : '.cgi';
 
 while (<>) {
     chomp;
+    next if /^\s*#/;
 
-    my ( $city, $population ) = split(/[:\s]+/);
+    my ( $city, $name, $lang, $area, $coord, $population ) = split(/:/);
 
-    $population = 1 if $population <= 0;
+    $lang = "de" if !$lang;
+    $area = "de" if !$area;
+    $population = 1 if $population < 1;
+    $name = $city if !$name;
 
-    $cloud->add( $city, "cgi/$city$ext", $population );
+    next if $area ne $selected_area;
+
+    my $link = "cgi/$city" . ($lang eq 'de' ? '' : ".$lang") . '.cgi'; 
+
+    warn join("\t", ( $name, $link, $population )), "\n";
+    $cloud->add( $name, $link, $population );
 }
 
-print &id2class( $cloud->html );
+print &id2class( $cloud->html ), "\n";
 
