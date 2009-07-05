@@ -46,7 +46,7 @@ my $area;
 GetOptions(
     "debug=i"     => \$debug,
     "lang"        => \$lang,
-    "population"        => \$population,
+    "population"  => \$population,
     "coord"       => \$coord,
     "centerdelta" => \$centerdelta,
     "area=s"      => \$area,
@@ -68,11 +68,11 @@ while (<$fh>) {
 
     my ( $city, $name, $lang, $area, $coord, $population ) = split(/:/);
     $hash{$city} = {
-        city  => $city,
-        name  => $name,
-        lang  => $lang || "de",
-        area  => $area || "de",
-        coord => $coord,
+        city       => $city,
+        name       => $name,
+        lang       => $lang || "de",
+        area       => $area || "de",
+        coord      => $coord,
         population => $population || 1,
     };
 }
@@ -104,6 +104,7 @@ if ( exists $hash{$city} ) {
     if ($population) {
         print $hash{$city}->{population}, "\n";
     }
+
     # else { warn "unknown directive\n"; die &usage; }
 }
 else {

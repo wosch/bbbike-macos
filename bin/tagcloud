@@ -5,9 +5,9 @@ use Getopt::Long;
 use strict;
 use warnings;
 
-my $debug = 1;      # 0: quiet, 1: normal, 2: verbose
-my $selected_area  = 'de';
-my $level = 12;
+my $debug         = 1;      # 0: quiet, 1: normal, 2: verbose
+my $selected_area = 'de';
+my $level         = 12;
 
 sub usage () {
     <<EOF;
@@ -34,21 +34,20 @@ GetOptions(
 
 my $cloud = HTML::TagCloud->new( levels => $level );
 
-
 while (<>) {
     chomp;
     next if /^\s*#/;
 
     my ( $city, $name, $lang, $area, $coord, $population ) = split(/:/);
 
-    $lang = "de" if !$lang;
-    $area = "de" if !$area;
-    $population = 1 if $population < 1;
-    $name = $city if !$name;
+    $lang       = "de"  if !$lang;
+    $area       = "de"  if !$area;
+    $population = 1     if $population < 1;
+    $name       = $city if !$name;
 
     next if $area ne $selected_area;
 
-    my $link = "cgi/$city" . ($lang eq 'de' ? '' : ".$lang") . '.cgi'; 
+    my $link = "cgi/$city" . ( $lang eq 'de' ? '' : ".$lang" ) . '.cgi';
     $cloud->add( $name, $link, $population );
 }
 
