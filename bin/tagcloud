@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl
 
-use HTML::TagCloud;
+use HTML::TagCloud 0.34;
 use Getopt::Long;
 use strict;
 use warnings;
