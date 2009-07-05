@@ -49,8 +49,6 @@ while (<>) {
     next if $area ne $selected_area;
 
     my $link = "cgi/$city" . ($lang eq 'de' ? '' : ".$lang") . '.cgi'; 
-
-    warn join("\t", ( $name, $link, $population )), "\n";
     $cloud->add( $name, $link, $population );
 }
 
