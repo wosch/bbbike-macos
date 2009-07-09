@@ -46,9 +46,15 @@
 </script>
   <link href="html/jquery.suggest.css" rel="stylesheet" type=
   "text/css" />
+  <link rel="stylesheet" type="text/css" href="html/luft.css" />
 </head>
 
-<body>
+<body onload="setFocus();" >
+  <div id="all">
+    <div id="border">
+      <div id="main">
+      <div id="streets">
+
   <h1><a href='http://bbbike.elsif.de/cgi/Berlin.cgi?begin=1'
   title='Zur&uuml;ck zur Hauptseite' style=
   'text-decoration:none; color:black;'>BBBike<img style=
@@ -71,14 +77,23 @@
   <div>
     this program search for street names in:<br />
 
-    <form action="cgi/streets.cgi" target="_blank">
+    <form name="opensearchEurope" action="cgi/streets.cgi" target="_blank">
       <b>Europe</b>: <input type="hidden" name="action" value=
       "opensearch" /> <input type="hidden" name="namespace" value=
       "1" /> <input type="hidden" name="city" value="europe" />
       <input id="suggest_start_europe" size="40" type="text" name=
       "search" autocomplete="yes" /> <input type="submit" />
-    </form><script type="text/javascript">
+    </form>
+
+<script type="text/javascript">
 //<![CDATA[
+
+    // set focus to first search field (Europe)
+     function setFocus ()  {
+	document.opensearchEurope.search.focus();
+     }
+
+
     jQuery.noConflict();
     jQuery(function() {
         jQuery("#suggest_start_europe").suggest("cgi/api.cgi?action=opensearch&city=europe&namespace=1&search=", 
@@ -86,7 +101,7 @@
          { minchars: 1, delay: 200, onSelect: function() {} }); });
          // { onSelect: function() {alert("You selected: " + this.value)}}); });
     //]]>
-    </script><br />
+    </script>
   </div>
 
   <p>Example Searches are: <tt>Minsk Lodz most alborg
@@ -189,7 +204,7 @@
     </tr>
 
     <tr>
-      <td><b>World</b>:</td>
+      <td><b>World</b> <span style="font-size:small;">(a little bit slow)</span>:</td>
 
       <td>
         <form action="cgi/streets.cgi" target="_blank">
@@ -248,7 +263,27 @@
     <a href=
     "http://wiki.openstreetmap.org/wiki/OpenStreetMap_License">OpenStreetMap
     License</a><br />
-  </div><script type="text/javascript">
+  </div>
+
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+    // set focus to first search field (Europe)
+     function setFocus ()  {
+	document.opensearchEurope.search.focus();
+     }
+//]]>
+</script>
+
+
+
+<script type="text/javascript">
 //<![CDATA[
   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
   document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
