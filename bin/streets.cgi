@@ -8,6 +8,8 @@ use strict;
 
 $ENV{LANG} = 'C';
 
+my $use_osm_map = 1; # fall back is google maps
+
 my $opensearch_file = 'opensearch.streetnames';
 my $opensearch_dir  = '../data-osm';
 my $opensearch_dir2  = '../data-opensearch';
@@ -141,5 +143,11 @@ my $namespace = $q->param('namespace') || '0';
 
 binmode( \*STDERR, ":utf8" ) if $debug >= 1;
 
+if ($use_osm_map) {
+	my ($lat, $lon) = split(/,/,  &streetnames_suggestions('city' => $city, 'street' => $street));
+print $q->redirect("http://www.openstreetmap.org/?zoom=16&layers=B000FTF&lat=$lat&lon=$lon");
+} else {
 print $q->redirect("http://maps.google.ca/maps?q=" . &streetnames_suggestions('city' => $city, 'street' => $street));
+}
+
 
