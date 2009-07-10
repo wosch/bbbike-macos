@@ -67,7 +67,7 @@ CITIES=		\
 	Colmar \
 	Copenhagen \
 	Cottbus \
-	Cracow \
+	Krakau \
 	CraterLake \
 	Danzig \
 	Davis \

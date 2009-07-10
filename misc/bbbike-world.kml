@@ -187,8 +187,8 @@
     </Point>
   </Placemark>
   <Placemark>
-    <name>Cracow</name>
-    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Cracow.cgi">Start BBBike @ Cracow</a></span>]]></description>
+    <name>Krakau</name>
+    <description><![CDATA[<span style="color:rgb(0, 0, 238);text-decoration:underline"><a href="http://bbbike.elsif.de/cgi/Krakau.cgi">Start BBBike @ Krakau</a></span>]]></description>
     <styleUrl>#style1</styleUrl>
     <Point>
       <coordinates>19.94,50.055,0.000000</coordinates>
