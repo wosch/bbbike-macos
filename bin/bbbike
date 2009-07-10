@@ -67,7 +67,7 @@ case $0 in
         *Kopenhagen* | *Copenhagen* )  datadir=data-osm/Copenhagen ;;
         *Cottbus* )  	datadir=data-osm/Cottbus ;;
         *Kassel* )   datadir=data-osm/Kassel ;;
-        *Krakau* | *Cracow* )   datadir=data-osm/Cracow ;;
+        *Krakau* | *Cracow* )   datadir=data-osm/Krakau ;;
         *CraterLake* )     datadir=data-osm/CraterLake ;;
         *Danzig* )      datadir=data-osm/Danzig ;;
         *Davis* )     datadir=data-osm/Davis ;;
