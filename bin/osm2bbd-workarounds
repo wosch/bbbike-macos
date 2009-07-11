@@ -19,7 +19,7 @@ $p/berlin-coords-data strassen > Berlin.coords.data
 
 # test -e opensearch.streetnames && mv -f opensearch.streetnames opensearch.streetnames.old
 # perl $p/opensearch-suggestion --lang=de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode < strassen > opensearch.streetnames
-perl $p/opensearch-suggestion < strassen | sort -fu > opensearch.streetnames
+perl $p/opensearch-suggestion-gps --gps=0 < strassen > opensearch.streetnames
 
 # green ways
 # perl -npe 's/^\s/XYZ\t/; s/RW1/green2/g' radwege_exact > green 
