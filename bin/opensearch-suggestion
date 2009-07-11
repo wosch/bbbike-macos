@@ -372,7 +372,7 @@ while (<STDIN>) {
     $s{$street} = 1 if $street;
 }
 
-foreach my $street ( sort keys %s ) {
+foreach my $street ( keys %s ) {
     if ( my @strings = unicode2ascii( $street, $lang ) ) {
         foreach my $s (@strings) {
             print $s, "\t", $street, "\n";
