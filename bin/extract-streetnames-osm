@@ -4,10 +4,10 @@
 # Copyright (c) Wolfram Schneider, May 2009
 #
 # extract-streetnames-osm - extract street names from an OpenStreetMap
-#	XML dump. The output format is: 
+#	XML dump. The output format is:
 #
 #		streetname <tab> lon,lat
-#				
+#
 # you can use this script to build an OpenSearch suggestion database
 #
 
