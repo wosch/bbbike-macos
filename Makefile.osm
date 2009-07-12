@@ -154,8 +154,9 @@ city-population:
 update-city-population:
 	${MAKE} -s -f Makefile.osm city-population | sort -k 2 -nr | perl -npe 's/ /:/' > ../bbbike-macos/misc/population.csv
 
+convert: _convert convert-workarounds
 # using GNU xargs -P parallel
-convert:
+_convert:
 	rm -rf data-osm.old
 	if test -e data-osm; then mv data-osm data-osm.old; fi
 	mkdir -p data-osm
