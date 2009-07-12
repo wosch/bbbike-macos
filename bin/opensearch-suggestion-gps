@@ -15,11 +15,11 @@ my $lang_supported =
 'de_7bit,de_en,de_en_2,da,es,slavic,cyrillic_iso9,cyrillic_iso9:slavic,cyrillic_de,text_unidecode';
 my $lang      = $lang_supported;
 my $substring = 1;
-my $gps = 1;
+my $gps       = 1;
 
 #
 # ignore these words as single items in the database
-# 
+#
 my @stopwords = qw(
   Rd Dr Ln St Road Ct Ave N E S W Way [ZIP de Cir Pl Rue Street Avenue Via NE NW SW SE Straße County Drive Calle Lane Trl Hill Place Creek Blvd Close Court Am Old Park Lake du Ridge Ter la Forest des Loop Crescent Weg Route West Point Highway - State Cv East North South View Chemin Grove Farm del Hollow Valley der Oak Im Hwy De ул. Run Mill River Pky Aly Terrace Green Circle Trail Rua Mountain Strada Bay San Ranch Gardens La Natl Develop Boulevard Glen Pine C Van Impasse Church utca Avenida Hills van Cove An Branch Bridge Vista Springs Woods Oaks Walk Wood Canyon Meadow Camino Township Cemetery Spring Allée Little R Rock J Heights A Pond New Brook School Mc Village John Path Mount Private Saint Zum Carrer Tree Tr B Farm-to-Market White Landing Camp rue Acres Beach Red El Service Square St. calle The Spur Manor Auf 2 Bend 1 Gate Island Fork Crest Upper Los Blue Estates In D Lee Fire Cedar Pass Indian Lower Hall den Town Club House di High Meadows Country Line Sq L Smith Big Santa Plaza Cross Bluff Stone F M Pointe Trce Weg Str. Damm Ring Platz Allee);
 
@@ -366,21 +366,22 @@ sub wordlist {
     $s =~ s/[\[\s"'()]+$//g;
 
     if (1) {
-    while ( $s && length($s) >= 3 ) {
-        if ( $s =~ s/^([\S]+?)[\s\-]// ) {
-            warn qq{Removed "$1" from "$string"\n} if $debug >= 3;
+        while ( $s && length($s) >= 3 ) {
+            if ( $s =~ s/^([\S]+?)[\s\-]// ) {
+                warn qq{Removed "$1" from "$string"\n} if $debug >= 3;
 
-            last if exists $stopwords{$s};
-            push( @list, $s ) if length($s) >= 3;
-        }
-        else {
-            last;
-        }
+                last if exists $stopwords{$s};
+                push( @list, $s ) if length($s) >= 3;
+            }
+            else {
+                last;
+            }
 
+        }
     }
-    } else {
-        my @data = split(/[\s\-]+/, $s);
-   	for(my $i = 1; $i < $#data; $i++) {
+    else {
+        my @data = split( /[\s\-]+/, $s );
+        for ( my $i = 1 ; $i < $#data ; $i++ ) {
         }
     }
 
@@ -406,7 +407,7 @@ my $rc = GetOptions(
     "input-charset=s" => \$icharset,
     "lang=s"          => \$lang,
     "substring=i"     => \$substring,
-    "gps=i"     => \$gps,
+    "gps=i"           => \$gps,
     "help"            => \$help,
 );
 
@@ -448,7 +449,8 @@ select($fd_sort);
 
 while ( my ( $street, $val ) = each %s ) {
     my @wordlist = &wordlist($street);
-    warn "Wordlist: $street: ", join( ' : ', @wordlist ), "\n" if $debug >= 2 && @wordlist;
+    warn "Wordlist: $street: ", join( ' : ', @wordlist ), "\n"
+      if $debug >= 2 && @wordlist;
 
     my @list = $street;
     push( @list, @wordlist ) if $substring && @wordlist;
@@ -456,14 +458,14 @@ while ( my ( $street, $val ) = each %s ) {
     foreach my $street2 (@list) {
         if ( my @strings = unicode2ascii( $street2, $lang ) ) {
             foreach my $s (@strings) {
-                print $s, "\t", $street, ($gps ? "\t$val" : ""), "\n";
+                print $s, "\t", $street, ( $gps ? "\t$val" : "" ), "\n";
             }
         }
         else {
             print $street2, "\t";
             print $street if $street ne $street2;
             print "\t", $val if $gps;
-	    print "\n";
+            print "\n";
         }
     }
 }
