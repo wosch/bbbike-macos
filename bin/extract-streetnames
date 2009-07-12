@@ -155,16 +155,25 @@ my $reader;
 my $fh;
 for my $osm_file (@osm_files) {
 
-    if ( $osm_file =~ m{\.bz2$} ) {
+    if ( $osm_file =~ m{\.osm\.bz2$} ) {
         open $fh, "-|", "bzip2", "-dc", $osm_file
           or die "Can't run bunzip2 on $osm_file: $!";
     }
-    elsif ( $osm_file =~ m{\.gz$} ) {
+    elsif ( $osm_file =~ m{\.osm\.gz$} ) {
         open $fh, "-|", "gzip", "-dc", $osm_file
           or die "Can't run gzip on $osm_file: $!";
     }
+    elsif ( $osm_file =~ m{\.osm$} ) {
+        open $fh, $osm_file
+          or die "Can't open $osm_file: $!";
+    }
     elsif ( $osm_file eq '-' ) {
         $fh = \*STDIN;
+    }
+    else {
+	warn "Unknown file extenstion: $osm_file\n";
+	warn "Expect *.osm.gz, *.osm.bz2, *.osm or '-'\n";
+	next;
     }
 
     binmode( $fh, ":utf8" );
