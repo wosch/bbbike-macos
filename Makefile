@@ -262,7 +262,6 @@ clean:
 dist-clean devel-clean distclean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
 	rm -f ${BUILD_DIR}/*.dmg
-	cd bin && ${MAKE} clean
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
 kml:
