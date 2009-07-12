@@ -8,7 +8,7 @@ ALL=	bbbike-world-kml \
 	strasse-str \
 	livesearch.cgi \
 	streetnames-gps \
-	extract-streetnames \
+	extract-streetnames-osm \
 	bbbike-db \
 	tagcloud \
 
