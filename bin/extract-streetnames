@@ -171,9 +171,9 @@ for my $osm_file (@osm_files) {
         $fh = \*STDIN;
     }
     else {
-	warn "Unknown file extenstion: $osm_file\n";
-	warn "Expect *.osm.gz, *.osm.bz2, *.osm or '-'\n";
-	next;
+        warn "Unknown file extenstion: $osm_file\n";
+        warn "Expect *.osm.gz, *.osm.bz2, *.osm or '-'\n";
+        next;
     }
 
     binmode( $fh, ":utf8" );
