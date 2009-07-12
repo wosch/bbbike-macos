@@ -17,7 +17,7 @@ $VERSION = 0.1;
 $ENV{'LC_ALL'} = 'C';
 
 my $debug  = 1;    # 0: quiet, 1: normal, 2: verbose
-my $sort   = 1;
+my $sort   = 0;
 my $uniq   = 1;
 my $unlink = 1;
 
@@ -25,12 +25,13 @@ my $xmlparser;
 
 sub usage () {
     <<EOF;
-usage: $0 [--debug={0..2}] [ --sort=0|1 ] [ --uniq=0|1 ] [ --unlink=0|1 ] osm_file
+usage: $0 [--debug={0..2}] [ --sort=0|1 ] [ --uniq=0|1 ] 
+          [ --unlink=0|1 ] osm_files ....
 
---debug=0..2	  debug option
---sort=0|1
---uniq=0|1
---unlink=0|1
+--debug=0..2	  debug option, default: $debug
+--sort=0|1	  sort street names, default: $sort
+--uniq=0|1	  filter street names, default: $uniq
+--unlink=0|1	  remove temporary databases, default: $unlink
 osmfile ...       Files downloaded by downloadosm,
                   or directory containing .osm files
 EOF
