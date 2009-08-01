@@ -139,6 +139,7 @@ CITIES=		\
         Darmstadt \
         Mannheim \
         Kassel \
+        Lissabon \
 
 
 all: help
