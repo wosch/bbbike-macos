@@ -11,7 +11,8 @@ MAX_PARALLELS_OSM_DOWNLOADS=	3
 NICE=		nice -n 5
 DOWNLOADOSM=	./miscsrc/downloadosm --debug=2 --step=0.02
 OSMBIKE_DATA=	data-osm.tgz
-OSM2BBD=	perl ./miscsrc/osm2bbd -ignore-unhandled -ignore-underline -experiment add_postal_code --debug=0 -f -map bbbike -experiment polar_coord_hack
+OSM2BBD_MAPTYPE=	-map bbbike	
+OSM2BBD=	perl ./miscsrc/osm2bbd --debug=0 -f ${OSM2BBD_MAPTYPE} -ignore-unhandled -ignore-underline -experiment add_postal_code -experiment polar_coord_hack
 MAX_CPU=	`../bbbike-macos/bin/ncpu`
 GXARGS=		`which gxargs xargs | head -1`
 
@@ -99,7 +100,7 @@ CITIES=		\
 	CraterLake \
 	Riga \
 	Davis \
-	Cracow \
+	Krakau \
 	Kaunas \
 	Corvallis \
 	BrandenburgHavel \
@@ -153,8 +154,9 @@ city-population:
 update-city-population:
 	${MAKE} -s -f Makefile.osm city-population | sort -k 2 -nr | perl -npe 's/ /:/' > ../bbbike-macos/misc/population.csv
 
+convert: _convert convert-workarounds
 # using GNU xargs -P parallel
-convert:
+_convert:
 	rm -rf data-osm.old
 	if test -e data-osm; then mv data-osm data-osm.old; fi
 	mkdir -p data-osm

@@ -67,7 +67,7 @@ case $0 in
         *Kopenhagen* | *Copenhagen* )  datadir=data-osm/Copenhagen ;;
         *Cottbus* )  	datadir=data-osm/Cottbus ;;
         *Kassel* )   datadir=data-osm/Kassel ;;
-        *Krakau* | *Cracow* )   datadir=data-osm/Cracow ;;
+        *Krakau* | *Cracow* )   datadir=data-osm/Krakau ;;
         *CraterLake* )     datadir=data-osm/CraterLake ;;
         *Danzig* )      datadir=data-osm/Danzig ;;
         *Davis* )     datadir=data-osm/Davis ;;
@@ -87,6 +87,7 @@ case $0 in
         *Koeln* )       datadir=data-osm/Koeln ;;
         *Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
         *Leipzig* )     datadir=data-osm/Leipzig ;;
+        *Lissabon* )      datadir=data-osm/Lissabon ;;
         *London* )      datadir=data-osm/London ;;
         *Luebeck* )     datadir=data-osm/Luebeck ;;
         *Mainz* )       datadir=data-osm/Mainz ;;
@@ -158,6 +159,7 @@ case $0 in
 	*Corvallis* | \
 	*CraterLake* | \
 	*Davis* | \
+	*Lissabon* | \
 	*London* | \
 	*Miami* | \
 	*NewYork* | \

@@ -67,7 +67,7 @@ CITIES=		\
 	Colmar \
 	Copenhagen \
 	Cottbus \
-	Cracow \
+	Krakau \
 	CraterLake \
 	Danzig \
 	Davis \
@@ -139,6 +139,7 @@ CITIES=		\
         Darmstadt \
         Mannheim \
         Kassel \
+        Lissabon \
 
 
 all: help
@@ -172,6 +173,7 @@ create-bbbike-tarball:
 update-files:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
+	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
@@ -179,6 +181,7 @@ update-files:
 update-files-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
+	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
@@ -260,7 +263,6 @@ clean:
 dist-clean devel-clean distclean: clean
 	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
 	rm -f ${BUILD_DIR}/*.dmg
-	cd bin && ${MAKE} clean
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
 kml:
