@@ -1,0 +1,57 @@
+#!/usr/local/bin/perl
+
+use HTML::TagCloud;
+use Getopt::Long;
+use strict;
+use warnings;
+
+my $debug = 1;      # 0: quiet, 1: normal, 2: verbose
+my $area  = 'de';
+my $level = 12;
+
+sub usage () {
+    <<EOF;
+usage: $0 [--debug={0..2}] [--level=number ] [ --area=area ] < population.csv
+
+--debug=0..2    debug option
+--area=		de | eu | other
+--level=16
+EOF
+}
+
+# several tagclouds on one page
+sub id2class {
+    my $data = shift;
+    $data =~ s,<div id="htmltagcloud">,<div class="htmltagcloud">,;
+    return $data;
+}
+
+GetOptions(
+    "debug=i" => \$debug,
+    "area=s"  => \$area,
+    "level=i" => \$level,
+) or die usage;
+
+my $cloud = HTML::TagCloud->new( levels => $level );
+
+
+while (<>) {
+    chomp;
+    next if /^\s*#/;
+
+    my ( $city, $name, $lang, $area2, $coord, $population ) = split(/:/);
+    $area2 |= "de";
+    $lang |= "de";
+    $population = 1 if $population <= 0;
+
+    my $ext = $lang eq 'de' ? '.cgi' : ".$lang.cgi";
+
+    warn "XXX: $city, $name, $lang, $area2, $coord, $population\n";
+    warn "$name cgi/$city$ext $population | $area,$area2 \n";
+    next if $area ne $area2;
+
+    $cloud->add( $name, "cgi/$city$ext", $population );
+}
+
+#print &id2class( $cloud->html );
+
