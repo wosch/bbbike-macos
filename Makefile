@@ -281,9 +281,6 @@ dist-clean devel-clean distclean: clean
 	rm -f ${BUILD_DIR}/*.dmg
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
-kml:
-	./bin/bbbike-world-kml misc/cities.csv > misc/bbbike-world.kml
-		
 build-version version:
 	@git show | head -1 | perl -npe 's/^commit\s+//'
 
@@ -294,6 +291,6 @@ update:
 	${MAKE} rsync
 
 help:
-	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync | kml ]"
+	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
 	@echo "            [ help | build-version | clean | dist-clean | update ]"
 
