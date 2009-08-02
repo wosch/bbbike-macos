@@ -186,6 +186,19 @@ case $0 in
 		export LANG=en_US.UTF-8;;
 esac
 
+#
+# support compressed bbbike data, save ca. 200MB disk space
+#
+datadir_opt="$dir/.$bbbike_version/$datadir"
+if [ -f $datadir_opt.tgz ]; then
+	_city=`basename $datadir_opt`	
+	tmpdir=${TMPDIR-"/tmp"}/bbbike-`logname`-${_city}
+	rm -rf $tmpdir
+	mkdir -p $tmpdir
+	gzip -dc $datadir_opt.tgz | ( cd $tmpdir && tar xf - )
+	datadir_opt=$datadir_opt/${_city}
+fi
+
 ##################################################################################
 
 exec "$perl_home"/bin/perl \
@@ -194,6 +207,6 @@ exec "$perl_home"/bin/perl \
 	-I"$perl_home"/lib/site_perl/$perl_version/darwin-thread-multi-2level \
 	-I"$perl_home"/lib/site_perl/$perl_version \
    "$dir"/.$bbbike_version/bbbike \
-	-datadir "$dir/.$bbbike_version/$datadir" \
+	-datadir $datadir_opt \
 	$additional_layers $advanced_mode "$@"
 
