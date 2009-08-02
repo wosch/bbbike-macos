@@ -205,7 +205,6 @@ get-data-osm:
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
 extract-data-osm-tgz:
-	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
 	cd ${_BUILD_DIR}/data-osm; \
 	for i in *; do \
@@ -216,9 +215,11 @@ extract-data-osm-tgz:
 	gzip -t ${_BUILD_DIR}/data-osm/*.tgz
 
 extract-data-osm: extract-data-osm-tgz
+	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 	cp -f ${_BUILD_DIR}/data-osm/*.tgz ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 
 extract-data-osm-powerpc: extract-data-osm-tgz
+	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 	cp -f ${_BUILD_DIR}/data-osm/*.tgz ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 
 extract-data-osm-powerpc-old:
