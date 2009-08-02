@@ -198,7 +198,7 @@ if [ -f $datadir_opt.tgz ]; then
 	rm -rf $tmpdir
 	mkdir -p $tmpdir
 	gzip -dc $datadir_opt.tgz | ( cd $tmpdir && tar xf - )
-	datadir_opt=$datadir_opt/${_city}
+	datadir_opt=$tmpdir/${_city}
 fi
 
 ##################################################################################
