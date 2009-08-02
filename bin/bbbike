@@ -192,12 +192,12 @@ esac
 # support compressed bbbike data, save ca. 200MB disk space
 #
 datadir_opt="$dir/.$bbbike_version/$datadir"
-if [ -f $datadir_opt.tgz ]; then
-	_city=`basename $datadir_opt`	
-	tmpdir=${TMPDIR-"/tmp"}/bbbike-`logname`-${_city}
+if [ -f "$datadir_opt.tbz" ]; then
+	_city=`basename "$datadir_opt"`	
+	tmpdir=${TMPDIR-"/tmp"}/bbbike-`logname`
 	rm -rf $tmpdir
 	mkdir -p $tmpdir
-	gzip -dc $datadir_opt.tgz | ( cd $tmpdir && tar xf - )
+	bzcat "$datadir_opt.tbz" | ( cd $tmpdir && tar xf - )
 	datadir_opt=$tmpdir/${_city}
 fi
 
