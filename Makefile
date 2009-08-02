@@ -22,11 +22,12 @@ BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 
 BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
 
-BUILD_DIR=		build/macos-intel
-BUILD_DIR_POWERPC=	build/macos-powerpc
-BUILD_DIR_SOLARIS=	build/solaris
-BUILD_DIR_LINUX=	build/linux
-BUILD_DIR_FREEBSD=	build/freebsd
+_BUILD_DIR=		build
+BUILD_DIR=		${_BUILD_DIR}/macos-intel
+BUILD_DIR_POWERPC=	${_BUILD_DIR}/macos-powerpc
+BUILD_DIR_SOLARIS=	${_BUILD_DIR}/solaris
+BUILD_DIR_LINUX=	${_BUILD_DIR}/linux
+BUILD_DIR_FREEBSD=	${_BUILD_DIR}/freebsd
 BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_SOLARIS} ${BUILD_DIR_LINUX} ${BUILD_DIR_FREEBSD}
 
 DOWNLOAD_DIR=	download
@@ -173,7 +174,7 @@ create-bbbike-tarball:
 update-files:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
+	#cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
@@ -181,7 +182,7 @@ update-files:
 update-files-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
+	#cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
@@ -203,10 +204,25 @@ get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
-extract-data-osm:
-	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
+extract-data-osm-tbz:
+	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
+	cd ${_BUILD_DIR}/data-osm; \
+	for i in *; do \
+	   if [ -d $$i -a ! -f $$i.tbz ]; then \
+		tar cf - $$i | bzip2 > $$i.tbz; \
+           fi; \
+	done
+	bzip2 -t ${_BUILD_DIR}/data-osm/*.tbz
 
-extract-data-osm-powerpc:
+extract-data-osm: extract-data-osm-tbz
+	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+
+extract-data-osm-powerpc: extract-data-osm-tbz
+	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+
+extract-data-osm-powerpc-old:
 	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
 
 
