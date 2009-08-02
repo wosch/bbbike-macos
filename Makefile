@@ -261,7 +261,9 @@ clean:
 	mkdir -p ${BUILD_DIR_ALL}
 
 dist-clean devel-clean distclean: clean
-	cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg
+	if [ -d ${DOWNLOAD_DIR} ]; then \
+		 cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg; \
+	fi
 	rm -f ${BUILD_DIR}/*.dmg
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
