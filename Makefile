@@ -204,23 +204,23 @@ get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
-extract-data-osm-tgz:
+extract-data-osm-tbz:
 	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
 	cd ${_BUILD_DIR}/data-osm; \
 	for i in *; do \
-	   if [ -d $$i -a ! -f $$i.tgz ]; then \
-		tar cf - $$i | gzip > $$i.tgz; \
+	   if [ -d $$i -a ! -f $$i.tbz ]; then \
+		tar cf - $$i | bzip2 > $$i.tbz; \
            fi; \
 	done
-	gzip -t ${_BUILD_DIR}/data-osm/*.tgz
+	bzip2 -t ${_BUILD_DIR}/data-osm/*.tbz
 
-extract-data-osm: extract-data-osm-tgz
+extract-data-osm: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
-	cp -f ${_BUILD_DIR}/data-osm/*.tgz ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 
-extract-data-osm-powerpc: extract-data-osm-tgz
+extract-data-osm-powerpc: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
-	cp -f ${_BUILD_DIR}/data-osm/*.tgz ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 
 extract-data-osm-powerpc-old:
 	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
