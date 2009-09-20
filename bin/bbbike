@@ -199,6 +199,8 @@ if [ -f "$datadir_opt.tbz" ]; then
 	tmpdir=`mktemp -d ${TMPDIR-"/tmp"}/bbbike.XXXXXXXXX` || exit 2
 	bzcat "$datadir_opt.tbz" | ( cd $tmpdir && tar xf - )
 	datadir_opt=$tmpdir/${_city}
+
+	trap 'test -n "$tmpdir" && rm -rf $tmpdir' 0 15 3 5
 fi
 
 ##################################################################################
@@ -211,8 +213,4 @@ fi
    "$dir"/.$bbbike_version/bbbike \
 	-datadir $datadir_opt \
 	$additional_layers $advanced_mode "$@"
-
-if [ -n "$tmpdir" ]; then
-	rm -rf "$tmpdir"
-fi
 
