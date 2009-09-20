@@ -192,18 +192,18 @@ esac
 # support compressed bbbike data, save ca. 200MB disk space
 #
 datadir_opt="$dir/.$bbbike_version/$datadir"
+tmpdir=""
+
 if [ -f "$datadir_opt.tbz" ]; then
 	_city=`basename "$datadir_opt"`	
-	tmpdir=${TMPDIR-"/tmp"}/bbbike-`logname`
-	rm -rf $tmpdir
-	mkdir -p $tmpdir
+	tmpdir=`mktemp -d ${TMPDIR-"/tmp"}/bbbike.XXXXXXXXX` || exit 2
 	bzcat "$datadir_opt.tbz" | ( cd $tmpdir && tar xf - )
 	datadir_opt=$tmpdir/${_city}
 fi
 
 ##################################################################################
 
-exec "$perl_home"/bin/perl \
+"$perl_home"/bin/perl \
 	-I"$perl_home"/lib/$perl_version/darwin-thread-multi-2level \
      	-I"$perl_home"/lib/$perl_version \
 	-I"$perl_home"/lib/site_perl/$perl_version/darwin-thread-multi-2level \
@@ -211,4 +211,8 @@ exec "$perl_home"/bin/perl \
    "$dir"/.$bbbike_version/bbbike \
 	-datadir $datadir_opt \
 	$additional_layers $advanced_mode "$@"
+
+if [ -n "$tmpdir" ]; then
+	rm -rf "$tmpdir"
+fi
 
