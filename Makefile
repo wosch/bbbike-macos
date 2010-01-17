@@ -15,7 +15,7 @@ BUILD_VERSION=	`${MAKE} -s build-version`
 
 PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
-OSMBIKE_DATA=	data-osm.tgz
+OSMBIKE_DATA=	data-osm.bbbike.tgz
 
 PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
 BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
@@ -206,6 +206,7 @@ get-data-osm:
 
 extract-data-osm-tbz:
 	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
+	cd ${_BUILD_DIR} && mv data-osm.bbbike data-osm
 	cd ${_BUILD_DIR}/data-osm; \
 	for i in *; do \
 	   if [ -d $$i -a ! -f $$i.tbz ]; then \
