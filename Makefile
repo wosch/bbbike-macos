@@ -281,7 +281,7 @@ dist-clean devel-clean distclean: clean
 	if [ -d ${DOWNLOAD_DIR} ]; then \
 		 cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg; \
 	fi
-	rm -f ${BUILD_DIR}/*.dmg
+	rm -rf ${_BUILD_DIR}
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
 build-version version:
