@@ -45,6 +45,7 @@ CPAN_HOME=	${PERL_FAKEDIR}/${PERL_RELEASE}/cpan
 B_PATH=		/bin:/usr/bin
 
 MAKE_ARGS=	-j8
+MAX_CPU=        `../bbbike/world/bin/ncpu`
 
 zcat=	gzip -dc
 
@@ -205,15 +206,15 @@ get-data-osm:
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
 extract-data-osm-tbz:
-	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
+	mkdir -p cd ${_BUILD_DIR}
 	cd ${_BUILD_DIR} && mv data-osm.bbbike data-osm
 	cd ${_BUILD_DIR}/data-osm; \
 	for i in *; do \
 	   if [ -d $$i -a ! -f $$i.tbz ]; then \
-		tar cf - $$i | bzip2 > $$i.tbz; \
+		tar cf - $$i | bzip2 > $$i.tbz & sleep 0.3 & \
            fi; \
-	done
-	bzip2 -t ${_BUILD_DIR}/data-osm/*.tbz
+	done; wait
+	find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} bzip2 -t
 
 extract-data-osm: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
