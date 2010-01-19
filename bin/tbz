@@ -1,0 +1,11 @@
+#!/bin/sh
+
+bzip2=bzip2
+dirs=$@
+
+for i in $dirs; do 
+    if [ -d $i -a ! -f $i.tbz ]; then 
+    	tar cf - $i | ${bzip2} > $i.tbz.tmp && mv -f $i.tbz.tmp $i.tbz
+    fi
+done
+
