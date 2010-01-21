@@ -48,6 +48,7 @@ MAKE_ARGS=	-j8
 MAX_CPU=        `../bbbike/world/bin/ncpu`
 
 zcat=	gzip -dc
+bzip2=	pbzip2
 
 CITIES=		\
 	Aachen \
@@ -169,7 +170,7 @@ create-bbbike-image-powerpc:
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
 create-bbbike-tarball:
-	cd tarball && tar cf - .${BBBIKE_VERSION} | bzip2 > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
+	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
 
 update-files:
@@ -206,15 +207,16 @@ get-data-osm:
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
 
 extract-data-osm-tbz:
-	mkdir -p cd ${_BUILD_DIR}
-	cd ${_BUILD_DIR} && mv data-osm.bbbike data-osm
+	mkdir -p ${_BUILD_DIR}
+	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
+	cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm )
 	cd ${_BUILD_DIR}/data-osm; \
 	for i in *; do \
 	   if [ -d $$i -a ! -f $$i.tbz ]; then \
-		tar cf - $$i | bzip2 > $$i.tbz & sleep 0.3 & \
+		tar cf - $$i | ${bzip2} > $$i.tbz;  \
            fi; \
-	done; wait
-	find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} bzip2 -t
+	done
+	find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t
 
 extract-data-osm: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
