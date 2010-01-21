@@ -210,12 +210,7 @@ extract-data-osm-tbz:
 	mkdir -p ${_BUILD_DIR}
 	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
 	cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm )
-	cd ${_BUILD_DIR}/data-osm; \
-	for i in *; do \
-	   if [ -d $$i -a ! -f $$i.tbz ]; then \
-		tar cf - $$i | ${bzip2} > $$i.tbz;  \
-           fi; \
-	done
+	tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P4 $${tbz}
 	find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t
 
 extract-data-osm: extract-data-osm-tbz
