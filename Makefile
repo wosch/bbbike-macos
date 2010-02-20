@@ -20,7 +20,7 @@ OSMBIKE_DATA=	data-osm.bbbike.tgz
 PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
 BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 
-BBBIKE_TARBALL= ${BBBIKE_VERSION}.tbz
+BBBIKE_TARBALL= ${BBBIKE_VERSION}-git.tbz
 
 _BUILD_DIR=		build
 BUILD_DIR=		${_BUILD_DIR}/macos-intel
@@ -83,7 +83,8 @@ create-bbbike-tarball:
 update-files:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
+	#cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
+	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
@@ -92,7 +93,8 @@ update-files:
 update-files-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
+	#cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
+	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
