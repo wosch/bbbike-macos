@@ -117,6 +117,7 @@ update-files-berlin:
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.doc
+	touch ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.english_cities
 
 get-tarball:
 	mkdir -p ${DOWNLOAD_DIR}

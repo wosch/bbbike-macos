@@ -45,7 +45,7 @@ datadir=data
 
 city=`basename "$0"`;
 if [ $city = "bbbike" ]; then
-	:
+	datadir=data
 elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
 	datadir=data-osm/$city
 elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
