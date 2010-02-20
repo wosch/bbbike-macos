@@ -43,150 +43,25 @@ esac
 
 datadir=data
 
-case $0 in
-        *Aachen* )      datadir=data-osm/Aachen ;;
-        *Amsterdam* )   datadir=data-osm/Amsterdam ;;
-        *Austin* )      datadir=data-osm/Austin ;;
-        *Barcelona* )        datadir=data-osm/Barcelona ;;
-        *Basel* )       datadir=data-osm/Basel ;;
-        *Berlin* )       datadir=data-osm/Berlin ;;
-        *Bielefeld* )   datadir=data-osm/Bielefeld ;;
-        *Bonn* )        datadir=data-osm/Bonn ;;
-        *Boulder* )        datadir=data-osm/Boulder ;;
-        *BrandenburgHavel* ) datadir=data-osm/BrandenburgHavel ;;
-        *Bremen* )      datadir=data-osm/Bremen ;;
-        *Budapest* )    datadir=data-osm/Budapest ;;
-        *CambridgeMa* )     datadir=data-osm/CambridgeMa ;;
-        *Cambridge* )   datadir=data-osm/Cambridge ;;
-        *Chemnitz* )    datadir=data-osm/Chemnitz ;;
-        *Chicago* )     datadir=data-osm/Chicago ;;
-        *Darmstadt* )    datadir=data-osm/Darmstadt ;;
-        *Duisburg* )    datadir=data-osm/Duisburg ;;
-        *Dortmund* )    datadir=data-osm/Dortmund ;;
-        *Kolmar* | *Colmar* )   datadir=data-osm/Colmar ;;
-        *Kopenhagen* | *Copenhagen* )  datadir=data-osm/Copenhagen ;;
-        *Cottbus* )  	datadir=data-osm/Cottbus ;;
-        *Kassel* )   datadir=data-osm/Kassel ;;
-        *Krakau* | *Cracow* )   datadir=data-osm/Krakau ;;
-        *CraterLake* )     datadir=data-osm/CraterLake ;;
-        *Danzig* )      datadir=data-osm/Danzig ;;
-        *Davis* )     datadir=data-osm/Davis ;;
-        *Dresden* )     datadir=data-osm/Dresden ;;
-        *Duesseldorf* ) datadir=data-osm/Duesseldorf ;;
-        *Erfurt* )      datadir=data-osm/Erfurt ;;
-        *Erlangen* )    datadir=data-osm/Erlangen ;;
-        *Frankfurt* )   datadir=data-osm/Frankfurt ;;
-        *FrankfurtOder* )   datadir=data-osm/FrankfurtOder ;;
-        *Freiburg* )    datadir=data-osm/Freiburg ;;
-        *Goerlitz* )	datadir=data-osm/Goerlitz ;;
-        *Goettingen* )  datadir=data-osm/Goettingen ;;
-        *Hamburg* )     datadir=data-osm/Hamburg ;;
-        *Hannover* )    datadir=data-osm/Hannover ;;
-        *Jena* )        datadir=data-osm/Jena ;;
-        *Karlsruhe* )   datadir=data-osm/Karlsruhe ;;
-        *Koeln* )       datadir=data-osm/Koeln ;;
-        *Laibach* | *Ljubljana* ) datadir=data-osm/Laibach;;
-        *Leipzig* )     datadir=data-osm/Leipzig ;;
-        *Lissabon* )      datadir=data-osm/Lissabon ;;
-        *London* )      datadir=data-osm/London ;;
-        *Luebeck* )     datadir=data-osm/Luebeck ;;
-        *Mainz* )       datadir=data-osm/Mainz ;;
-        *Mannheim* )       datadir=data-osm/Mannheim ;;
-        *Miami* )     datadir=data-osm/Miami ;;
-        *Muenster* )    datadir=data-osm/Muenster ;;
-        *NewYork* )    datadir=data-osm/NewYork ;;
-        *PaloAlto* )     datadir=data-osm/PaloAlto ;;
-        *Paris* )       datadir=data-osm/Paris ;;
-        *Portland* )    datadir=data-osm/Portland ;;
-        *Prag* | *Praha* ) datadir=data-osm/Prag ;;
-        *Providence* )  datadir=data-osm/Providence ;;
-        *Rostock* )     datadir=data-osm/Rostock ;;
-        *Ruegen* )      datadir=data-osm/Ruegen ;;
-        *SanFrancisco* )       datadir=data-osm/SanFrancisco ;;
-        *SanJose* )       datadir=data-osm/SanJose ;;
-        *SantaCruz* )  datadir=data-osm/SantaCruz ;;
-        *Seattle* )     datadir=data-osm/Seattle ;;
-        *Stettin* )  	datadir=data-osm/Stettin ;;
-        *Strassburg* | *Strasbourg* )  datadir=data-osm/Strassburg ;;
-        *Turin* )  	datadir=data-osm/Turin ;;
-        *Toronto* )  	datadir=data-osm/Toronto ;;
-        *Vancouver* )     datadir=data-osm/Vancouver ;;
-        *WarenMueritz* ) datadir=data-osm/WarenMueritz ;;
-        *Wien* )        datadir=data-osm/Wien ;;
-        *Zagreb* )      datadir=data-osm/Zagreb ;;
-        *Zuerich* )     datadir=data-osm/Zuerich ;;
-	*Kaunas* )    datadir=data-osm/Kaunas  ;;
-	*Riga* )    datadir=data-osm/Riga  ;;
-	*Reval* )    datadir=data-osm/Reval  ;;
-	*SanktPetersburg* )    datadir=data-osm/SanktPetersburg  ;;
-	*Helsinki* )    datadir=data-osm/Helsinki  ;;
-	*Stockholm* )    datadir=data-osm/Stockholm  ;;
-	*Oslo* )    datadir=data-osm/Oslo  ;;
-	*Dublin* )    datadir=data-osm/Dublin  ;;
-	*Sofia* )    datadir=data-osm/Sofia  ;;
-	*Sarajewo* )    datadir=data-osm/Sarajewo  ;;
-	*Kiew* )    datadir=data-osm/Kiew  ;;
-	*Bruessel* )    datadir=data-osm/Bruessel  ;;
-        *Groningen* )   datadir=data-osm/Groningen ;;
-        *DenHaag* )   datadir=data-osm/DenHaag ;;
-        *Rotterdam* )   datadir=data-osm/Rotterdam ;;
-        *Montreal* )   datadir=data-osm/Montreal ;;
-        *Aarhus* )   datadir=data-osm/Aarhus ;;
-        *Corvallis* )   datadir=data-osm/Corvallis ;;
-	*FortCollins* )    datadir=data-osm/FortCollins  ;;
-	*Madison* )    datadir=data-osm/Madison  ;;
-	*Tuscon* )    datadir=data-osm/Tuscon  ;;
-
-        *bbbike ) ;;
-        *) echo "Unknown city: $0" ;;
-esac
+city=`basename $0`;
+if [ $city = "bbbike" ]; then
+	:
+elif [ -d $dir/.$bbbike_version/data-osm/$city ]; then
+	datadir=data-osm/$city
+else
+	echo "Unknown city: $city"
+	exit 1
+fi
 
 
 # Languate is German by default
 export LANG=de_DE.UTF-8;
 
 # start english version of BBBike
-case $0 in
-	*Aarhus* | \
-	*Austin* | \
-	*Barcelona* | \
-	*Boulder* | \
-	*Boulder* | \
-	*Cambridge* | \
-	*CambridgeMa* | \
-	*Chicago* | \
-	*Copenhagen* | \
-	*Corvallis* | \
-	*CraterLake* | \
-	*Davis* | \
-	*Lissabon* | \
-	*London* | \
-	*Miami* | \
-	*NewYork* | \
-	*PaloAlto* | \
-	*Paris* | \
-	*Portland* | \
-	*Providence* | \
-	*SanFrancisco* | \
-	*SanJose* | \
-	*SantaCruz* | \
-	*Seattle* | \
-	*Turin* | \
-	*Toronto* | \
-	*SanktPetersburg* | \
-	*Helsinki* | \
-	*Stockholm* | \
-	*Oslo* | \
-	*Dublin* | \
-	*Sofia* | \
-	*Kiew* | \
-	*Montreal* | \
-	*FortCollins* | \
-	*Madison* | \
-	*Tuscon* | \
-	*Vancouver* ) \
-		export LANG=en_US.UTF-8;;
-esac
+english_cities=`dirname $0`/.english_cities
+if egrep -q "^$city$" $english_cities; then
+	export LANG=en_US.UTF-8
+fi
 
 #
 # support compressed bbbike data, save ca. 200MB disk space
