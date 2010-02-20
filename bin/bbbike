@@ -60,8 +60,8 @@ fi
 export LANG=de_DE.UTF-8;
 
 # start english version of BBBike
-english_cities=`dirname $0`/.english_cities
-if egrep -q "^$city$" $english_cities; then
+english_cities="$dir/.english_cities"
+if egrep -q "^$city$" "$english_cities"; then
 	export LANG=en_US.UTF-8
 fi
 
