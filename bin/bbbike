@@ -43,7 +43,7 @@ esac
 
 datadir=data
 
-city=`basename $0`;
+city=`basename "$0"`;
 if [ $city = "bbbike" ]; then
 	:
 elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then

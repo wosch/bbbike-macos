@@ -50,7 +50,7 @@ MAX_CPU=        `../bbbike/world/bin/ncpu`
 zcat=	gzip -dc
 bzip2=	pbzip2
 
-CITIES= `../../bbbike/world/bin/bbbike-db --city-by-lang=any`
+CITIES= `../bbbike/world/bin/bbbike-db --city-by-lang=any`
 
 all: help
 
@@ -83,19 +83,21 @@ create-bbbike-tarball:
 update-files:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
+	#cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -dP
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
+	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR}/${BBBIKE_ROOT}/.english_cities
 
 update-files-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
+	#cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && cvs -Q update -d
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
 	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
+	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.english_cities
 
 
 get-tarball:
