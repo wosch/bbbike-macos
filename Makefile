@@ -56,7 +56,7 @@ CITIES= `../bbbike/world/bin/bbbike-db --city-by-lang=any`
 
 all: help
 
-bbbike: bbbike-intel-dmg bbbike-powerpc-dmg
+bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin
 bbbike-intel-dmg bbbike-intel: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 bbbike-powerpc-dmg bbbike-powerpc: clean get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
 bbbike-intel-berlin: clean get-tarball update-files-berlin create-bbbike-image-berlin
@@ -154,7 +154,7 @@ extract-data-osm-powerpc-old:
 
 
 scp rsync:
-	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${SCP_HOME}
+	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN} ${SCP_HOME}
 
 get-perl:
 	if test -f ${DOWNLOAD_DIR}/${PERL_DIST} && gzip -t ${DOWNLOAD_DIR}/${PERL_DIST}; then : ; \
