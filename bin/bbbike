@@ -46,7 +46,9 @@ datadir=data
 city=`basename $0`;
 if [ $city = "bbbike" ]; then
 	:
-elif [ -d $dir/.$bbbike_version/data-osm/$city ]; then
+elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
+	datadir=data-osm/$city
+elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
 	datadir=data-osm/$city
 else
 	echo "Unknown city: $city"
