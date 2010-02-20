@@ -88,6 +88,6 @@ fi
 	-I"$perl_home"/lib/site_perl/$perl_version/darwin-thread-multi-2level \
 	-I"$perl_home"/lib/site_perl/$perl_version \
    "$dir"/.$bbbike_version/bbbike \
-	-datadir $datadir_opt \
+	-datadir "$datadir_opt" \
 	$additional_layers $advanced_mode "$@"
 
