@@ -20,6 +20,7 @@ OSMBIKE_DATA=	data-osm.bbbike.tgz
 PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
 BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
 BBBIKE_DMG_BERLIN=	${BBBIKE_VERSION}-Intel-Berlin.dmg
+BBBIKE_DMG_POWERPC_BERLIN=	${BBBIKE_VERSION}-PowerPC-Berlin.dmg
 
 BBBIKE_TARBALL= ${BBBIKE_VERSION}-git.tbz
 
@@ -30,6 +31,7 @@ BUILD_DIR_SOLARIS=	${_BUILD_DIR}/solaris
 BUILD_DIR_LINUX=	${_BUILD_DIR}/linux
 BUILD_DIR_FREEBSD=	${_BUILD_DIR}/freebsd
 BUILD_DIR_BERLIN=	${_BUILD_DIR}/macos-intel-berlin
+BUILD_DIR_POWERPC_BERLIN=	${_BUILD_DIR}/macos-powerpc-berlin
 BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_SOLARIS} ${BUILD_DIR_LINUX} ${BUILD_DIR_FREEBSD} ${BUILD_DIR_BERLIN}
 
 DOWNLOAD_DIR=	download
@@ -56,10 +58,11 @@ CITIES= `../bbbike/world/bin/bbbike-db --city-by-lang=any`
 
 all: help
 
-bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin
+bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
 bbbike-intel-dmg bbbike-intel: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 bbbike-powerpc-dmg bbbike-powerpc: clean get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
 bbbike-intel-berlin: clean get-tarball update-files-berlin create-bbbike-image-berlin
+bbbike-powerpc-berlin: clean get-tarball update-files-powerpc-berlin create-bbbike-image-powerpc-berlin
 
 create-bbbike-image:
 	@for city in ${CITIES}; do \
@@ -84,6 +87,13 @@ create-bbbike-image-berlin:
 	cp -f bin/cpan ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.cpan
 	echo ${BUILD_VERSION} > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN}
+
+create-bbbike-image-powerpc-berlin:
+	date > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_date
+	cp -f bin/cpan ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.cpan
+	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_version
+	hdiutil create -srcfolder ${BUILD_DIR_POWERPC_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN}
+
 
 create-bbbike-tarball:
 	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
@@ -118,6 +128,16 @@ update-files-berlin:
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.doc
 	touch ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.english_cities
+
+update-files-powerpc-berlin:
+	mkdir -p ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
+	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
+	cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
+	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
+	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
+	cp -rf doc ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.doc
+	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/bbbike
+	touch ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.english_cities
 
 get-tarball:
 	mkdir -p ${DOWNLOAD_DIR}
@@ -154,7 +174,8 @@ extract-data-osm-powerpc-old:
 
 
 scp rsync:
-	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} ${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN} ${SCP_HOME}
+	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} \
+		${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN} ${SCP_HOME}
 
 get-perl:
 	if test -f ${DOWNLOAD_DIR}/${PERL_DIST} && gzip -t ${DOWNLOAD_DIR}/${PERL_DIST}; then : ; \
@@ -221,5 +242,6 @@ update:
 
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
+	@echo "usage: make [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
 	@echo "            [ help | build-version | clean | dist-clean | update ]"
 
