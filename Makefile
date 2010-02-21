@@ -135,7 +135,7 @@ update-files-powerpc-berlin:
 	mkdir -p ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
-	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
+	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.doc
 	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/bbbike
