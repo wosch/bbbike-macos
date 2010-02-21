@@ -61,8 +61,10 @@ all: help
 bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
 bbbike-intel-dmg bbbike-intel: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 bbbike-powerpc-dmg bbbike-powerpc: clean get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
+
 bbbike-intel-berlin: clean get-tarball update-files-berlin create-bbbike-image-berlin
 bbbike-powerpc-berlin: clean get-tarball update-files-powerpc-berlin create-bbbike-image-powerpc-berlin
+
 
 create-bbbike-image:
 	@for city in ${CITIES}; do \
@@ -132,7 +134,7 @@ update-files-berlin:
 update-files-powerpc-berlin:
 	mkdir -p ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
+	cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.doc
