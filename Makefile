@@ -25,14 +25,14 @@ BBBIKE_DMG_POWERPC_BERLIN=	${BBBIKE_VERSION}-PowerPC-Berlin.dmg
 BBBIKE_TARBALL= ${BBBIKE_VERSION}-git.tbz
 
 _BUILD_DIR=		build
-BUILD_DIR=		${_BUILD_DIR}/$(shell mktemp -d macos-intel.XXXXXXXXXX)
-BUILD_DIR_POWERPC=	${_BUILD_DIR}/$(shell mktemp -d macos-powerpc.XXXXXXXXXX)
-BUILD_DIR_SOLARIS=	${_BUILD_DIR}/$(shell mktemp -d solaris.XXXXXXXXXX)
-BUILD_DIR_LINUX=	${_BUILD_DIR}/$(shell mktemp -d linux.XXXXXXXXXX)
-BUILD_DIR_FREEBSD=	${_BUILD_DIR}/$(shell mktemp -d freebsd.XXXXXXXXXX)
+BUILD_DIR:=		${_BUILD_DIR}/$(shell mktemp -d macos-intel.XXXXXXXXXX)
+BUILD_DIR_POWERPC:=	${_BUILD_DIR}/$(shell mktemp -d macos-powerpc.XXXXXXXXXX)
+BUILD_DIR_SOLARIS:=	${_BUILD_DIR}/$(shell mktemp -d solaris.XXXXXXXXXX)
+BUILD_DIR_LINUX:=	${_BUILD_DIR}/$(shell mktemp -d linux.XXXXXXXXXX)
+BUILD_DIR_FREEBSD:=	${_BUILD_DIR}/$(shell mktemp -d freebsd.XXXXXXXXXX)
 BUILD_DIR_BERLIN:=	${_BUILD_DIR}/$(shell mktemp -d macos-intel-berlin.freebsd.XXXXXXXXXX)
+BUILD_DIR_POWERPC_BERLIN:=	${_BUILD_DIR}/macos-powerpc-berlin
 
-BUILD_DIR_POWERPC_BERLIN=	${_BUILD_DIR}/macos-powerpc-berlin
 BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_SOLARIS} ${BUILD_DIR_LINUX} ${BUILD_DIR_FREEBSD} ${BUILD_DIR_BERLIN}
 
 DOWNLOAD_DIR=	download
@@ -242,6 +242,11 @@ update:
 	#cd ../bbbike && ${MAKE} -f Makefile.osm rsync-tgz
 	${MAKE} bbbike
 	${MAKE} rsync
+
+test:
+	@echo ${BUILD_DIR}
+	@echo ${BUILD_DIR}
+	@echo ${BUILD_DIR}
 
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
