@@ -161,7 +161,7 @@ extract-data-osm-tbz:
 	mkdir -p ${_BUILD_DIR}
 	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
 	cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm )
-	tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P{MAX_CPU} $${tbz}
+	tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P${MAX_CPU} $${tbz}
 	find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t
 
 extract-data-osm: extract-data-osm-tbz
@@ -247,6 +247,7 @@ test:
 	@echo ${BUILD_DIR}
 	@echo ${BUILD_DIR}
 	@echo ${BUILD_DIR}
+	@echo ${MAX_CPU}
 
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
