@@ -31,7 +31,7 @@ BUILD_DIR_SOLARIS:=	${_BUILD_DIR}/$(shell mktemp -d solaris.XXXXXXXXXX)
 BUILD_DIR_LINUX:=	${_BUILD_DIR}/$(shell mktemp -d linux.XXXXXXXXXX)
 BUILD_DIR_FREEBSD:=	${_BUILD_DIR}/$(shell mktemp -d freebsd.XXXXXXXXXX)
 BUILD_DIR_BERLIN:=	${_BUILD_DIR}/$(shell mktemp -d macos-intel-berlin.XXXXXXXXXX)
-BUILD_DIR_POWERPC_BERLIN:=	${_BUILD_DIR}/macos-powerpc-berlin
+BUILD_DIR_POWERPC_BERLIN:=	${_BUILD_DIR}/$(shell mktemp -d macos-powerpc-berlin.XXXXXXXXXX)
 
 BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_SOLARIS} ${BUILD_DIR_LINUX} ${BUILD_DIR_FREEBSD} ${BUILD_DIR_BERLIN}
 
