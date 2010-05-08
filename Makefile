@@ -25,10 +25,11 @@ BBBIKE_DMG_POWERPC_BERLIN=	${BBBIKE_VERSION}-PowerPC-Berlin.dmg
 BBBIKE_TARBALL= ${BBBIKE_VERSION}-git.tbz
 
 _BUILD_DIR=		build
-BUILD_DIR:=		${_BUILD_DIR}/$(shell mktemp -d macos-intel.XXXXXXXXXX)
-BUILD_DIR_POWERPC:=	${_BUILD_DIR}/$(shell mktemp -d macos-powerpc.XXXXXXXXXX)
-BUILD_DIR_BERLIN:=	${_BUILD_DIR}/$(shell mktemp -d macos-intel-berlin.XXXXXXXXXX)
-BUILD_DIR_POWERPC_BERLIN:=${_BUILD_DIR}/$(shell mktemp -d macos-powerpc-berlin.XXXXXXXXXX)
+_build:=		$(shell mkdir -p ${_BUILD_DIR})
+BUILD_DIR:=		$(shell mktemp -d ${_BUILD_DIR}/macos-intel.XXXXXXXXXX)
+BUILD_DIR_POWERPC:=	$(shell mktemp -d ${_BUILD_DIR}/macos-powerpc.XXXXXXXXXX)
+BUILD_DIR_BERLIN:=	$(shell mktemp -d ${_BUILD_DIR}/macos-intel-berlin.XXXXXXXXXX)
+BUILD_DIR_POWERPC_BERLIN:=$(shell mktemp -d ${_BUILD_DIR}/macos-powerpc-berlin.XXXXXXXXXX)
 
 BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_BERLIN}
 
