@@ -27,13 +27,10 @@ BBBIKE_TARBALL= ${BBBIKE_VERSION}-git.tbz
 _BUILD_DIR=		build
 BUILD_DIR:=		${_BUILD_DIR}/$(shell mktemp -d macos-intel.XXXXXXXXXX)
 BUILD_DIR_POWERPC:=	${_BUILD_DIR}/$(shell mktemp -d macos-powerpc.XXXXXXXXXX)
-BUILD_DIR_SOLARIS:=	${_BUILD_DIR}/$(shell mktemp -d solaris.XXXXXXXXXX)
-BUILD_DIR_LINUX:=	${_BUILD_DIR}/$(shell mktemp -d linux.XXXXXXXXXX)
-BUILD_DIR_FREEBSD:=	${_BUILD_DIR}/$(shell mktemp -d freebsd.XXXXXXXXXX)
 BUILD_DIR_BERLIN:=	${_BUILD_DIR}/$(shell mktemp -d macos-intel-berlin.XXXXXXXXXX)
-BUILD_DIR_POWERPC_BERLIN:=	${_BUILD_DIR}/$(shell mktemp -d macos-powerpc-berlin.XXXXXXXXXX)
+BUILD_DIR_POWERPC_BERLIN:=${_BUILD_DIR}/$(shell mktemp -d macos-powerpc-berlin.XXXXXXXXXX)
 
-BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_SOLARIS} ${BUILD_DIR_LINUX} ${BUILD_DIR_FREEBSD} ${BUILD_DIR_BERLIN}
+BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_BERLIN}
 
 DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
@@ -186,9 +183,6 @@ get-perl:
 
 build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
-build-perl-solaris:
-	${MAKE} BUILD_DIR=${BUILD_DIR_SOLARIS} build-perl-intel
-
 
 perl-intel: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
 
