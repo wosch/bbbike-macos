@@ -59,11 +59,11 @@ all: help
 
 bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
 
-bbbike-intel-dmg bbbike-intel: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
-bbbike-powerpc-dmg bbbike-powerpc: clean get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
+bbbike-intel-dmg bbbike-intel: get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
+bbbike-powerpc-dmg bbbike-powerpc: get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
 
-bbbike-intel-berlin: clean get-tarball update-files-berlin create-bbbike-image-berlin
-bbbike-powerpc-berlin: clean get-tarball update-files-powerpc-berlin create-bbbike-image-powerpc-berlin
+bbbike-intel-berlin: get-tarball update-files-berlin create-bbbike-image-berlin
+bbbike-powerpc-berlin: get-tarball update-files-powerpc-berlin create-bbbike-image-powerpc-berlin
 
 
 ###############################################################
@@ -191,9 +191,9 @@ get-perl:
 build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
 
-perl-intel: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
+perl-intel: get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
 
-perl-powerpc: clean get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-powerpc build-perllibs-powerpc
+perl-powerpc: get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-powerpc build-perllibs-powerpc
 
 build-perl-intel: 
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
@@ -226,17 +226,13 @@ build-perllibs-intel:
 # generic 
 #
 
+# currently not in used
 clean:
-	rm -rf -- ${BUILD_DIR_ALL}
-	rm -f /tmp/cpan.log
-	mkdir -p ${BUILD_DIR_ALL}
+	@true
 
-dist-clean devel-clean distclean: clean
-	if [ -d ${DOWNLOAD_DIR} ]; then \
-		 cd ${DOWNLOAD_DIR} && rm -f *.part *.tbz *.tgz *.dmg; \
-	fi
-	rm -rf ${_BUILD_DIR}
-	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
+distclean: clean
+	rm -rf ${DOWNLOAD_DIR} ${_BUILD_DIR}
+	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE} /tmp/cpan.log
 
 update: 
 	${MAKE} distclean
@@ -250,5 +246,5 @@ build-version version:
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
 	@echo "usage: make [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
-	@echo "            [ help | build-version | clean | dist-clean | update ]"
+	@echo "            [ help | build-version | clean | distclean | update ]"
 
