@@ -1,11 +1,10 @@
 ###############################################################
-# Wolfram Schneider, Aug 2008
+# Copyright (c) 2008-2010 Wolfram Schneider, http://bbbike.org
 #
-# build and update a BBBike/SFBike image archive for MacOS 10.5 Intel
+# build and update a BBBike image for MacOS 10.5 Intel & PowerPC
 #
 # For more information about BBBike, visit http://www.bbbike.de
-#
-# $Id: Makefile,v 1.126 2009/04/19 20:19:02 wosch Exp $
+
 
 BBBIKE_ROOT=	BBBike
 BBBIKE_VERSION= BBBike-3.17-devel
@@ -54,10 +53,12 @@ zcat=	gzip -dc
 bzip2=	pbzip2
 
 CITIES= `../bbbike/world/bin/bbbike-db --city-by-lang=any`
+###############################################################
 
 all: help
 
 bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
+
 bbbike-intel-dmg bbbike-intel: clean get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
 bbbike-powerpc-dmg bbbike-powerpc: clean get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
 
@@ -65,6 +66,10 @@ bbbike-intel-berlin: clean get-tarball update-files-berlin create-bbbike-image-b
 bbbike-powerpc-berlin: clean get-tarball update-files-powerpc-berlin create-bbbike-image-powerpc-berlin
 
 
+###############################################################
+#
+# target per system archtecture
+#
 create-bbbike-image:
 	@for city in ${CITIES}; do \
 		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
@@ -96,6 +101,7 @@ create-bbbike-image-powerpc-berlin:
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN}
 
 
+###############################################################
 create-bbbike-tarball:
 	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
 	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
@@ -215,6 +221,11 @@ build-perllibs-intel:
 	cp -f /tmp/cpan.log ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}
 	${PERL_FAKEDIR}/${PERL_RELEASE}/bin/perl -MTk -e 'exit 0'
 
+###############################################################
+#
+# generic 
+#
+
 clean:
 	rm -rf -- ${BUILD_DIR_ALL}
 	rm -f /tmp/cpan.log
@@ -227,20 +238,14 @@ dist-clean devel-clean distclean: clean
 	rm -rf ${_BUILD_DIR}
 	rm -rf ${PERL_FAKEDIR}/${PERL_RELEASE}
 
-build-version version:
-	@git show | head -1 | perl -npe 's/^commit\s+//'
-
 update: 
 	${MAKE} distclean
 	#cd ../bbbike && ${MAKE} -f Makefile.osm rsync-tgz
 	${MAKE} bbbike
 	${MAKE} rsync
 
-test:
-	@echo ${BUILD_DIR}
-	@echo ${BUILD_DIR}
-	@echo ${BUILD_DIR}
-	@echo ${MAX_CPU}
+build-version version:
+	@git show | head -1 | perl -npe 's/^commit\s+//'
 
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
