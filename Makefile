@@ -36,6 +36,8 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
+#WITH_GIT_PULL=	YES
+
 PERL_VERSION=	5.10.0
 PERL_DIST=	perl-${PERL_VERSION}.tar.gz
 PERL_RELEASE=	perl-${PERL_VERSION}
@@ -109,7 +111,7 @@ dmg-powerpc-berlin:
 fix:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
+	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && test -n "${WITH_GIT_PULL}" && git pull -q && rm -rf .git
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
@@ -118,7 +120,7 @@ fix:
 fix-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
+	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && test -n "${WITH_GIT_PULL}" && git pull -q && rm -rf .git
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
@@ -128,7 +130,7 @@ fix-powerpc:
 fix-berlin:
 	mkdir -p ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
+	cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && test -n "${WITH_GIT_PULL}" && git pull -q && rm -rf .git
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.doc
@@ -137,7 +139,7 @@ fix-berlin:
 fix-powerpc-berlin:
 	mkdir -p ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
+	cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && test -n "${WITH_GIT_PULL}" && git pull -q && rm -rf .git
 	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.doc
