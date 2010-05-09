@@ -59,8 +59,8 @@ all: help
 
 bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
 
-bbbike-intel-dmg bbbike-intel: download-tarballs fix get-data-osm extract-data-osm dmg
-bbbike-powerpc-dmg bbbike-powerpc: download-tarballs-powerpc fix-powerpc get-data-osm extract-data-osm-powerpc dmg-powerpc
+bbbike-intel-dmg bbbike-intel: download-tarballs fix extract-data-osm dmg
+bbbike-powerpc-dmg bbbike-powerpc: download-tarballs-powerpc fix-powerpc extract-data-osm-powerpc dmg-powerpc
 
 bbbike-intel-berlin: download-tarballs fix-berlin dmg-berlin
 bbbike-powerpc-berlin: download-tarballs fix-powerpc-berlin dmg-powerpc-berlin
@@ -164,8 +164,9 @@ download-tarballs-powerpc:
 get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
+	${gzip} -t ${OSMBIKE_DATA}
 
-extract-data-osm-tbz:
+extract-data-osm-tbz: get-data-osm
 	mkdir -p ${_BUILD_DIR}
 	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
 	cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm )
