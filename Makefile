@@ -36,7 +36,7 @@ DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
 SCP_HOME=		wolfram.schneider.org:www/src/bbbike
 
-#WITH_GIT_PULL=	YES
+WITH_GIT_PULL=	YES
 
 PERL_VERSION=	5.10.0
 PERL_DIST=	perl-${PERL_VERSION}.tar.gz
