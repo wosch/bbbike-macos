@@ -102,11 +102,6 @@ dmg-powerpc-berlin:
 
 
 ###############################################################
-#create-bbbike-tarball:
-#	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
-#	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
-
-###############################################################
 #
 # correction, configuration for target platform
 #
@@ -185,13 +180,10 @@ extract-data-osm-powerpc: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 
-extract-data-osm-powerpc-old:
-	@${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && tar xf - )
-
-
-scp rsync:
-	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} \
-		${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN} ${SCP_HOME}
+###############################################################
+#
+# old perl stuff
+#
 
 get-perl:
 	if test -f ${DOWNLOAD_DIR}/${PERL_DIST} && gzip -t ${DOWNLOAD_DIR}/${PERL_DIST}; then : ; \
@@ -237,6 +229,10 @@ build-perllibs-intel:
 # generic 
 #
 
+scp rsync:
+	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} \
+		${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN} ${SCP_HOME}
+
 # currently not in used
 clean:
 	@true
@@ -258,4 +254,9 @@ help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
 	@echo "usage: make [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
 	@echo "            [ help | build-version | clean | distclean | update ]"
+
+###############################################################
+#create-bbbike-tarball:
+#	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
+#	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
 
