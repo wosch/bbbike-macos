@@ -59,18 +59,18 @@ all: help
 
 bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
 
-bbbike-intel-dmg bbbike-intel: get-tarball update-files get-data-osm extract-data-osm create-bbbike-image
-bbbike-powerpc-dmg bbbike-powerpc: get-tarball-powerpc update-files-powerpc get-data-osm extract-data-osm-powerpc create-bbbike-image-powerpc
+bbbike-intel-dmg bbbike-intel: download-tarballs fix get-data-osm extract-data-osm dmg
+bbbike-powerpc-dmg bbbike-powerpc: download-tarballs-powerpc fix-powerpc get-data-osm extract-data-osm-powerpc dmg-powerpc
 
-bbbike-intel-berlin: get-tarball update-files-berlin create-bbbike-image-berlin
-bbbike-powerpc-berlin: get-tarball update-files-powerpc-berlin create-bbbike-image-powerpc-berlin
+bbbike-intel-berlin: download-tarballs fix-berlin dmg-berlin
+bbbike-powerpc-berlin: download-tarballs fix-powerpc-berlin dmg-powerpc-berlin
 
 
 ###############################################################
 #
 # target per system archtecture
 #
-create-bbbike-image:
+dmg:
 	@for city in ${CITIES}; do \
 		( cd ${BUILD_DIR}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
@@ -79,7 +79,7 @@ create-bbbike-image:
 	echo ${BUILD_VERSION} > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
 
-create-bbbike-image-powerpc:
+dmg-powerpc:
 	@for city in ${CITIES}; do \
 		( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && cp bbbike $$city ); \
 	done
@@ -88,13 +88,13 @@ create-bbbike-image-powerpc:
 	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
-create-bbbike-image-berlin:
+dmg-berlin:
 	date > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_date
 	cp -f bin/cpan ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.cpan
 	echo ${BUILD_VERSION} > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN}
 
-create-bbbike-image-powerpc-berlin:
+dmg-powerpc-berlin:
 	date > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_date
 	cp -f bin/cpan ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.cpan
 	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_version
@@ -102,11 +102,16 @@ create-bbbike-image-powerpc-berlin:
 
 
 ###############################################################
-create-bbbike-tarball:
-	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
-	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
+#create-bbbike-tarball:
+#	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
+#	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
 
-update-files:
+###############################################################
+#
+# correction, configuration for target platform
+#
+
+fix:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
@@ -115,7 +120,7 @@ update-files:
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
 	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR}/${BBBIKE_ROOT}/.english_cities
 
-update-files-powerpc:
+fix-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
 	cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
@@ -125,7 +130,7 @@ update-files-powerpc:
 	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
 	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.english_cities
 
-update-files-berlin:
+fix-berlin:
 	mkdir -p ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
@@ -134,7 +139,7 @@ update-files-berlin:
 	cp -rf doc ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.doc
 	touch ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.english_cities
 
-update-files-powerpc-berlin:
+fix-powerpc-berlin:
 	mkdir -p ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
 	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
 	cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git
@@ -144,16 +149,22 @@ update-files-powerpc-berlin:
 	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/bbbike
 	touch ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.english_cities
 
-get-tarball:
+###############################################################
+#
+# download tarballs for perl and bbbike
+#
+download-tarballs:
 	mkdir -p ${DOWNLOAD_DIR}
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
 	  test -f ${PERL_TARBALL} || curl -s -S -f -o ${PERL_TARBALL} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL}
 
-get-tarball-powerpc:
+download-tarballs-powerpc:
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
 	  test -f ${PERL_TARBALL_POWERPC} || curl -s -S -f -o ${PERL_TARBALL_POWERPC} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL_POWERPC}
+
+###############################################################
 
 get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
@@ -191,9 +202,9 @@ get-perl:
 build-perl-powerpc:
 	${MAKE} BUILD_DIR=${BUILD_DIR_POWERPC} build-perl-intel
 
-perl-intel: get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
+perl-intel: download-tarballs update-files get-data-osm extract-data-osm get-perl build-perl-intel build-perllibs-intel
 
-perl-powerpc: get-tarball update-files get-data-osm extract-data-osm get-perl build-perl-powerpc build-perllibs-powerpc
+perl-powerpc: download-tarballs update-files get-data-osm extract-data-osm get-perl build-perl-powerpc build-perllibs-powerpc
 
 build-perl-intel: 
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
