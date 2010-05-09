@@ -166,7 +166,7 @@ download-tarballs-powerpc:
 get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
-	gzip -t ${OSMBIKE_DATA}
+	gzip -t ${DOWNLOAD_DIR}/${OSMBIKE_DATA}
 
 extract-data-osm-tbz: get-data-osm
 	mkdir -p ${_BUILD_DIR}
