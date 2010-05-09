@@ -166,22 +166,23 @@ download-tarballs-powerpc:
 get-data-osm:
 	cd ${DOWNLOAD_DIR}; \
 	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
-	gzip -t ${DOWNLOAD_DIR}/${OSMBIKE_DATA}
 
 extract-data-osm-tbz: get-data-osm
 	mkdir -p ${_BUILD_DIR}
-	${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - )
-	cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm )
-	tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P${MAX_CPU} $${tbz}
-	find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t
+	if ! test -d ${_BUILD_DIR}/data-osm; then \
+		${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - ); \
+		( cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm ) ); \
+		( tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P${MAX_CPU} $${tbz} ); \
+		find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t; \
+	fi
 
 extract-data-osm: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
-	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+	p=`pwd`; cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm && ln -f $$p/${_BUILD_DIR}/data-osm/*.tbz .
 
 extract-data-osm-powerpc: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
-	cp -f ${_BUILD_DIR}/data-osm/*.tbz ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
+	p=`pwd`; cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm && ln -f $$p/${_BUILD_DIR}/data-osm/*.tbz .
 
 ###############################################################
 #
@@ -257,9 +258,4 @@ help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
 	@echo "usage: make [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
 	@echo "            [ help | build-version | clean | distclean | update ]"
-
-###############################################################
-#create-bbbike-tarball:
-#	cd tarball && tar cf - .${BBBIKE_VERSION} | ${bzip2} > ../${DOWNLOAD_DIR}/${BBBIKE_TARBALL}
-#	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_TARBALL}  ${SCP_HOME}
 
