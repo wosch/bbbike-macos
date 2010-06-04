@@ -256,6 +256,6 @@ build-version version:
 
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
-	@echo "usage: make [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
+	@echo "            [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
 	@echo "            [ help | build-version | clean | distclean | update ]"
 
