@@ -184,6 +184,18 @@ extract-data-osm-powerpc: extract-data-osm-tbz
 	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
 	p=`pwd`; cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm && ln -f $$p/${_BUILD_DIR}/data-osm/*.tbz .
 
+# create a bzip2'd tarball for every city and put it online
+create-data-osm-tbz: 
+	mkdir -p ${_BUILD_DIR}
+	if ! test -d ${_BUILD_DIR}/data-osm; then \
+		${zcat} ../../www/src/bbbike/data-osm.tgz | ( cd ${_BUILD_DIR} && tar xf - ); \
+		( cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm ) ); \
+		( tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P${MAX_CPU} $${tbz} ); \
+		find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t; \
+	fi
+	mkdir -p ../../www/src/bbbike/data-osm
+	rsync -av cd ${_BUILD_DIR}/data-osm/*.tbz ../../www/src/bbbike/data-osm
+
 ###############################################################
 #
 # old perl stuff
