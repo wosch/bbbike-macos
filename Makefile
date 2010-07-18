@@ -269,5 +269,6 @@ build-version version:
 help:
 	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
 	@echo "            [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
+	@echo "            [ create-data-osm-tbz ]"
 	@echo "            [ help | build-version | clean | distclean | update ]"
 
