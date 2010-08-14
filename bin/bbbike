@@ -15,6 +15,7 @@ bbbike_version="BBBike-3.17-devel"
 # BBBike options
 additional_layers="--sehenswuerdigkeiten --rbahn"
 advanced_mode=	#"--advanced"
+: {update_data_osm="YES"}
 
 
 ##################################################################################
@@ -50,7 +51,9 @@ elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
 	datadir=data-osm/$city
 elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
 	datadir=data-osm/$city
-	( cd `dirname $0` && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
+	if [ "$update_data_osm" = "YES" ]; then
+		( cd `dirname $0` && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
+	fi
 else
 	echo "Unknown city: $city"
 	exit 1
