@@ -1,0 +1,50 @@
+#!/bin/sh
+# Copyright (c) 2010, Wolfram Schneider
+# 
+# update-data-osm - update BBBike city data at startup time
+#
+
+file=$1
+url=http://wolfram.schneider.org/src/bbbike/data-osm
+
+usage ()
+{
+	echo "usage $0 file.tbz"
+	exit 2
+}
+
+update_failed ()
+{
+	echo "Update of $1 failed"
+	exit 1
+}
+
+case $file in
+	*.tbz ) ;;
+	* ) usage ;;
+esac
+
+test -f $file || usage
+
+f=`basename $file`
+
+size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
+size_old=`ls -l $file | awk '{print $5}'`
+
+if [ $size_new -ne $size_old ]; then
+	cd `dirname $file`
+	tmp=$f.$$
+	touch $tmp || update_failed $f
+        echo "Updating $f ..."
+	if curl -sf -o $tmp "$url/$f"; then
+		bzip2 -t $tmp || update_failed $f
+		mv $tmp $f || update_failed $f
+		echo "... done"
+		echo "Please re-start BBBike"
+	else
+		update_failed "$url/$f"
+	fi
+else
+	true
+fi
+
