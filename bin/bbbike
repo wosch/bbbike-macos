@@ -47,6 +47,22 @@ datadir=data
 city=`basename "$0"`;
 if [ $city = "bbbike" ]; then
 	datadir=data
+	( # update of original BBBike ./data 
+	  set -e
+	  set -x
+	  tmp=`mktemp -t bbbike`
+	  sleep 30
+	  cd `dirname $0` && ./.update-data-osm "$dir/.$bbbike_version/data-osm/data.tbz" 
+	  if [ "$dir/.$bbbike_version/data-osm/data.tbz" -nt $tmp ]; then
+	    cd "$dir/.$bbbike_version/data-osm"
+	    bzip2 -t data.tbz
+	    bzcat data.tbz | tar xf -
+	    rm -rf ../data.old
+	    mv -f ../data ../data.old || true
+	    mv data ..
+	  fi
+	  rm -f $tmp
+	) &
 elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
 	datadir=data-osm/$city
 elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
