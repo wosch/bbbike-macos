@@ -15,7 +15,7 @@ bbbike_version="BBBike-3.17-devel"
 # BBBike options
 additional_layers="--sehenswuerdigkeiten --rbahn"
 advanced_mode=	#"--advanced"
-: {update_data_osm="YES"}
+: ${update_data_osm="YES"}
 
 
 ##################################################################################
