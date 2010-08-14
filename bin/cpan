@@ -1,8 +1,7 @@
 #!/bin/sh
+# Copyright (c) 2008-2010 Wolfram Schneider, http://bbbike.org
 #
 # .cpan - a cpan wrapper to install missing perl libs for BBBike
-#
-# $Id: cpan,v 1.1 2009/01/25 21:56:58 wosch Exp $
 
 
 ##################################################################################
