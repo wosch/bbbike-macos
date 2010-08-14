@@ -35,8 +35,13 @@ export DYLD_LIBRARY_PATH
 ##################################################################################
 case `sysctl -n hw.machine` in
         i386) ;;
-        * ) banner '.'; echo "Wrong architecture, only MacOS/Intel is supported"; exit 1 ;;
+        * ) 	banner '.' 
+		echo "Wrong architecture, only MacOS/Intel is supported"
+		sleep 10
+		exit 1 
+		;;
 esac
+
 case `sw_vers -productVersion` in
         10.[5-9].* ) ;;
         * ) banner '.'; echo "Wrong MacOS release, only 10.5.X or higher is supported"; exit 1 ;;
