@@ -50,15 +50,15 @@ if [ $city = "bbbike" ]; then
 	( # update of original BBBike ./data 
 	  set -e
 	  tmp=`mktemp -t bbbike`
-	  sleep 30
+	  sleep 10
 	  cd `dirname $0` && ./.update-data-osm "$dir/.$bbbike_version/data-osm/data.tbz" 
 	  if [ "$dir/.$bbbike_version/data-osm/data.tbz" -nt $tmp ]; then
 	    cd "$dir/.$bbbike_version/data-osm"
 	    bzip2 -t data.tbz
 	    bzcat data.tbz | tar xf -
 	    rm -rf ../data.old
-	    mv -f ../data ../data.old || true
-	    mv data ..
+	    cp -fr ../data ../data.old || true
+	    rsync -a data ../
 	  fi
 	  rm -f $tmp
 	) &
