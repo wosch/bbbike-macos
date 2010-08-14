@@ -78,6 +78,7 @@ dmg:
 	done
 	date > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_date
 	cp -f bin/cpan ${BUILD_DIR}/${BBBIKE_ROOT}/.cpan
+	cp -f bin/update-data-osm ${BUILD_DIR}/${BBBIKE_ROOT}/.update-data-osm
 	echo ${BUILD_VERSION} > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
 
@@ -87,6 +88,7 @@ dmg-powerpc:
 	done
 	date > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_date
 	cp -f bin/cpan ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.cpan
+	cp -f bin/update-data-osm ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.update-data-osm
 	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
 
