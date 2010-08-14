@@ -50,6 +50,7 @@ if [ $city = "bbbike" ]; then
 	( # update of original BBBike ./data 
 	  set -e
 	  tmp=`mktemp -t bbbike`
+	  mkdir -p "$dir/.$bbbike_version/data-osm"
 	  touch "$dir/.$bbbike_version/data-osm/data.tbz" 2>/dev/null
 	  sleep 10
 	  cd `dirname $0` && ./.update-data-osm "$dir/.$bbbike_version/data-osm/data.tbz" 
