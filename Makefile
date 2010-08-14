@@ -95,12 +95,14 @@ dmg-powerpc:
 dmg-berlin:
 	date > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_date
 	cp -f bin/cpan ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.cpan
+	cp -f bin/update-data-osm ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.update-data-osm
 	echo ${BUILD_VERSION} > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN}
 
 dmg-powerpc-berlin:
 	date > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_date
 	cp -f bin/cpan ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.cpan
+	cp -f bin/update-data-osm ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.update-data-osm
 	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR_POWERPC_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN}
 
