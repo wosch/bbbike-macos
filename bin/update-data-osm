@@ -19,20 +19,20 @@ update_failed ()
 	exit 1
 }
 
-case $file in
+case "$file" in
 	*.tbz ) ;;
 	* ) usage ;;
 esac
 
-test -f $file || usage
+test -f "$file" || usage
 
-f=`basename $file`
+f=`basename "$file"`
 
 size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
 size_old=`ls -l $file | awk '{print $5}'`
 
 if [ $size_new -ne $size_old ]; then
-	cd `dirname $file`
+	cd `dirname "$file"`
 	tmp=$f.$$
 	touch $tmp || update_failed $f
         echo "Updating $f ..."
