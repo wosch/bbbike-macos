@@ -58,7 +58,7 @@ if [ $city = "bbbike" ]; then
 	  mkdir -p "$dir/.$bbbike_version/data-osm"
 	  touch "$dir/.$bbbike_version/data-osm/data.tbz" 2>/dev/null
 	  sleep 10
-	  cd "`dirname $0`" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/data.tbz" 
+	  cd "$dir" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/data.tbz" 
 	  if [ "$dir/.$bbbike_version/data-osm/data.tbz" -nt $tmp ]; then
 	    cd "$dir/.$bbbike_version/data-osm"
 	    bzip2 -t data.tbz
@@ -74,7 +74,7 @@ elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
 elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
 	datadir=data-osm/$city
 	if [ "$update_data_osm" = "YES" ]; then
-		( cd "`dirname $0`" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
+		( cd "$dir" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
 	fi
 else
 	echo "Unknown city: $city"
