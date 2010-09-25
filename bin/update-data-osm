@@ -29,7 +29,7 @@ test -f "$file" || usage
 f=`basename "$file"`
 
 size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
-size_old=`ls -l $file | awk '{print $5}'`
+size_old=`ls -l "$file" | awk '{print $5}'`
 
 if [ $size_new -ne $size_old ]; then
 	cd `dirname "$file"`
