@@ -27,12 +27,13 @@ esac
 test -f "$file" || usage
 
 f=`basename "$file"`
+dir=`dirname "$file"`
 
 size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
 size_old=`ls -l "$file" | awk '{print $5}'`
 
 if [ $size_new -ne $size_old ]; then
-	cd `dirname "$file"`
+	cd "$dir"
 	tmp=$f.$$
 	touch $tmp || update_failed $f
         echo "Updating $f ..."
