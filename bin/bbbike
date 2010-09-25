@@ -74,7 +74,7 @@ elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
 elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
 	datadir=data-osm/$city
 	if [ "$update_data_osm" = "YES" ]; then
-		( cd `dirname $0` && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
+		( cd "`dirname $0`" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
 	fi
 else
 	echo "Unknown city: $city"
