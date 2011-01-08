@@ -158,8 +158,7 @@ build-perllibs-intel:
 #
 
 scp rsync:
-	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC} \
-		${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN} ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN} ${SCP_HOME}
+	rsync -av ${DOWNLOAD_DIR}/${BBBIKE_DMG} ${SCP_HOME}
 
 # currently not in used
 clean:
