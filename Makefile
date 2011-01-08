@@ -59,7 +59,7 @@ CITIES= `../bbbike/world/bin/bbbike-db --city-by-lang=any`
 
 all: help
 
-bbbike: bbbike-intel-dmg bbbike-powerpc-dmg bbbike-intel-berlin bbbike-powerpc-berlin
+bbbike: bbbike-intel-dmg bbbike-intel-berlin 
 
 bbbike-intel-dmg bbbike-intel: download-tarballs fix extract-data-osm dmg
 bbbike-powerpc-dmg bbbike-powerpc: download-tarballs-powerpc fix-powerpc extract-data-osm-powerpc dmg-powerpc
@@ -271,8 +271,8 @@ build-version version:
 	@git show | head -1 | perl -npe 's/^commit\s+//'
 
 help:
-	@echo "usage: make [ bbbike | bbbike-intel | bbbike-powerpc | rsync ]"
-	@echo "            [ bbbike-powerpc-berlin | bbbike-intel-berlin ]"
+	@echo "usage: make [ bbbike | bbbike-intel | rsync ]"
+	@echo "            [ bbbike-intel-berlin ]"
 	@echo "            [ create-data-osm-tbz ]"
 	@echo "            [ help | build-version | clean | distclean | update ]"
 
