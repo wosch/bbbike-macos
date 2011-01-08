@@ -24,13 +24,16 @@ case "$file" in
 	* ) usage ;;
 esac
 
-test -f "$file" || usage
 
 f=`basename "$file"`
 dir=`dirname "$file"`
 
 size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
-size_old=`ls -l "$file" | awk '{print $5}'`
+if [ -f "$file" ]; then
+	size_old=`ls -l "$file" | awk '{print $5}'`
+else 
+	size_old=0
+fi
 
 if [ $size_new -ne $size_old ]; then
 	cd "$dir"
@@ -41,7 +44,9 @@ if [ $size_new -ne $size_old ]; then
 		bzip2 -t $tmp || update_failed $f
 		mv $tmp $f || update_failed $f
 		echo "... done"
-		echo "Please re-start BBBike"
+		if [ $size_old != 0 ]; then
+			echo "Please re-start BBBike to use the latest OpenStreetMap data"
+		fi
 	else
 		update_failed "$url/$f"
 	fi

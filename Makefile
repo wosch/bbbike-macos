@@ -54,14 +54,15 @@ MAKE_ARGS=	-j${MAX_CPU}
 zcat=	gzip -dc
 bzip2=	pbzip2
 
-CITIES= `../bbbike/world/bin/bbbike-db --city-by-lang=any`
+CITIES= `../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
 ###############################################################
 
 all: help
 
-bbbike: bbbike-intel-dmg bbbike-intel-berlin 
+bbbike: bbbike-macos
 
-bbbike-intel-dmg bbbike-intel: download-tarballs fix extract-data-osm dmg
+bbbike-macos: download-tarballs fix dmg
+
 bbbike-powerpc-dmg bbbike-powerpc: download-tarballs-powerpc fix-powerpc extract-data-osm-powerpc dmg-powerpc
 
 bbbike-intel-berlin: download-tarballs fix-berlin dmg-berlin
@@ -120,6 +121,7 @@ fix:
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
 	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR}/${BBBIKE_ROOT}/.english_cities
+	(echo data; ../bbbike/world/bin/bbbike-db --list )> ${BUILD_DIR}/${BBBIKE_ROOT}/.all_cities
 
 fix-powerpc:
 	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}

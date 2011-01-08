@@ -31,6 +31,10 @@ perl_home="$dir"/.perl-$perl_version
 DYLD_LIBRARY_PATH="$perl_home/lib/5.10.0/darwin-thread-multi-2level/CORE"
 export DYLD_LIBRARY_PATH
 
+BBBIKEWORLD_DIR=$HOME/.bbbikeworld; export BBBIKEWORLD_DIR
+cache_dir=$BBBIKEWORLD_DIR/cache
+
+mkdir -p $cache_dir
 
 ##################################################################################
 case `sysctl -n hw.machine` in
@@ -50,32 +54,21 @@ esac
 datadir=data
 
 city=`basename "$0"`;
+
+# update orginal bbbike data
 if [ $city = "bbbike" ]; then
-	datadir=data
-	( # update of original BBBike ./data 
-	  set -e
-	  tmp=`mktemp -t bbbike`
-	  mkdir -p "$dir/.$bbbike_version/data-osm"
-	  touch "$dir/.$bbbike_version/data-osm/data.tbz" 2>/dev/null
-	  sleep 10
-	  cd "$dir" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/data.tbz" 
-	  if [ "$dir/.$bbbike_version/data-osm/data.tbz" -nt $tmp ]; then
-	    cd "$dir/.$bbbike_version/data-osm"
-	    bzip2 -t data.tbz
-	    bzcat data.tbz | tar xf -
-	    rm -rf ../data.old
-	    cp -fr ../data ../data.old || true
-	    rsync -a data ../
-	  fi
-	  rm -f $tmp
-	) &
-elif [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
+	city=data
+fi
+
+if [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
 	datadir=data-osm/$city
-elif [ -f "$dir/.$bbbike_version/data-osm/$city.tbz" ]; then
-	datadir=data-osm/$city
+elif [ -f "$cache_dir/$city.tbz" ]; then
 	if [ "$update_data_osm" = "YES" ]; then
-		( cd "$dir" && ./.update-data-osm "$dir/.$bbbike_version/data-osm/$city.tbz" & )
+		( cd "$dir" && ./.update-data-osm "$cache_dir/$city.tbz" & )
 	fi
+elif egrep -qx "$city" "$dir/.all_cities"; then
+	echo "Must download data for $city, be patient..."
+	( cd "$dir" && ./.update-data-osm "$cache_dir/$city.tbz" )
 else
 	echo "Unknown city: $city"
 	exit 1
@@ -87,14 +80,14 @@ export LANG=de_DE.UTF-8;
 
 # start english version of BBBike
 english_cities="$dir/.english_cities"
-if egrep -q "^$city$" "$english_cities"; then
+if egrep -xq "$city" "$english_cities"; then
 	export LANG=en_US.UTF-8
 fi
 
 #
 # support compressed bbbike data, save ca. 200MB disk space
 #
-datadir_opt="$dir/.$bbbike_version/$datadir"
+datadir_opt="$cache_dir/$city"
 tmpdir=""
 
 if [ -f "$datadir_opt.tbz" ]; then
