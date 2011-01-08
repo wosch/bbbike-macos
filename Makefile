@@ -16,21 +16,13 @@ PERL_TARBALL=	MacOS-10.5-intel-perl-5.10.0.tbz
 BBBIKE_DMG=	${BBBIKE_VERSION}-Intel.dmg
 OSMBIKE_DATA=	data-osm.bbbike.tgz
 
-PERL_TARBALL_POWERPC=	MacOS-10.5-powerpc-perl-5.10.0.tbz
-BBBIKE_DMG_POWERPC=	${BBBIKE_VERSION}-PowerPC.dmg
-BBBIKE_DMG_BERLIN=	${BBBIKE_VERSION}-Intel-Berlin.dmg
-BBBIKE_DMG_POWERPC_BERLIN=	${BBBIKE_VERSION}-PowerPC-Berlin.dmg
-
 BBBIKE_TARBALL= ${BBBIKE_VERSION}-git.tbz
 
 _BUILD_DIR=		build
 _build:=		$(shell mkdir -p ${_BUILD_DIR})
 BUILD_DIR:=		$(shell mktemp -d ${_BUILD_DIR}/macos-intel.XXXXXXXXXX)
-BUILD_DIR_POWERPC:=	$(shell mktemp -d ${_BUILD_DIR}/macos-powerpc.XXXXXXXXXX)
-BUILD_DIR_BERLIN:=	$(shell mktemp -d ${_BUILD_DIR}/macos-intel-berlin.XXXXXXXXXX)
-BUILD_DIR_POWERPC_BERLIN:=$(shell mktemp -d ${_BUILD_DIR}/macos-powerpc-berlin.XXXXXXXXXX)
 
-BUILD_DIR_ALL=		${BUILD_DIR} ${BUILD_DIR_POWERPC} ${BUILD_DIR_BERLIN}
+BUILD_DIR_ALL=		${BUILD_DIR}
 
 DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
@@ -51,8 +43,9 @@ B_PATH=		/bin:/usr/bin
 MAX_CPU:=        $(shell ../bbbike/world/bin/ncpu)
 MAKE_ARGS=	-j${MAX_CPU}
 
-zcat=	gzip -dc
-bzip2=	pbzip2
+GZIP:=             $(shell which pigz gzip | head -1)
+BZIP2:=            $(shell which pbzip2 bzip2 | head -1)
+
 
 CITIES= `../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
 ###############################################################
@@ -60,13 +53,7 @@ CITIES= `../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
 all: help
 
 bbbike: bbbike-macos
-
 bbbike-macos: download-tarballs fix dmg
-
-bbbike-powerpc-dmg bbbike-powerpc: download-tarballs-powerpc fix-powerpc extract-data-osm-powerpc dmg-powerpc
-
-bbbike-intel-berlin: download-tarballs fix-berlin dmg-berlin
-bbbike-powerpc-berlin: download-tarballs fix-powerpc-berlin dmg-powerpc-berlin
 
 
 ###############################################################
@@ -83,31 +70,6 @@ dmg:
 	echo ${BUILD_VERSION} > ${BUILD_DIR}/${BBBIKE_ROOT}/.build_version
 	hdiutil create -srcfolder ${BUILD_DIR} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG}
 
-dmg-powerpc:
-	@for city in ${CITIES}; do \
-		( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && cp bbbike $$city ); \
-	done
-	date > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_date
-	cp -f bin/cpan ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.cpan
-	cp -f bin/update-data-osm ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.update-data-osm
-	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.build_version
-	hdiutil create -srcfolder ${BUILD_DIR_POWERPC} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC}
-
-dmg-berlin:
-	date > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_date
-	cp -f bin/cpan ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.cpan
-	cp -f bin/update-data-osm ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.update-data-osm
-	echo ${BUILD_VERSION} > ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.build_version
-	hdiutil create -srcfolder ${BUILD_DIR_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_BERLIN}
-
-dmg-powerpc-berlin:
-	date > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_date
-	cp -f bin/cpan ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.cpan
-	cp -f bin/update-data-osm ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.update-data-osm
-	echo ${BUILD_VERSION} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.build_version
-	hdiutil create -srcfolder ${BUILD_DIR_POWERPC_BERLIN} -volname BBBike -ov  ${DOWNLOAD_DIR}/${BBBIKE_DMG_POWERPC_BERLIN}
-
-
 ###############################################################
 #
 # correction, configuration for target platform
@@ -115,42 +77,13 @@ dmg-powerpc-berlin:
 
 fix:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
-	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
+	${BZIP2} -dc ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	if test -n "${WITH_GIT_PULL}"; then cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git; fi
-	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
+	${BZIP2} -dc ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
 	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR}/${BBBIKE_ROOT}/.english_cities
 	(echo data; ../bbbike/world/bin/bbbike-db --list )> ${BUILD_DIR}/${BBBIKE_ROOT}/.all_cities
-
-fix-powerpc:
-	mkdir -p ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
-	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	if test -n "${WITH_GIT_PULL}"; then cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git; fi
-	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT} && tar xf - )
-	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}
-	cp -rf doc ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.doc
-	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/bbbike
-	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.english_cities
-
-fix-berlin:
-	mkdir -p ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
-	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	if test -n "${WITH_GIT_PULL}"; then cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git; fi
-	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	cp -f ${UPDATE_FILES} ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}
-	cp -rf doc ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.doc
-	touch ${BUILD_DIR_BERLIN}/${BBBIKE_ROOT}/.english_cities
-
-fix-powerpc-berlin:
-	mkdir -p ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
-	bzcat ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	if test -n "${WITH_GIT_PULL}"; then cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git; fi 
-	bzcat ${DOWNLOAD_DIR}/${PERL_TARBALL_POWERPC} | ( cd ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT} && tar xf - )
-	cp -f ${UPDATE_FILES} ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}
-	cp -rf doc ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.doc
-	perl -npe s'/^(\s+)i386/Power\*/; s,only MacOS/Intel,only MacOS/PowerPC,' ${BBBIKE_SCRIPT} > ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/bbbike
-	touch ${BUILD_DIR_POWERPC_BERLIN}/${BBBIKE_ROOT}/.english_cities
 
 ###############################################################
 #
@@ -162,42 +95,15 @@ download-tarballs:
 	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
 	  test -f ${PERL_TARBALL} || curl -s -S -f -o ${PERL_TARBALL} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL}
 
-download-tarballs-powerpc:
-	cd ${DOWNLOAD_DIR}; \
-	  test -f ${BBBIKE_TARBALL} || curl -s -S -f -o ${BBBIKE_TARBALL} ${ARCHIVE_HOMEPAGE}/${BBBIKE_TARBALL}; \
-	  test -f ${PERL_TARBALL_POWERPC} || curl -s -S -f -o ${PERL_TARBALL_POWERPC} ${ARCHIVE_HOMEPAGE}/${PERL_TARBALL_POWERPC}
-
 ###############################################################
-
-get-data-osm:
-	cd ${DOWNLOAD_DIR}; \
-	  test -f ${OSMBIKE_DATA} || curl  -s -S -f -o ${OSMBIKE_DATA} ${ARCHIVE_HOMEPAGE}/${OSMBIKE_DATA}
-
-extract-data-osm-tbz: get-data-osm
-	mkdir -p ${_BUILD_DIR}
-	if ! test -d ${_BUILD_DIR}/data-osm; then \
-		${zcat} ${DOWNLOAD_DIR}/${OSMBIKE_DATA} | ( cd ${_BUILD_DIR} && tar xf - ); \
-		( cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm ) ); \
-		( tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P${MAX_CPU} $${tbz} ); \
-		find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t; \
-	fi
-
-extract-data-osm: extract-data-osm-tbz
-	mkdir -p  ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
-	p=`pwd`; cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm && ln -f $$p/${_BUILD_DIR}/data-osm/*.tbz .
-
-extract-data-osm-powerpc: extract-data-osm-tbz
-	mkdir -p  ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm
-	p=`pwd`; cd ${BUILD_DIR_POWERPC}/${BBBIKE_ROOT}/.${BBBIKE_VERSION}/data-osm && ln -f $$p/${_BUILD_DIR}/data-osm/*.tbz .
-
 # create a bzip2'd tarball for every city and put it online
 create-data-osm-tbz: 
 	mkdir -p ${_BUILD_DIR}
 	if ! test -d ${_BUILD_DIR}/data-osm; then \
-		${zcat} ../../www/src/bbbike/data-osm.tgz | ( cd ${_BUILD_DIR} && tar xf - ); \
+		${GZIP} -dc ../../www/src/bbbike/data-osm.tgz | ( cd ${_BUILD_DIR} && tar xf - ); \
 		( cd ${_BUILD_DIR} && ( rm -rf data-osm; mv data-osm.bbbike data-osm ) ); \
 		( tbz=`pwd`/bin/tbz; cd ${_BUILD_DIR}/data-osm; ls | xargs -n1 -P${MAX_CPU} $${tbz} ); \
-		find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${bzip2} -t; \
+		find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${BZIP2} -t; \
 	fi
 	mkdir -p ../../www/src/bbbike/data-osm
 	rsync -av ${_BUILD_DIR}/data-osm/*.tbz ../../www/src/bbbike/data-osm
@@ -224,7 +130,7 @@ build-perl-intel:
 	@test -n ${PERL_RELEASE} && rm -rf /tmp/${PERL_RELEASE}
 	@rm -rf ${BUILD_DIR}/${PERL_RELEASE}
 	@echo "extract perl dist..."
-	${zcat} ${DOWNLOAD_DIR}/${PERL_DIST} | ( cd ${BUILD_DIR}; tar xf - )
+	${GZIP} -dc ${DOWNLOAD_DIR}/${PERL_DIST} | ( cd ${BUILD_DIR}; tar xf - )
 	@echo "configure perl..."
 	cd ${BUILD_DIR}/${PERL_RELEASE};  \
 		env PATH="${B_PATH}" HOME="${CPAN_HOME}" cc='cc' ccflags='-g -pipe -fno-common -DPERL_DARWIN -no-cpp-precomp -fno-strict-aliasing -Wdeclaration-after-statement -I/usr/include' optimize='-O3' ld='cc -mmacosx-version-min=10.5' ldflags='-L/usr/lib' \
@@ -273,8 +179,7 @@ build-version version:
 	@git show | head -1 | perl -npe 's/^commit\s+//'
 
 help:
-	@echo "usage: make [ bbbike | bbbike-intel | rsync ]"
-	@echo "            [ bbbike-intel-berlin ]"
+	@echo "usage: make [ bbbike | rsync ]"
 	@echo "            [ create-data-osm-tbz ]"
 	@echo "            [ help | build-version | clean | distclean | update ]"
 
