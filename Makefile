@@ -106,7 +106,7 @@ create-data-osm-tbz:
 		find ${_BUILD_DIR}/data-osm/*.tbz -print0 | xargs -n1 -0 -P${MAX_CPU} ${BZIP2} -t; \
 	fi
 	mkdir -p ../../www/src/bbbike/data-osm
-	rsync -av ${_BUILD_DIR}/data-osm/*.tbz ../../www/src/bbbike/data-osm
+	rsync -a ${_BUILD_DIR}/data-osm/*.tbz ../../www/src/bbbike/data-osm
 
 ###############################################################
 #
