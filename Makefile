@@ -47,7 +47,7 @@ GZIP:=             $(shell which pigz gzip | head -1)
 BZIP2:=            $(shell which pbzip2 bzip2 | head -1)
 
 
-CITIES= `../bbbike ../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
+CITIES= `../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
 ###############################################################
 
 all: help
