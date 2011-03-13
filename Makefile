@@ -47,7 +47,7 @@ GZIP:=             $(shell which pigz gzip | head -1)
 BZIP2:=            $(shell which pbzip2 bzip2 | head -1)
 
 
-CITIES= `../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
+CITIES= `../bbbike ../bbbike/world/bin/bbbike-db --list | egrep -xv "berlin"`
 ###############################################################
 
 all: help
@@ -82,7 +82,7 @@ fix:
 	${BZIP2} -dc ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
-	../bbbike/world/bin/bbbike-db --city-by-lang=en > ${BUILD_DIR}/${BBBIKE_ROOT}/.english_cities
+	../bbbike/world/bin/bbbike-db --city-en > ${BUILD_DIR}/${BBBIKE_ROOT}/.english_cities
 	(echo data; ../bbbike/world/bin/bbbike-db --list )> ${BUILD_DIR}/${BBBIKE_ROOT}/.all_cities
 
 ###############################################################
