@@ -1,12 +1,11 @@
 #!/bin/sh
-# Copyright (c) Wolfram Schneider, Aug 2008
+# Copyright (c) 2008-2011 Wolfram Schneider, http://bbbike.org 
 #
 # bbbike - a wrapper for the perl/tk program BBBike.
 #
 # BBBike is a route-finder for cyclists in Berlin and Brandenburg
 # see http://www.bbbike.de
 #
-# $Id: bbbike,v 1.56 2009/04/18 10:56:01 wosch Exp $
 ##################################################################################
 
 # BBBike version
