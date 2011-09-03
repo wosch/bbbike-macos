@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2008-2010 Wolfram Schneider, http://bbbike.org
+# Copyright (c) 2008-2011 Wolfram Schneider, http://bbbike.org
 # 
 # update-data-osm - update BBBike city data at startup time
 #
