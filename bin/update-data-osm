@@ -5,7 +5,8 @@
 #
 
 file=$1
-url=http://wolfram.schneider.org/src/bbbike/data-osm
+#url=http://wolfram.schneider.org/src/bbbike/data-osm
+url=http://download.bbbike.org/bbbike/data-osm
 
 usage ()
 {
