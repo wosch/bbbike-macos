@@ -1,9 +1,9 @@
 ###############################################################
-# Copyright (c) 2008-2010 Wolfram Schneider, http://bbbike.org
+# Copyright (c) 2008-2011 Wolfram Schneider, http://bbbike.org
 #
-# build and update a BBBike image for MacOS 10.5 Intel & PowerPC
+# build and update a BBBike image for MacOS 10.5 
 #
-# For more information about BBBike, visit http://www.bbbike.de
+# For more information about BBBike, visit http://www.bbbike.org
 
 
 BBBIKE_ROOT=	BBBike
@@ -25,8 +25,8 @@ BUILD_DIR:=		$(shell mktemp -d ${_BUILD_DIR}/macos-intel.XXXXXXXXXX)
 BUILD_DIR_ALL=		${BUILD_DIR}
 
 DOWNLOAD_DIR=	download
-ARCHIVE_HOMEPAGE=	http://wolfram.schneider.org/src/bbbike
-SCP_HOME=		wolfram.schneider.org:www/src/bbbike
+ARCHIVE_HOMEPAGE=	http://download.bbbike.org/bbbike
+SCP_HOME=		download.bbbike.org/bbbike
 
 WITH_GIT_PULL=	YES
 
