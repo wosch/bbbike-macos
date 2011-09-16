@@ -37,7 +37,7 @@ mkdir -p $cache_dir
 
 ##################################################################################
 case `sysctl -n hw.machine` in
-        i386) ;;
+        i386 | x86_64 ) ;;
         * ) 	banner '.' 
 		echo "Wrong architecture, only MacOS/Intel is supported"
 		sleep 10
