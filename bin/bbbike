@@ -14,6 +14,10 @@ bbbike_version="BBBike-3.17-devel"
 # BBBike options
 additional_layers="--sehenswuerdigkeiten --rbahn"
 advanced_mode=	#"--advanced"
+
+# disable weather update
+wind=--nowind
+
 : ${update_data_osm="YES"}
 
 
@@ -58,6 +62,7 @@ city=`basename "$0"`;
 # update orginal bbbike data
 if [ $city = "bbbike" ]; then
 	city=data
+	#wind=--wind
 fi
 
 if [ -d "$dir/.$bbbike_version/data-osm/$city" ]; then
@@ -108,5 +113,5 @@ fi
 	-I"$perl_home"/lib/site_perl/$perl_version \
    "$dir"/.$bbbike_version/bbbike \
 	-datadir "$datadir_opt" \
-	$additional_layers $advanced_mode "$@"
+	$additional_layers $advanced_mode $wind "$@"
 
