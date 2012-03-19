@@ -29,6 +29,7 @@ esac
 f=`basename "$file"`
 dir=`dirname "$file"`
 
+agent="BBBikeWorld/3.18-DEVEL [$(sw_vers -productName) $(sw_vers  -productVersion) $(uname -mprs)]"
 if [ -f "$file" ]; then
 	size_old=`ls -l "$file" | awk '{print $5}'`
 
@@ -36,7 +37,6 @@ if [ -f "$file" ]; then
 		exit 0
 	fi
 
-	agent="BBBikeWorld/3.18-DEVEL [$(sw_vers -productName) $(sw_vers  -productVersion) $(uname -mprs)]"
 	size_new=`curl -A "$agent" -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
 else 
 	size_old=0
@@ -49,7 +49,7 @@ if [ $size_new -ne $size_old ]; then
 	tmp=$f.$$
 	touch $tmp || update_failed $f
         echo "Updating $f ..."
-	if curl -sf -o $tmp "$url/$f"; then
+	if curl -A "$agent" -sf -o $tmp "$url/$f"; then
 		bzip2 -t $tmp || update_failed $f
 		mv $tmp $f || update_failed $f
 		echo "... done"
