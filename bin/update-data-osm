@@ -36,7 +36,8 @@ if [ -f "$file" ]; then
 		exit 0
 	fi
 
-	size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
+	agent="BBBikeWorld/3.18-DEVEL [$(sw_vers -productName) $(sw_vers  -productVersion) $(uname -mprs)]"
+	size_new=`curl -A "$agent" -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
 else 
 	size_old=0
 	size_new=1
