@@ -35,11 +35,13 @@ if [ -f "$file" ]; then
 	if perl -e 'use File::stat; $st = stat(shift); exit (time - $st->mtime > 86400 ? 1 : 0)' $file; then
 		exit 0
 	fi
+
+	size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
 else 
 	size_old=0
+	size_new=1
 fi
 
-size_new=`curl -s --head "$url/$f" | perl -ne 'print "$1\n" if /^Content-Length: (\d+)/'`
 
 if [ $size_new -ne $size_old ]; then
 	cd "$dir"
