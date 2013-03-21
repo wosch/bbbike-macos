@@ -7,7 +7,8 @@
 
 
 BBBIKE_ROOT=	BBBike
-BBBIKE_VERSION= BBBike-3.17-devel
+BBBIKE_VERSION= BBBike-3.18-devel
+GIT_BRANCH= RELEASE_3_18
 
 # see target build-version
 BUILD_VERSION=	`${MAKE} -s build-version` 
@@ -26,7 +27,7 @@ BUILD_DIR_ALL=		${BUILD_DIR}
 
 DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://download.bbbike.org/bbbike
-SCP_HOME=		bbbike32:/usr/local/www/download.bbbike.org/bbbike
+SCP_HOME=		bbbike4:/usr/local/www/download.bbbike.org/bbbike
 
 WITH_GIT_PULL=	YES
 
@@ -78,7 +79,7 @@ dmg:
 fix:
 	mkdir -p ${BUILD_DIR}/${BBBIKE_ROOT}
 	${BZIP2} -dc ${DOWNLOAD_DIR}/${BBBIKE_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
-	if test -n "${WITH_GIT_PULL}"; then cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && rm -rf .git; fi
+	if test -n "${WITH_GIT_PULL}"; then cd ${BUILD_DIR}/${BBBIKE_ROOT}/.${BBBIKE_VERSION} && git pull -q && git checkout ${GIT_BRANCH} && rm -rf .git; fi
 	${BZIP2} -dc ${DOWNLOAD_DIR}/${PERL_TARBALL} | ( cd ${BUILD_DIR}/${BBBIKE_ROOT} && tar xf - )
 	cp -f ${UPDATE_FILES} ${BUILD_DIR}/${BBBIKE_ROOT}
 	cp -rf doc ${BUILD_DIR}/${BBBIKE_ROOT}/.doc
