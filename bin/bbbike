@@ -9,7 +9,7 @@
 ##################################################################################
 
 # BBBike version
-bbbike_version="BBBike-3.17-devel"
+bbbike_version="BBBike-3.18-devel"
 
 # BBBike options
 additional_layers="--sehenswuerdigkeiten --rbahn"
