@@ -40,7 +40,7 @@ cache_dir=$BBBIKEWORLD_DIR/cache
 mkdir -p $cache_dir
 
 ##################################################################################
-hw=`sysctl -n hw.machine`
+hw=$(sysctl -n hw.machine)
 case $hw in
         i386 | x86_64 ) ;;
         * ) 	banner '.' 
@@ -50,7 +50,8 @@ case $hw in
 		;;
 esac
 
-case `sw_vers -productVersion` in
+os_version=$(sw_vers -productVersion)
+case $os_version in
         10.[5-9].* ) ;;
         * ) banner '.'; echo "Wrong MacOS release, only 10.5.X or higher is supported"; exit 1 ;;
 esac
