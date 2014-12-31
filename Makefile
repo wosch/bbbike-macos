@@ -27,7 +27,7 @@ BUILD_DIR_ALL=		${BUILD_DIR}
 
 DOWNLOAD_DIR=	download
 ARCHIVE_HOMEPAGE=	http://download.bbbike.org/bbbike
-SCP_HOME=		bbbike4:/usr/local/www/download.bbbike.org/bbbike
+SCP_HOME=		download.bbbike.org:/usr/local/www/download.bbbike.org/bbbike
 
 WITH_GIT_PULL=	YES
 
